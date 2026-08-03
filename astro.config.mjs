@@ -39,6 +39,22 @@ export default defineConfig({
   trailingSlash: 'never',
   output: 'static',
   adapter: vercel(),
+
+  // Zonder deze lijst vertrouwt Astro de `Host`/`X-Forwarded-Host` van de proxy
+  // niet en valt `Astro.url` terug op `https://localhost`. De CSRF-check
+  // vergelijkt de `Origin`-header daarmee, dus élke POST achter Vercel wordt
+  // "Cross-site POST form submissions are forbidden" — inloggen dus ook.
+  //
+  // Niet de check uitzetten: dan staat het inlogformulier open voor cross-site
+  // POSTs. Wel zeggen wélke hosts we zijn.
+  security: {
+    allowedDomains: [
+      { hostname: 'rpmedelmetaal.nl', protocol: 'https' },
+      { hostname: '**.rpmedelmetaal.nl', protocol: 'https' },
+      // Vercel-previews en de standaard *.vercel.app-URL.
+      { hostname: '**.vercel.app', protocol: 'https' },
+    ],
+  },
   integrations: [
     reviewRoutes,
     sitemap({

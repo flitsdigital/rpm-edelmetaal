@@ -86,16 +86,19 @@
 
 ### ⛔ Blokkeert livegang
 
+**Stand 3 augustus 2026, 22:10 — alleen #6 (test) staat nog open.**
+
 | # | Wat | Wie |
 |---|---|---|
 | 1 | ~~**Auth bouwen**~~ ✅ gebouwd. `/auth/login` (wachtwoord, 1-op-1 van live), `/auth/wachtwoord`, `/auth/callback`, `/auth/logout`, middleware op `/inkoopprijzen-b2b`. Geverifieerd zonder sessie en met een vervalste cookie. **Nog niet getest met een echte gebruiker** — die bestaat nog niet; zie #5. | ✅ |
-| 2 | **Vercel deploy-hook** aanmaken, als `vercel_deploy_hook` in de Vault, dan `08-deploy-hook.sql` draaien. Zonder deze stap update de database wel maar de site niet. | Jordi |
-| 3 | **n8n-workflow `7ok70BWJ7aHF1FNU` publiceren.** De mailvraag is beslecht: verzending gaat via SMTP op `info@flitsdigital.nl` (Gmail-node eruit). Nu staat de workflow nog uit en geeft `/api/taxatie` een 502. Stuur er vóór het publiceren één testaanvraag doorheen — ik heb dat niet gedaan, want dan zou er ongevraagd post bij RPM binnenkomen. | Jordi |
-| 4 | **Redirect-lijst uit Webflow** (Site settings → Publishing). Uit de conversie zelf komt geen enkele redirect — alle slugs blijven gelijk — maar bestaande redirects moeten mee. | Jordi |
+| 2 | ~~**Vercel deploy-hook**~~ ✅ 03-08-2026 door Jordi ingesteld: hook in de Vault als `vercel_deploy_hook`, `08-deploy-hook.sql` gedraaid. | ✅ |
+| 3 | ~~**n8n-workflow publiceren**~~ ✅ Gemeten op de deploy: `POST /api/taxatie` geeft 400 "ongeldig" op een leeg formulier, dus de route werkt en `N8N_TAXATIE_WEBHOOK` staat in Vercel. Oorspronkelijke tekst: **n8n-workflow `7ok70BWJ7aHF1FNU` publiceren.** De mailvraag is beslecht: verzending gaat via SMTP op `info@flitsdigital.nl` (Gmail-node eruit). Nu staat de workflow nog uit en geeft `/api/taxatie` een 502. Stuur er vóór het publiceren één testaanvraag doorheen — ik heb dat niet gedaan, want dan zou er ongevraagd post bij RPM binnenkomen. | Jordi |
+| 4 | ~~**Redirect-lijst uit Webflow**~~ ✅ Vervalt — Jordi: er staat geen redirect-lijst in Webflow. Alle slugs blijven sowieso gelijk. | ✅ |
 | 5 | **3 gebruikers uitnodigen** (Supabase → Authentication → Users → Invite). Zet de redirect-URL van de invitemail op `/auth/callback?terug=%2Fauth%2Fwachtwoord`, anders komen ze binnen zonder ooit een wachtwoord te kiezen en zijn ze na het verlopen van de sessie buitengesloten. Wachtwoord-hashes komen niet uit Memberstack, dus vooraf mailen — anders lijkt de invite op phishing. Daarna één keer echt inloggen en controleren dat de zakelijke prijzen laden: dat pad is nog niet gedraaid. | Jordi |
 | 5b | **SMTP instellen** in Supabase (Authentication → Emails). De ingebouwde mailer doet ~3 mails per uur en stuurt vanaf een supabase.io-adres — dat komt bij een zakelijke klant niet aan of in spam. | Jordi |
 | 5c | **Site URL + redirect-URL** zetten op `https://www.rpmedelmetaal.nl` (Authentication → URL Configuration), anders wijzen de invite- en herstellinks naar localhost. | Jordi |
-| 5d | **Site deployen naar Vercel.** Nog geen project. Env-vars: `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`, `N8N_TAXATIE_WEBHOOK`. Pas daarna kan #2. | Jordi |
+| 5d | ~~**Site deployen naar Vercel**~~ ✅ Draait op `rpm-edelmetaal.vercel.app`. Alle 7 routes 200, prijzen correct, `/inkoopprijzen-b2b` 302 naar login, review-routes 404. | ✅ |
+| 5e | **Bij het omzetten naar het echte domein**: Site URL en redirect-URL in Supabase méé omzetten naar `https://www.rpmedelmetaal.nl`, anders wijzen invite- en herstelmails naar de vercel.app-URL. | Jordi |
 
 ### ⚠️ Los van de migratie, maar urgent
 

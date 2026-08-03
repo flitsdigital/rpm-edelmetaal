@@ -88,13 +88,14 @@
 
 | # | Wat | Wie |
 |---|---|---|
-| 1 | ~~**Auth bouwen**~~ ✅ gebouwd. `/auth/login` (magic link), `/auth/callback`, `/auth/logout`, middleware op `/inkoopprijzen-b2b`. Geverifieerd zonder sessie en met een vervalste cookie. **Nog niet getest met een echte gebruiker** — die bestaat nog niet; zie #5. | ✅ |
+| 1 | ~~**Auth bouwen**~~ ✅ gebouwd. `/auth/login` (wachtwoord, 1-op-1 van live), `/auth/wachtwoord`, `/auth/callback`, `/auth/logout`, middleware op `/inkoopprijzen-b2b`. Geverifieerd zonder sessie en met een vervalste cookie. **Nog niet getest met een echte gebruiker** — die bestaat nog niet; zie #5. | ✅ |
 | 2 | **Vercel deploy-hook** aanmaken, als `vercel_deploy_hook` in de Vault, dan `08-deploy-hook.sql` draaien. Zonder deze stap update de database wel maar de site niet. | Jordi |
 | 3 | **n8n-workflow `7ok70BWJ7aHF1FNU` publiceren.** De mailvraag is beslecht: verzending gaat via SMTP op `info@flitsdigital.nl` (Gmail-node eruit). Nu staat de workflow nog uit en geeft `/api/taxatie` een 502. Stuur er vóór het publiceren één testaanvraag doorheen — ik heb dat niet gedaan, want dan zou er ongevraagd post bij RPM binnenkomen. | Jordi |
 | 4 | **Redirect-lijst uit Webflow** (Site settings → Publishing). Uit de conversie zelf komt geen enkele redirect — alle slugs blijven gelijk — maar bestaande redirects moeten mee. | Jordi |
 | 5 | **3 gebruikers uitnodigen** (Supabase → Authentication → Users → Invite). Zet de redirect-URL van de invitemail op `/auth/callback?terug=%2Fauth%2Fwachtwoord`, anders komen ze binnen zonder ooit een wachtwoord te kiezen en zijn ze na het verlopen van de sessie buitengesloten. Wachtwoord-hashes komen niet uit Memberstack, dus vooraf mailen — anders lijkt de invite op phishing. Daarna één keer echt inloggen en controleren dat de zakelijke prijzen laden: dat pad is nog niet gedraaid. | Jordi |
 | 5b | **SMTP instellen** in Supabase (Authentication → Emails). De ingebouwde mailer doet ~3 mails per uur en stuurt vanaf een supabase.io-adres — dat komt bij een zakelijke klant niet aan of in spam. | Jordi |
-| 5c | **Site URL + redirect-URL** zetten op `https://www.rpmedelmetaal.nl` (Authentication → URL Configuration), anders wijst de magic link naar localhost. | Jordi |
+| 5c | **Site URL + redirect-URL** zetten op `https://www.rpmedelmetaal.nl` (Authentication → URL Configuration), anders wijzen de invite- en herstellinks naar localhost. | Jordi |
+| 5d | **Site deployen naar Vercel.** Nog geen project. Env-vars: `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`, `N8N_TAXATIE_WEBHOOK`. Pas daarna kan #2. | Jordi |
 
 ### ⚠️ Los van de migratie, maar urgent
 
@@ -122,7 +123,7 @@
 | 15 | **Fidelity van 19,2% omlaag.** Hoogtes kloppen binnen ~100px; wat resteert is horizontale drift. `/over-ons` en `/testwijze` staan het hoogst. |
 | 16 | **Hover-, focus- en actieve staten** handmatig nalopen op de echte routes. |
 | 17 | **Lighthouse ≥ 90** en het JS-budget verantwoorden (nu 0 `client:`-directives, ~2,7 kB inline). |
-| 18 | **Openingstijden, telefoon en adres** in `src/data/site.ts` niet geverifieerd tegen de live footer. |
+| ~~18~~ | ~~**Openingstijden, telefoon en adres** verifiëren~~ ✅ 03-08-2026 nagelopen tegen live: alle zeven dagen, `+31 85 060 1486`, `info@rpmedelmetaal.nl` en `8601 BE Sneek` komen exact overeen. Live staat er geen straatnaam, hier ook niet. |
 
 ## Bekende issues / TODO
 

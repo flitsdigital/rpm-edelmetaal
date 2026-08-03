@@ -282,6 +282,20 @@ const links = [...navLinks, ...b2bLinks];
     display: none;
   }
 
+  /* De divider staat in de nav lichter dan in een sectie.
+     Alleen de lijnen krijgen een achtergrond — zet je die ook op de
+     logo-wrapper, dan staat er een grijs blok achter het monogram. Dat was
+     alleen in het mobiele menu te zien, want daar staat de enige nav-divider. */
+  .nav :global(.divider__line) { /* guard-ignore: global-css — SectionDivider draagt zijn eigen scope-hash */
+    opacity: .4;
+    background-color: var(--_color---neutral--neutral-100);
+  }
+
+  .nav :global(.divider__logo) { /* guard-ignore: global-css — idem */
+    opacity: .4;
+    color: var(--_color---neutral--neutral-100);
+  }
+
   .page-bg {
     z-index: 0;
     position: absolute;
@@ -294,13 +308,6 @@ const links = [...navLinks, ...b2bLinks];
     transition: opacity var(--duration-fast) var(--cubic-default);
   }
 
-  /* De divider staat in de nav lichter dan in een sectie. */
-  .nav :global(.divider__line), /* guard-ignore: global-css — SectionDivider draagt zijn eigen scope-hash */
-  .nav :global(.divider__logo) { /* guard-ignore: global-css — idem */
-    opacity: .4;
-    color: var(--_color---neutral--neutral-100);
-    background-color: var(--_color---neutral--neutral-100);
-  }
 
   @media screen and (max-width: 991px) {
     .nav-banner {

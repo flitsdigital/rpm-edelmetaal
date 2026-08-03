@@ -71,7 +71,7 @@ const jaar = new Date().getFullYear();
         <Col lg={4} md={12}>
           <div class="footer__flits">
             <Text size="sm" tone="secondary" flush>Website door</Text>
-            <span class="footer__flits-logo"><Icon name="flits" label="Flits Digital" /></span>
+            <span class="footer__flits-logo"><Logo variant="flits" label="Flits Digital" /></span>
           </div>
         </Col>
       </Row>
@@ -162,9 +162,11 @@ const jaar = new Date().getFullYear();
     color: var(--primary--text-secondary);
   }
 
+  /* 2.5rem uit `.flits-logo` in de export. Stond op 4rem, en dat viel niet op
+     omdat Icon zijn eigen `width: 1em` meebracht en die won. */
   .footer__flits-logo {
     display: block;
-    width: 4rem;
+    width: 2.5rem;
   }
 
   @media screen and (max-width: 479px) {

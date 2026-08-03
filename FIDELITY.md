@@ -99,8 +99,9 @@ Elk van deze is een verbetering die de diff als verschil telt.
 | `mast@latest`-CDN vervangen door eigen code | Niet gepind — productie hing aan een derde partij |
 | `rel=canonical` toegevoegd | Ontbrak op alle 19 pagina's |
 | Alt-teksten ingevuld | Waren overal leeg |
-| Inloggen met magic link i.p.v. wachtwoord | Het wachtwoordveld kwam van Memberstack; het bijbehorende reset-scherm in de export is een onafgemaakte placeholder ("Step 1 of 4"). De hashes komen niet mee uit Memberstack, dus iedereen moet toch opnieuw. Geen wachtwoord = niets te lekken of te resetten |
-| Zelfde melding bij een bekend en een onbekend adres | Anders kun je met het inlogformulier uitvinden wélke adressen een account hebben |
+| `/auth/wachtwoord` toegevoegd | Op die plek stond in het origineel een Memberstack-demotooltip ("Duncan from Memberstack — Step 1 of 4"), die op de live site nog steeds in de HTML zit. Er was dus geen werkend herstelscherm om na te bouwen |
+| "Account aanmaken" → "Neem contact op" | `/auth/signup` bestaat live nog, maar B2B is invite-only (beslissing 10) |
+| Zelfde melding bij een onbekend adres en een fout wachtwoord | Anders kun je met het inlogformulier uitvinden wélke adressen een account hebben |
 | B2B-link staat altijd in de nav | Was `data-ms-content` (client-side). De overige pagina's zijn statisch en weten niet wie er kijkt; alleen daarvoor JS toevoegen geeft een flits van de verkeerde staat. De URL is geen geheim — het slot zit in de database |
 | Uitloggen is een POST | Een GET-uitloglink wordt door prefetch of een link-preview uitgevoerd |
 

@@ -1,0 +1,240 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Specimen from '../components/molecules/Specimen.astro';
+import Button from '../components/atoms/Button.astro';
+import Container from '../components/atoms/Container.astro';
+import Row from '../components/atoms/Row.astro';
+import Col from '../components/atoms/Col.astro';
+import Heading from '../components/atoms/Heading.astro';
+import Text from '../components/atoms/Text.astro';
+import Eyebrow from '../components/atoms/Eyebrow.astro';
+import Icon from '../components/atoms/Icon.astro';
+import Logo from '../components/atoms/Logo.astro';
+import Field from '../components/molecules/Field.astro';
+import Media from '../components/atoms/Media.astro';
+import BgImage from '../components/atoms/BgImage.astro';
+import SectionDivider from '../components/atoms/SectionDivider.astro';
+import { icons } from '../data/icons';
+import { images } from '../data/images';
+
+const LEVELS = [1, 2, 3, 4, 5, 6] as const;
+const SIZES = ['xl', 'lg', 'body', 'sm'] as const;
+const METALEN = ['Goud', 'Zilver', 'Platina', 'Palladium'].map((m) => ({ value: m, label: m }));
+---
+
+<BaseLayout title="Componenten | RPM Edelmetaal" noindex>
+  <main class="cx">
+    <header>
+      <h1>Componenten</h1>
+      <Text tone="secondary">
+        Alle atoms in hun varianten en toestanden. Hover en tab er doorheen — de
+        focus-states horen er ook bij. Tokens staan op <a href="/styleguide">/styleguide</a>.
+      </Text>
+    </header>
+
+    <Specimen
+      title="Button"
+      note="In de export was dit een <div> met een aria-hidden label en een onzichtbare overlay-link erin. Hier is het een echte <a> of <button>."
+      props="variant: 'primary' | 'secondary' · href? · type? · full? · disabled?"
+    >
+      <div class="cx__inline">
+        <Button href="#">Gratis taxatie aanvragen</Button>
+        <Button variant="secondary" href="#">Bekijk inkoopprijzen</Button>
+        <Button type="submit">Versturen</Button>
+        <Button disabled>Uitgeschakeld</Button>
+      </div>
+      <div class="cx__stack">
+        <Button href="#" full>Volle breedte</Button>
+      </div>
+    </Specimen>
+
+    <Specimen
+      title="Heading"
+      note="`level` bepaalt het element, `size` het uiterlijk — de export gebruikt die los van elkaar (een <h3> met de h6-schaal)."
+      props="level: 1-6 · size?: 1-6 · align? · tone?"
+    >
+      {LEVELS.map((l) => <Heading level={l}>Heading {l} — goud &amp; zilver verkopen</Heading>)}
+      <Heading level={3} size={6} tone="accent">level=3 size=6 tone=accent</Heading>
+      <Heading level={4} align="center">align=center</Heading>
+    </Specimen>
+
+    <Specimen title="Text" props="size: 'xl' | 'lg' | 'body' | 'sm' · tone? · align? · element? · flush?">
+      {SIZES.map((s) => <Text size={s}>size={s} — al ruim 20 jaar de eerlijkste inkoopprijzen van Friesland.</Text>)}
+      <Text tone="secondary">tone=secondary</Text>
+      <Text tone="accent" flush>tone=accent, flush</Text>
+    </Specimen>
+
+    <Specimen title="Eyebrow" props="align? · flush?">
+      <div class="cx__inline">
+        <Eyebrow>Over ons</Eyebrow>
+        <Eyebrow>Testwijze</Eyebrow>
+      </div>
+    </Specimen>
+
+    <Specimen
+      title="Icon"
+      note={`${Object.keys(icons).length} iconen uit src/data/icons.ts. De export herhaalde deze SVG's 76× over 7 pagina's; de no-op Figma-maskers zijn eruit.`}
+      props="name · size: 'sm' | 'md' | 'lg' · tone? · label?"
+    >
+      <div class="cx__icons">
+        {
+          Object.keys(icons).map((name) => (
+            <figure>
+              <Icon name={name as keyof typeof icons} size="lg" tone="accent" />
+              <figcaption>{name}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+      <div class="cx__inline cx__baseline">
+        <span>sm <Icon name="phone" /></span>
+        <span>md <Icon name="phone" size="md" /></span>
+        <span>lg <Icon name="phone" size="lg" /></span>
+      </div>
+    </Specimen>
+
+    <Specimen title="Logo" props="variant: 'wordmark' | 'mark' · label?">
+      <div class="cx__logos">
+        <div style="width:20rem;color:var(--primary--accent)"><Logo variant="wordmark" label="RPM Edelmetaal" /></div>
+        <div style="width:6rem;color:var(--primary--accent)"><Logo variant="mark" /></div>
+      </div>
+    </Specimen>
+
+    <Specimen
+      title="Field"
+      note="Eén component voor input, select en textarea — die drie deelden in de export exact dezelfde 25 regels styling. Klik en tab er doorheen voor hover- en focus-states."
+      props="name · label · control: 'text' | 'email' | 'tel' | 'select' | 'textarea' · placeholder? · required? · options? · rows?"
+    >
+      <Field name="demo-naam" label="Naam" placeholder="bv. Jan Jansen" required autocomplete="name" />
+      <Field name="demo-mail" label="E-mail" control="email" placeholder="jan@mail.nl" required />
+      <Field name="demo-metaal" label="Welk metaal?" control="select" placeholder="Maak een keuze" options={METALEN} />
+      <Field name="demo-bericht" label="Bericht" control="textarea" placeholder="Waar kunnen we mee helpen?" />
+    </Specimen>
+
+    <Specimen
+      title="Media"
+      note="Plain <img>, geen Astro <Image> — de export levert al meerdere resoluties en her-encoderen verandert de rasterisatie."
+      props="src · alt · ratio: '4x3' | '16x9' | '3x4' | '9x16' | '1x1' | 'auto' · position? · loading?"
+    >
+      <Row gap="md">
+        <Col lg={4} sm={12}><Media src={images.portretVader.src} srcset={images.portretVader.srcset} sizes={images.portretVader.sizes} alt={images.portretVader.alt} ratio="4x3" /><Text size="sm" tone="secondary">4x3</Text></Col>
+        <Col lg={4} sm={12}><Media src={images.portretZoon.src} alt={images.portretZoon.alt} ratio="1x1" /><Text size="sm" tone="secondary">1x1</Text></Col>
+        <Col lg={4} sm={12}><Media src={images.goudenRing.src} alt={images.goudenRing.alt} ratio="3x4" /><Text size="sm" tone="secondary">3x4</Text></Col>
+      </Row>
+    </Specimen>
+
+    <Specimen
+      title="BgImage"
+      note="Apart van Media: vult de hele sectie en legt er een gradient van zwart naar transparant overheen. In de export een eigen component (.bg-img_component), niet een variant van het beeldcomponent."
+      props="src · alt? · loading?"
+    >
+      <div class="cx__bgdemo">
+        <BgImage src={images.achtergrond.src} srcset={images.achtergrond.srcset} sizes={images.achtergrond.sizes} />
+        <Heading level={3} size={4}>Tekst blijft leesbaar</Heading>
+      </div>
+    </Specimen>
+
+    <Specimen title="SectionDivider" note="Komt op de homepage 4× voor.">
+      <SectionDivider />
+    </Specimen>
+
+    <Specimen
+      title="Container · Row · Col"
+      note="Het 12-koloms systeem uit de export. Verklein het venster: op 991px valt md in, op 767px sm, op 479px xs."
+      props="Row: justify? · align? · gap? — Col: lg? · md? · sm? · xs?"
+    >
+      <Container>
+        <Row gap="md">
+          {[4, 4, 4].map((n) => <Col lg={n} md={6} xs={12}><div class="cx__box">lg={n} md=6 xs=12</div></Col>)}
+        </Row>
+        <Row gap="md" justify="between" class="u-mt-md">
+          <Col lg={5}><div class="cx__box">lg=5</div></Col>
+          <Col lg={5}><div class="cx__box">lg=5</div></Col>
+        </Row>
+        <Row gap="md" justify="center" class="u-mt-md">
+          <Col lg={6} sm={12}><div class="cx__box">justify=center</div></Col>
+        </Row>
+      </Container>
+    </Specimen>
+  </main>
+</BaseLayout>
+
+<style>
+  .cx {
+    max-width: var(--_components---container--max-width);
+    margin-inline: auto;
+    padding: var(--_components---section--padding) 6%;
+    color: var(--primary--text);
+  }
+
+  .cx h1 {
+    color: var(--primary--accent);
+  }
+
+  .cx__inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--_layout---grid--gap-main);
+    align-items: center;
+  }
+
+  .cx__baseline {
+    margin-block-start: var(--_layout---spacing--margin-md);
+    color: var(--primary--text-secondary);
+    font-size: var(--_typography---paragraph-sm--font-size);
+  }
+
+  .cx__stack {
+    margin-block-start: var(--_layout---grid--gap-main);
+  }
+
+  .cx__icons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    gap: var(--_layout---grid--gap-main);
+  }
+
+  .cx__icons figure {
+    margin: 0;
+    text-align: center;
+  }
+
+  .cx__icons figcaption {
+    margin-block-start: var(--_size---0-25rem);
+    font-size: var(--_typography---paragraph-sm--font-size);
+    color: var(--primary--text-secondary);
+    font-family: ui-monospace, monospace;
+  }
+
+  .cx__logos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--_layout---spacing--margin-md);
+    align-items: center;
+  }
+
+  .cx__bgdemo {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: 16rem;
+    padding: var(--_layout---spacing--margin-md);
+    overflow: hidden;
+  }
+
+  /* guard-ignore: de kop komt uit Heading en draagt diens scope-hash, niet die van deze pagina */
+  .cx__bgdemo :global(.heading) {
+    position: relative;
+    margin: 0;
+  }
+
+  .cx__box {
+    padding: var(--_layout---spacing--margin-sm);
+    background-color: var(--primary--background-secondary);
+    font-size: var(--_typography---paragraph-sm--font-size);
+    text-align: center;
+  }
+</style>
+
+<!-- guard-ignore: size-budget — component-showcase, geen productieroute. De lengte
+     is één blok per atom; het herhaalde kader zit al in Specimen. -->

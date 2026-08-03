@@ -1,0 +1,84 @@
+---
+import Section from './Section.astro';
+import Container from '../atoms/Container.astro';
+import Row from '../atoms/Row.astro';
+import Col from '../atoms/Col.astro';
+import Heading from '../atoms/Heading.astro';
+import Eyebrow from '../atoms/Eyebrow.astro';
+import Button from '../atoms/Button.astro';
+import Media from '../atoms/Media.astro';
+import RichText from '../molecules/RichText.astro';
+import type { Afbeelding } from '../../data/images';
+
+/** Kop links, tekst rechts (lager beginnend), en daaronder twee staande
+ *  portretten naast elkaar waarvan de rechter is verspringt. Staat identiek op
+ *  de homepage en op /over-ons.
+ *
+ *  Ook gebruikt op /contact, daar zonder de twee portretten. */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  html: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  images?: [Afbeelding, Afbeelding];
+  level?: 1 | 2;
+  /** Visuele schaal, los van het element — zie Heading. Standaard gelijk aan `level`. */
+  size?: 1 | 2 | 3;
+  paddingBottom?: 'default' | 'none';
+}
+
+const { eyebrow, title, html, ctaLabel, ctaHref, images, level = 2, size, paddingBottom = 'none' } = Astro.props;
+---
+
+<Section paddingBottom={paddingBottom}>
+  <Container>
+    <Row>
+      <Col lg={6} sm={12}>
+        {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+        <Heading level={level} size={size ?? level}>{title}</Heading>
+      </Col>
+      <Col lg={6} sm={12}>
+        <div class="over__body u-mt-xxl">
+          <RichText html={html} />
+          {ctaLabel && ctaHref && <div class="over__cta"><Button href={ctaHref}>{ctaLabel}</Button></div>}
+        </div>
+      </Col>
+    </Row>
+
+    {
+      images && (
+        <div class="u-mt-xxl">
+          <Row>
+            <Col lg={6}>
+              <Media
+                src={images[0].src}
+                srcset={images[0].srcset}
+                sizes={images[0].sizes}
+                alt={images[0].alt}
+                ratio="3x4"
+              />
+            </Col>
+            <Col lg={6}>
+              <div class="u-mt-xxl">
+                <Media
+                  src={images[1].src}
+                  srcset={images[1].srcset}
+                  sizes={images[1].sizes}
+                  alt={images[1].alt}
+                  ratio="3x4"
+                />
+              </div>
+            </Col>
+          </Row>
+        </div>
+      )
+    }
+  </Container>
+</Section>
+
+<style>
+  .over__cta {
+    margin-top: var(--_layout---grid--gap-button);
+  }
+</style>

@@ -1,0 +1,56 @@
+---
+/** Eén blok op /components: titel, korte toelichting, de props-signatuur en het
+ *  levende voorbeeld. Bestaat zodat de showcase geen 20× dezelfde kop-plus-kader
+ *  herhaalt. */
+interface Props {
+  title: string;
+  note?: string;
+  props?: string;
+}
+
+const { title, note, props } = Astro.props;
+---
+
+<section class="spec">
+  <h2 class="spec__title">{title}</h2>
+  {note && <p class="spec__note">{note}</p>}
+  {props && <pre class="spec__props"><code>{props}</code></pre>}
+  <div class="spec__stage"><slot /></div>
+</section>
+
+<style>
+  .spec {
+    border-top: 1px solid var(--primary--text-secondary);
+    padding-block-start: var(--_layout---spacing--margin-md);
+    margin-block-start: var(--_layout---spacing--margin-lg);
+  }
+
+  .spec__title {
+    color: var(--primary--accent);
+    font-family: var(--_typography---h4--font);
+    font-size: var(--_typography---h4--font-size);
+    margin-bottom: var(--_size---0-5rem);
+  }
+
+  .spec__note {
+    color: var(--primary--text-secondary);
+    font-size: var(--_typography---paragraph-sm--font-size);
+    max-width: 70ch;
+    margin-block: 0 var(--_size---0-5rem);
+  }
+
+  .spec__props {
+    margin: 0 0 var(--_layout---spacing--margin-sm);
+    padding: var(--_size---0-5rem);
+    background-color: var(--primary--background-secondary);
+    font-family: ui-monospace, monospace;
+    font-size: .8rem;
+    color: var(--primary--text-secondary);
+    overflow-x: auto;
+  }
+
+  .spec__stage {
+    padding: var(--_layout---spacing--margin-sm);
+    border: 1px dashed var(--primary--background-secondary);
+  }
+</style>

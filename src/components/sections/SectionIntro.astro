@@ -1,0 +1,40 @@
+---
+import Heading from '../atoms/Heading.astro';
+import Text from '../atoms/Text.astro';
+import Row from '../atoms/Row.astro';
+import Col from '../atoms/Col.astro';
+
+/** Gecentreerde kop + inleiding boven een blok. Komt terug boven de
+ *  taxatie-USP's, de inkoopprijzen en de FAQ. */
+interface Props {
+  title: string;
+  text?: string;
+  level?: 1 | 2 | 3;
+  /** Visuele schaal, los van het element. Standaard gelijk aan `level`. */
+  size?: 1 | 2 | 3;
+}
+
+const { title, text, level = 2, size } = Astro.props;
+---
+
+<Row justify="center">
+  <Col lg={8} md={12}>
+    <Heading level={level} size={size ?? level} align="center">{title}</Heading>
+    {
+      text && (
+        <div class="intro__text">
+          <Text align="center" tone="secondary" flush>
+            {text}
+          </Text>
+        </div>
+      )
+    }
+  </Col>
+</Row>
+
+<style>
+  .intro__text {
+    max-width: 60ch;
+    margin-inline: auto;
+  }
+</style>

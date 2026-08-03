@@ -1,0 +1,38 @@
+{
+  "astroBase": "http://localhost:4330",
+  "originalBase": "http://localhost:5599",
+  "widths": [
+    1440,
+    991,
+    767,
+    479
+  ],
+  "outDir": "fidelity",
+  "routes": [
+    {
+      "name": "home",
+      "original": "/index.html",
+      "astro": "/"
+    },
+    {
+      "name": "over-ons",
+      "original": "/over-ons.html",
+      "astro": "/over-ons"
+    },
+    {
+      "name": "testwijze",
+      "original": "/testwijze.html",
+      "astro": "/testwijze"
+    },
+    {
+      "name": "inkoopprijzen",
+      "original": "/inkoopprijzen.html",
+      "astro": "/inkoopprijzen"
+    },
+    {
+      "name": "contact",
+      "original": "/contact.html",
+      "astro": "/contact"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+---
+/** Basiswrapper voor elke sectie: verticale ruimte, achtergrond en de
+ *  `data-padding-top/bottom`-haken uit Webflow. Elke sectie op de site zit
+ *  hierin, zodat spacing op één plek staat.
+ *
+ *  In de export stond het uitzetten van padding als `!important` in een inline
+ *  <style>; hier hoeft dat niet, omdat attribuutselectors binnen hetzelfde
+ *  component al winnen.
+ */
+interface Props {
+  paddingTop?: 'default' | 'none' | 'double' | 'half';
+  paddingBottom?: 'default' | 'none' | 'double' | 'half';
+  id?: string;
+  class?: string;
+}
+
+const { paddingTop = 'default', paddingBottom = 'default', id, class: className } = Astro.props;
+---
+
+<section class:list={['section', className]} id={id} data-pt={paddingTop} data-pb={paddingBottom}>
+  <slot />
+</section>
+
+<style>
+  .section {
+    position: relative;
+    padding-top: var(--_components---section--padding);
+    padding-bottom: var(--_components---section--padding);
+    background-color: var(--primary--background);
+  }
+
+  .section[data-pt='none'] { padding-top: 0; }
+  .section[data-pb='none'] { padding-bottom: 0; }
+
+  /* CTA-secties dubbel, footer half — zie de opmerking bij de tokens: dat is
+     niet hetzelfde als de basiswaarde × 2 of ÷ 2. */
+  .section[data-pt='double'] { padding-top: var(--_components---section--padding-double); }
+  .section[data-pb='double'] { padding-bottom: var(--_components---section--padding-double); }
+  .section[data-pt='half'] { padding-top: var(--_components---section--padding-half); }
+  .section[data-pb='half'] { padding-bottom: var(--_components---section--padding-half); }
+</style>

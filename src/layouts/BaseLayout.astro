@@ -1,0 +1,67 @@
+---
+import '../styles/base.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Absolute URL; ontbreekt in het origineel, wordt in fase 4 per pagina gezet. */
+  canonical?: string;
+  noindex?: boolean;
+}
+
+const { title, description, canonical, noindex = false } = Astro.props;
+
+// ponytail: GA4 alleen in productie. In dev vervuilt het de statistieken en
+// vertraagt het elke reload.
+const GA_ID = 'G-687K5LD8PT';
+const analytics = import.meta.env.PROD;
+---
+
+<!doctype html>
+<!-- lang was `en` in de Webflow-export terwijl alle content Nederlands is.
+     Bewuste correctie — zie PROGRESS.md. -->
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    {canonical && <link rel="canonical" href={canonical} />}
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+
+    <link rel="shortcut icon" href="/images/favicon.jpg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/webclip.jpg" />
+
+    <link rel="preload" href="/fonts/Cinzel-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/OpenSans-Regular.woff2" as="font" type="font/woff2" crossorigin />
+
+    {
+      analytics && (
+        <>
+          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
+          <script is:inline define:vars={{ GA_ID }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            gtag('config', GA_ID);
+          </script>
+        </>
+      )
+    }
+
+    <slot name="head" />
+  </head>
+
+  <body data-scrolling-started="false" data-scrolling-direction="up">
+    <slot />
+  </body>
+</html>

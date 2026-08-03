@@ -1,0 +1,217 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TokenSwatch from '../components/molecules/TokenSwatch.astro';
+import TokenScale from '../components/molecules/TokenScale.astro';
+import TypeSpecimen from '../components/molecules/TypeSpecimen.astro';
+import tokensCss from '../styles/tokens.css?raw';
+import themesCss from '../styles/themes.css?raw';
+
+type Token = { name: string; value: string };
+
+const parse = (css: string): Token[] =>
+  [...css.matchAll(/^\s*(--[\w-]+)\s*:\s*([^;]+);/gm)].map(([, name, value]) => ({
+    name,
+    value: value.trim(),
+  }));
+
+const primitives = parse(tokensCss);
+const semantic = parse(themesCss);
+
+const val = (name: string) => primitives.find((t) => t.name === name)?.value;
+const startsWith = (p: string) => primitives.filter((t) => t.name.startsWith(p));
+
+const colors = primitives.filter(
+  (t) => /^(#|rgb|hsl)/.test(t.value) || t.value === 'white' || t.value === 'black'
+);
+const radii = startsWith('--_components---').filter((t) => t.name.endsWith('border-radius'));
+const motion = primitives.filter((t) => /^--(cubic|duration)-/.test(t.name));
+
+const typeMeta = (k: string) => ({
+  minRem: val(`--_typography---${k}--font-size-min-rem`),
+  maxRem: val(`--_typography---${k}--font-size-max-rem`),
+  lineHeight: val(`--_typography---${k}--line-height`),
+  letterSpacing: val(`--_typography---${k}--letter-spacing`),
+});
+
+const HEADINGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+const BODY = ['paragraph-xl', 'paragraph-lg', 'paragraph-body', 'paragraph-sm', 'eyebrow'];
+---
+
+<BaseLayout title="Styleguide | RPM Edelmetaal" noindex>
+  <main class="sg">
+    <header>
+      <h1>Styleguide</h1>
+      <p>
+        Leest <code>tokens.css</code> en <code>themes.css</code> in op build-time. Wijzigt een token,
+        dan wijzigt deze pagina mee — er staat hier niets met de hand overgetypt.
+      </p>
+      <p class="sg__note">
+        {primitives.length} primitives · {semantic.length} semantische tokens · dark-only
+      </p>
+    </header>
+
+    <section class="sg__section">
+      <h2>Kleuren</h2>
+      <div class="sg__grid">
+        {colors.map((t) => <TokenSwatch name={t.name} value={t.value} />)}
+      </div>
+    </section>
+
+    <section class="sg__section">
+      <h2>Semantische laag</h2>
+      <p class="sg__note">
+        Wat componenten consumeren — nooit rechtstreeks een primitive. De site is dark-only:
+        <code>data-theme</code> komt nergens in de Webflow-markup voor, en de light/dark-varianten die
+        Webflow genereerde worden op geen enkele echte pagina gebruikt. Komt er later een light mode,
+        dan wijzigt alleen <code>themes.css</code>.
+      </p>
+      <div class="sg__grid">
+        {semantic.map((t) => <TokenSwatch name={t.name} value={t.value} showResolved />)}
+      </div>
+    </section>
+
+    <section class="sg__section">
+      <h2>Typografie</h2>
+      <p class="sg__note">
+        Elke maat is een <code>clamp()</code> tussen <code>--_layout---fluid--min</code> (20rem) en
+        <code>--_layout---fluid--max</code> (85rem) — versleep het venster om de schaal te zien
+        bewegen. De formules zijn letterlijk die van Webflow.
+      </p>
+      {HEADINGS.map((k) => <TypeSpecimen token={k} sample="Goud & zilver verkopen" meta={typeMeta(k)} />)}
+      {
+        BODY.map((k) => (
+          <TypeSpecimen
+            token={k}
+            sample="Al ruim 20 jaar de eerlijkste inkoopprijzen van Friesland."
+            meta={typeMeta(k)}
+          />
+        ))
+      }
+    </section>
+
+    <section class="sg__section">
+      <h2>Ruimte</h2>
+      <TokenScale label="Spacing (marges)" tokens={startsWith('--_layout---spacing--')} />
+      <TokenScale label="Grid gaps" tokens={startsWith('--_layout---grid--gap')} />
+      <TokenScale label="Maten" tokens={startsWith('--_size---')} />
+    </section>
+
+    <section class="sg__section">
+      <h2>Radii &amp; randen</h2>
+      <div class="sg__grid">
+        {radii.map((t) => <TokenSwatch name={t.name} value={t.value} shape="radius" />)}
+      </div>
+      <p class="sg__note">
+        Randen zijn in de hele export <code>1px solid</code> op
+        <code>--primary--text-secondary</code> of een transparant wit. Er zijn géén shadow-tokens: de
+        7 schaduwen in de Webflow-CSS zijn ad-hoc per component en horen daar in fase 2–3 ook te
+        blijven, tenzij er alsnog een patroon uit komt.
+      </p>
+    </section>
+
+    <section class="sg__section">
+      <h2>Motion</h2>
+      <TokenScale tokens={motion} bars={false} />
+      <p class="sg__note">
+        Toegevoegd t.o.v. het origineel: een <code>prefers-reduced-motion</code>-fallback in
+        <code>base.css</code>. Webflow negeerde die OS-instelling volledig.
+      </p>
+    </section>
+
+    <section class="sg__section">
+      <h2>Alle tokens</h2>
+      <table class="sg__table">
+        <thead>
+          <tr><th>Token</th><th>Waarde</th><th>Resolved</th></tr>
+        </thead>
+        <tbody>
+          {
+            [...semantic, ...primitives].map((t) => (
+              <tr>
+                <td><code>{t.name}</code></td>
+                <td class="sg__value">{t.value}</td>
+                <td class="sg__resolved" data-resolved-for={t.name} />
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+  // Toont de berekende waarde, zodat aliassen hun echte kleur/maat laten zien.
+  const root = getComputedStyle(document.documentElement);
+  document.querySelectorAll<HTMLElement>('[data-resolved-for]').forEach((el) => {
+    el.textContent = root.getPropertyValue(el.dataset.resolvedFor!).trim();
+  });
+</script>
+
+<style>
+  .sg {
+    max-width: var(--_components---container--max-width);
+    margin-inline: auto;
+    padding: var(--_components---section--padding) 6%;
+    color: var(--primary--text);
+  }
+
+  .sg h1,
+  .sg h2 {
+    color: var(--primary--accent);
+  }
+
+  .sg__note {
+    color: var(--primary--text-secondary);
+    font-size: var(--_typography---paragraph-sm--font-size);
+    max-width: 70ch;
+  }
+
+  .sg__section {
+    border-top: 1px solid var(--primary--text-secondary);
+    padding-block-start: var(--_layout---spacing--margin-lg);
+    margin-block-start: var(--_layout---spacing--margin-lg);
+  }
+
+  .sg__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: var(--_layout---grid--gap-main);
+  }
+
+  .sg__table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-size: var(--_typography---paragraph-sm--font-size);
+  }
+
+  .sg__table th,
+  .sg__table td {
+    text-align: start;
+    padding: var(--_size---0-25rem) var(--_size---0-5rem);
+    border-block-end: 1px solid var(--primary--background-secondary);
+    vertical-align: top;
+  }
+
+  .sg__value {
+    max-inline-size: 40rem;
+    overflow-wrap: anywhere;
+    color: var(--primary--text-secondary);
+  }
+
+  .sg__resolved {
+    color: var(--primary--accent-light);
+    overflow-wrap: anywhere;
+  }
+
+  code {
+    font-family: ui-monospace, monospace;
+    font-size: .85em;
+    overflow-wrap: anywhere;
+  }
+</style>
+
+<!-- guard-ignore: size-budget — living design-system documentatie, geen productieroute.
+     De resterende lengte is de zeven secties die de workflow voorschrijft plus de
+     paginascopede layout-CSS; de herhaalde markup is al uitgesplitst naar
+     TokenSwatch / TokenScale / TypeSpecimen. -->

@@ -1,0 +1,63 @@
+---
+/** Een groep tokens als balkjes op ware grootte — ruimte, gaps, maten.
+ *  Zonder `bars` alleen naam + waarde (motion-tokens hebben geen breedte). */
+interface Props {
+  label?: string;
+  tokens: { name: string; value: string }[];
+  bars?: boolean;
+}
+
+const { label, tokens, bars = true } = Astro.props;
+---
+
+{label && <h3>{label}</h3>}
+<div class="scale">
+  {
+    tokens.map((t) => (
+      <div class="scale__row">
+        <code>{t.name}</code>
+        {bars && <div class="scale__bar" style={`inline-size:var(${t.name})`} />}
+        <span>{t.value}</span>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .scale {
+    display: flex;
+    flex-direction: column;
+    gap: var(--_size---0-5rem);
+    margin-block-end: var(--_layout---spacing--margin-md);
+  }
+
+  .scale__row {
+    display: grid;
+    grid-template-columns: 24rem 1fr auto;
+    gap: var(--_layout---grid--gap-md);
+    align-items: center;
+    font-size: var(--_typography---paragraph-sm--font-size);
+  }
+
+  .scale__bar {
+    block-size: 1rem;
+    background: var(--primary--accent);
+    justify-self: start;
+  }
+
+  .scale__row span {
+    color: var(--primary--text-secondary);
+  }
+
+  code {
+    font-family: ui-monospace, monospace;
+    font-size: .85em;
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 767px) {
+    .scale__row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

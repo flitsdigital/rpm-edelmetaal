@@ -1,0 +1,56 @@
+---
+/** Rij van het 12-koloms grid. Negatieve marges compenseren de padding van Col,
+ *  zodat kolommen aan de containerrand uitlijnen. */
+interface Props {
+  justify?: 'start' | 'center' | 'between' | 'around' | 'end';
+  align?: 'stretch' | 'center' | 'end';
+  gap?: 'main' | 'md' | 'sm' | 'button' | 'none';
+  class?: string;
+}
+
+const { justify = 'start', align = 'stretch', gap = 'main', class: className } = Astro.props;
+---
+
+<div class="row" data-justify={justify} data-align={align} data-gap={gap} class:list={[className]}>
+  <slot />
+</div>
+
+<style>
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: stretch;
+    row-gap: 4rem;
+    margin-inline: calc(var(--_layout---grid--gap-main) / 2 * -1);
+  }
+
+  .row[data-justify='center'] { justify-content: center; }
+  .row[data-justify='between'] { justify-content: space-between; }
+  .row[data-justify='around'] { justify-content: space-around; }
+  .row[data-justify='end'] { justify-content: flex-end; }
+
+  .row[data-align='center'] { align-items: center; }
+  .row[data-align='end'] { align-items: flex-end; }
+
+  .row[data-gap='md'] {
+    row-gap: var(--_layout---grid--gap-md);
+    margin-inline: calc(var(--_layout---grid--gap-md) / 2 * -1);
+  }
+
+  .row[data-gap='sm'] {
+    row-gap: var(--_layout---grid--gap-sm);
+    margin-inline: calc(var(--_layout---grid--gap-sm) / 2 * -1);
+  }
+
+  /* De export gaf row-gap-button bewust de md-marge, niet de button-marge. */
+  .row[data-gap='button'] {
+    row-gap: var(--_layout---grid--gap-button);
+    margin-inline: calc(var(--_layout---grid--gap-md) / 2 * -1);
+  }
+
+  .row[data-gap='none'] {
+    row-gap: var(--_size---0rem);
+    margin-block-end: 0;
+    margin-inline: 0;
+  }
+</style>

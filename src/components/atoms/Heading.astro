@@ -1,0 +1,32 @@
+---
+/** Kop. `level` bepaalt het element (semantiek), `size` het uiterlijk — de
+ *  export gebruikt die los van elkaar, bv. een <h3> met de h6-schaal.
+ *  De schaal zelf staat als `.h1`…`.h6` in base.css, precies zoals in de export,
+ *  omdat RichText hem ook nodig heeft voor CMS-HTML zonder component eromheen. */
+interface Props {
+  level?: 1 | 2 | 3 | 4 | 5 | 6;
+  size?: 1 | 2 | 3 | 4 | 5 | 6;
+  align?: 'left' | 'center' | 'right';
+  tone?: 'default' | 'secondary' | 'accent';
+  class?: string;
+}
+
+const { level = 2, size, align = 'left', tone = 'default', class: className } = Astro.props;
+const Tag = `h${level}` as const;
+---
+
+<Tag class:list={['heading', `h${size ?? level}`, className]} data-align={align} data-tone={tone}>
+  <slot />
+</Tag>
+
+<style>
+  .heading {
+    margin-top: 0;
+  }
+
+  .heading[data-align='center'] { text-align: center; }
+  .heading[data-align='right'] { text-align: right; }
+
+  .heading[data-tone='secondary'] { color: var(--primary--text-secondary); }
+  .heading[data-tone='accent'] { color: var(--primary--accent); }
+</style>

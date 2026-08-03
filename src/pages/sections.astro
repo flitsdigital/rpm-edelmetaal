@@ -1,0 +1,145 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Specimen from '../components/molecules/Specimen.astro';
+import HeroHome from '../components/sections/HeroHome.astro';
+import SectionContent from '../components/sections/SectionContent.astro';
+import SectionUsp from '../components/sections/SectionUsp.astro';
+import SectionCta from '../components/sections/SectionCta.astro';
+import SectionFaq from '../components/sections/SectionFaq.astro';
+import SectionContact from '../components/sections/SectionContact.astro';
+import SectionInkoopprijzen from '../components/sections/SectionInkoopprijzen.astro';
+import SectionPrijstabel from '../components/sections/SectionPrijstabel.astro';
+import SectionDivider from '../components/atoms/SectionDivider.astro';
+import { uspsTaxatie, faq } from '../data/content';
+import { haalPrijzen } from '../data/prijzen';
+import { images } from '../data/images';
+const { groepen: demoGroepen, topPrijzen: demoPrijzen, topKaarten: demoKaarten } = await haalPrijzen();
+---
+
+<PageLayout title="Secties | RPM Edelmetaal" current="/sections" prijzen={demoPrijzen} noindex>
+  <div class="sx">
+    <header class="sx__intro">
+      <h1>Secties</h1>
+      <p>
+        Elke sectie met representatieve props. De prijzen komen live uit Supabase
+        (<code>v_prijzen_publiek</code>), opgehaald tijdens de build.
+      </p>
+      <p><a href="/styleguide">Tokens</a> · <a href="/components">Atoms</a></p>
+    </header>
+
+    <Specimen title="Navbar" note="Vast bovenaan, met prijsbalk, burgermenu onder 768px en krimpgedrag bij omlaag scrollen. Hieronder in context bovenaan de pagina." props="current? · prijzen? · isB2b?">
+      <p class="sx__note">Staat bovenaan deze pagina — schaal het venster en scroll om het gedrag te zien.</p>
+    </Specimen>
+
+    <Specimen title="HeroHome" props="title · text · image?">
+      <HeroHome
+        title="Dé edelmetalen-specialist in Friesland, Groningen en Drenthe."
+        text="Als dé edelmetalen-specialist van Nederland verzorgen wij de inkoop van goud, zilver en andere edelmetalen in onze winkel in Sneek."
+      />
+    </Specimen>
+
+    <Specimen
+      title="SectionContent"
+      note="Het meest hergebruikte patroon: 7× over drie pagina's. Alleen de kant van het beeld en de inhoud verschillen."
+      props="eyebrow? · title · html · bullets? · ctaLabel? · ctaHref? · image · imagePosition?"
+    >
+      <SectionContent
+        eyebrow="Testwijze"
+        title="Zo bepalen wij snel en betrouwbaar de waarde van uw sieraden"
+        html="<p>Bij RPM Edelmetaal beoordelen we elk sieraad nauwkeurig en professioneel. Met onze beproefde testmethode krijgt u snel een eerste indicatie van het karaatgehalte.</p>"
+        bullets={['XRF-analyseapparaat', 'De Strijkproef', 'De Vuurproef']}
+        ctaLabel="Bekijk onze testwijze"
+        ctaHref="/testwijze"
+        image={images.goudenSieraden}
+      />
+      <SectionContent
+        eyebrow="Taxatie aan huis"
+        title="Gratis en vrijblijvende taxatie gewoon bij u thuis"
+        html="<p>Bij RPM Edelmetaal hoeft u uw sieraden niet over straat te dragen. Wij komen bij u langs voor een professionele taxatie.</p>"
+        bullets={['Eerlijke prijzen', 'Snel en flexibel', 'Persoonlijk advies']}
+        ctaLabel="Gratis taxatie aanvragen"
+        ctaHref="/contact"
+        image={images.goudsmid}
+        imagePosition="left"
+      />
+    </Specimen>
+
+    <Specimen title="SectionUsp" note="Drie per rij; dekt zowel het blok van drie op de homepage als dat van zes." props="title? · text? · items[]">
+      <SectionUsp items={uspsTaxatie.slice(0, 3)} />
+    </Specimen>
+
+    <Specimen title="SectionDivider in context" note="Scheidt secties op de homepage — 4× per pagina.">
+      <SectionDivider />
+    </Specimen>
+
+    <Specimen title="SectionCta" note="6× over de site. Verticale ruimte verdubbeld." props="title · text · ctaLabel? · ctaHref? · image?">
+      <SectionCta
+        title="Laat uw sieraden gratis en vrijblijvend taxeren"
+        text="Plan een gratis en vrijblijvende taxatie bij ons in de winkel of aan huis. Eerlijke prijzen, persoonlijke service en directe uitbetaling."
+      />
+    </Specimen>
+
+    <Specimen title="SectionInkoopprijzen" note="De compacte rij van vier op de homepage." props="title · text? · kaarten[]">
+      <SectionInkoopprijzen
+        title="Actuele inkoopprijzen van goud, zilver, platina en palladium"
+        text="Krijg snel inzicht in de waarde van uw edelmetalen."
+        kaarten={demoKaarten}
+      />
+    </Specimen>
+
+    <Specimen
+      title="SectionPrijstabel"
+      note="Tabs per metaal, herbouwd op de WAI-ARIA tabs-pattern — pijltjestoetsen werken. In de export was elke tab een <div> met een onzichtbare button tabindex=-1 eroverheen. De prijzen komen uit v_prijzen_publiek, dus zonder zakelijke kolom — die bestaat in die view niet."
+      props="groepen[] · id?"
+    >
+      <SectionPrijstabel groepen={demoGroepen} id="demo" />
+    </Specimen>
+
+    <Specimen title="SectionFaq" note="Accordeon met echte buttons en aria-expanded." props="title · text? · items[]">
+      <SectionFaq
+        title="Wij helpen u graag met al uw vragen over onze service."
+        text="Staat uw vraag er niet bij? Neem gerust contact met ons op."
+        items={faq}
+      />
+    </Specimen>
+
+    <Specimen
+      title="SectionContact"
+      note="Het taxatieformulier. Kies een ander metaal om het gehalte-veld te zien wisselen; verborgen selects worden ook uitgeschakeld zodat ze niet meegestuurd worden."
+      props="title · text · formId?"
+    >
+      <SectionContact
+        title="Persoonlijk advies en vrijblijvende taxatie, bij u thuis of in Sneek"
+        text="Heeft u vragen over de waarde van uw sieraden of wilt u direct een taxatie aanvragen?"
+        formId="demo-taxatie"
+      />
+    </Specimen>
+
+    <Specimen title="Footer" note="Hieronder in context onderaan de pagina." props="—">
+      <p class="sx__note">Staat onderaan deze pagina.</p>
+    </Specimen>
+  </div>
+</PageLayout>
+
+<style>
+  .sx {
+    padding-top: 8rem;
+  }
+
+  .sx__intro {
+    max-width: var(--_components---container--max-width);
+    margin-inline: auto;
+    padding-inline: 6%;
+    color: var(--primary--text);
+  }
+
+  .sx__intro h1 {
+    color: var(--primary--accent);
+  }
+
+  .sx__note {
+    color: var(--primary--text-secondary);
+  }
+</style>
+
+<!-- guard-ignore: size-budget — sectie-showcase, geen productieroute. Eén blok per sectie. -->

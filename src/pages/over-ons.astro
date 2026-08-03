@@ -1,0 +1,72 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionContent from '../components/sections/SectionContent.astro';
+import SectionOver from '../components/sections/SectionOver.astro';
+import SectionUsp from '../components/sections/SectionUsp.astro';
+import Section from '../components/sections/Section.astro';
+import Container from '../components/atoms/Container.astro';
+import SectionIntro from '../components/sections/SectionIntro.astro';
+import SectionDivider from '../components/atoms/SectionDivider.astro';
+import Media from '../components/atoms/Media.astro';
+import { seo, uspsHome } from '../data/content';
+import { images } from '../data/images';
+import { haalPrijzen } from '../data/prijzen';
+const { topPrijzen } = await haalPrijzen();
+---
+
+<PageLayout
+  title={seo.overOns.title}
+  description={seo.overOns.description}
+  canonical="https://www.rpmedelmetaal.nl/over-ons"
+  current="/over-ons"
+  prijzen={topPrijzen}
+>
+  <SectionOver
+    level={1}
+    size={2}
+    eyebrow="Over ons"
+    title="Meer dan 20 jaar passie voor sieraden en edelmetalen"
+    html="<p>RPM Edelmetaal is een gerenommeerd familiebedrijf met jaren lange ervaring in de inkoop van waardevolle sieraden en objecten. Dit jaar zijn we ook druk bezig geweest met het realiseren van een prachtige winkel/kantoor in de winkelstraat van Sneek. Een droom die werkelijkheid werd.<br><br>En u bent natuurlijk van harte welkom in ons goudwisselkantoor voor een gratis en vrijblijvende taxatie, onder het genot van een van een kopje koffie of thee.</p>"
+    images={[images.portretVader, images.portretZoon]}
+  />
+
+  <SectionUsp items={uspsHome} />
+
+  <SectionDivider />
+  <SectionContent
+    title="Jarenlange ervaring"
+    html="<p>Al ruim 20 jaar zitten wij in het vak. Al op jonge leeftijd waren wij gefascineerd door sieraden. De prachtig blinkende horloges, gedetailleerde ringen of een klassieke gouden ketting, wij konden er als kind al uren naar kijken.</p><p>Het was dan ook onze droom om een bedrijf in edelmetalen te starten en na jaren ervaring op te hebben gedaan, hebben wij deze droom in 2011 kunnen verwezenlijken. En dat is hoe RPM Edelmetaal is ontstaan.</p>"
+    ctaLabel="Gratis taxatie aanvragen"
+    ctaHref="/contact"
+    image={images.goudenRing}
+  />
+
+  <SectionContent
+    title="Een droom die werkelijkheid werd"
+    html="<p>RPM Edelmetaal bestaat inmiddels al ruim 12,5 jaar. Door de jaren heen hebben we in dorpen en steden door heel Nederland klanten geholpen en vertrouwen opgebouwd.</p><p>Vandaag de dag is onze droom werkelijkheid geworden: mijn oudste zoon treedt in mijn voetsporen en deelt dezelfde passie voor het vak en de verhalen achter elk sieraad. Samen zetten we ons elke dag in om onze klanten eerlijk en deskundig advies te geven over hun kostbaarheden.</p>"
+    ctaLabel="Gratis taxatie aanvragen"
+    ctaHref="/contact"
+    image={images.taxatieAanHuis}
+    imagePosition="left"
+    paddingBottom="none"
+  />
+
+  <Section paddingTop="none">
+    <SectionDivider />
+    <Container>
+      <div class="u-mb-lg">
+        <SectionIntro
+          title="Winkel/kantoor in Sneek (Friesland)"
+          text="Dit jaar zijn we druk bezig geweest met het realiseren van een kantoor in de winkelstraat van Sneek. De reden dat we deze stap hebben gezet, is dat het een enorme kostenbesparing oplevert die we terug kunnen berekenen naar de klant toe. Door deze enorme maandelijkse kostenbesparing hebben wij de mogelijkheid om met onze biedprijzen voor uw edelmetaal de hoogste prijs te bieden. Hier zijn wij dan ook enorm trots op."
+        />
+      </div>
+    </Container>
+    <Media
+      src={images.achtergrond.src}
+      srcset={images.achtergrond.srcset}
+      sizes={images.achtergrond.sizes}
+      alt="De winkel van RPM Edelmetaal in de winkelstraat van Sneek"
+      ratio="4x3"
+    />
+  </Section>
+</PageLayout>

@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionAuth from '../../components/sections/SectionAuth.astro';
+import Field from '../../components/molecules/Field.astro';
+import Button from '../../components/atoms/Button.astro';
+import Text from '../../components/atoms/Text.astro';
+import { maakServerClient } from '../../lib/supabase-server';
+import { contact } from '../../data/site';
+
+/* Inloggen met een magic link, niet met een wachtwoord — het wachtwoordveld in
+ * de export kwam van Memberstack en de hashes migreren niet mee. Beslissing 22
+ * in PROGRESS.md. */
+export const prerender = false;
+
+const supabase = maakServerClient(Astro);
+
+// Al ingelogd? Dan meteen door.
+const { data: sessie } = await supabase.auth.getUser();
+const terug = Astro.url.searchParams.get('terug') ?? '/inkoopprijzen-b2b';
+if (sessie.user) return Astro.redirect(terug, 302);
+
+let melding: { soort: 'ok' | 'fout'; tekst: string } | null = null;
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const email = String(form.get('email') ?? '').trim().toLowerCase();
+
+  if (!email.includes('@')) {
+    melding = { soort: 'fout', tekst: 'Vul een geldig e-mailadres in.' };
+  } else {
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: new URL(`/auth/callback?terug=${encodeURIComponent(terug)}`, Astro.url).href,
+        // Geen zelfregistratie: alleen bestaande gebruikers krijgen een link.
+        // Anders kan iedereen met een e-mailadres een account maken en
+        // vervolgens de zakelijke prijzen zien.
+        shouldCreateUser: false,
+      },
+    });
+
+    // Bewust dezelfde melding bij succes en bij een onbekend adres. Zou je die
+    // uit elkaar houden, dan kan iemand met dit formulier uitvinden wélke
+    // adressen een account hebben. `otp_disabled` is precies dat geval: het
+    // antwoord van Supabase op `shouldCreateUser: false` bij een onbekend adres.
+    const echteFout = error && error.code !== 'otp_disabled';
+
+    melding = echteFout
+      ? {
+          soort: 'fout',
+          tekst:
+            error.code === 'over_email_send_rate_limit'
+              ? 'Er is net een link verstuurd. Wacht een minuut voordat u het opnieuw probeert.'
+              : 'Er ging iets mis. Probeer het opnieuw.',
+        }
+      : {
+          soort: 'ok',
+          tekst: 'Als dit adres bij ons bekend is, staat er een inloglink in uw mailbox. De link is 1 uur geldig.',
+        };
+  }
+}
+---
+
+<BaseLayout title="Inloggen | RPM Edelmetaal" noindex>
+  <SectionAuth
+    title="Inloggen"
+    text="Voor zakelijke klanten. Vul uw e-mailadres in, dan sturen we u een inloglink."
+  >
+    {
+      melding && (
+        <div class="melding" data-soort={melding.soort} role={melding.soort === 'fout' ? 'alert' : 'status'}>
+          {melding.tekst}
+        </div>
+      )
+    }
+
+    {
+      melding?.soort !== 'ok' && (
+        <form method="post">
+          <Field
+            name="email"
+            label="E-mail"
+            control="email"
+            placeholder="bijv. naam@mail.com"
+            required
+            autocomplete="email"
+          />
+          <Button type="submit">Stuur mij een inloglink</Button>
+        </form>
+      )
+    }
+
+    <div class="u-mt-md">
+      <Text size="sm" tone="secondary" flush>
+        Nog geen toegang? Neem contact op via <a href={contact.emailHref}>{contact.email}</a> of
+        bel {contact.telefoon}.
+      </Text>
+    </div>
+  </SectionAuth>
+</BaseLayout>
+
+<style>
+  .melding {
+    margin-bottom: var(--_layout---spacing--margin-md);
+    padding: var(--_components---card--padding);
+    border: 1px solid var(--primary--text-secondary);
+  }
+
+  .melding[data-soort='fout'] {
+    border-color: var(--_color---feedback--error);
+    color: var(--_color---feedback--error);
+  }
+
+  .melding[data-soort='ok'] {
+    border-color: var(--primary--accent);
+  }
+</style>

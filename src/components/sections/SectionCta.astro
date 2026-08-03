@@ -1,0 +1,62 @@
+---
+import Section from './Section.astro';
+import Container from '../atoms/Container.astro';
+import Row from '../atoms/Row.astro';
+import Col from '../atoms/Col.astro';
+import Heading from '../atoms/Heading.astro';
+import Text from '../atoms/Text.astro';
+import Button from '../atoms/Button.astro';
+import BgImage from '../atoms/BgImage.astro';
+import ReviewsBadge from '../molecules/ReviewsBadge.astro';
+import { images, type Afbeelding } from '../../data/images';
+
+/** Gecentreerde call-to-action op een achtergrondbeeld. Komt 6× voor over de
+ *  site (2× alleen al op de homepage). Verticale ruimte is verdubbeld — zie de
+ *  opmerking bij `--_components---section--padding-double`. */
+interface Props {
+  title: string;
+  text: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  image?: Afbeelding;
+}
+
+const {
+  title,
+  text,
+  ctaLabel = 'Gratis taxatie aanvragen',
+  ctaHref = '/contact',
+  image = images.achtergrond,
+} = Astro.props;
+---
+
+<Section paddingTop="double" paddingBottom="double" class="cta">
+  <Container>
+    <Row justify="center">
+      <Col lg={6} md={12}>
+        <div class="cta__inner">
+          <Heading level={2} align="center">{title}</Heading>
+          <div class="cta__text"><Text align="center">{text}</Text></div>
+          <Button href={ctaHref}>{ctaLabel}</Button>
+          <div class="u-mt-md"><ReviewsBadge /></div>
+        </div>
+      </Col>
+    </Row>
+  </Container>
+  <BgImage src={image.src} srcset={image.srcset} sizes={image.sizes} alt={image.alt} />
+</Section>
+
+<style>
+  .cta {
+    overflow: hidden;
+  }
+
+  .cta__inner {
+    text-align: center;
+  }
+
+  .cta__text {
+    max-width: 50ch;
+    margin-inline: auto;
+  }
+</style>

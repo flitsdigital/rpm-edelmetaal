@@ -1,0 +1,29 @@
+---
+import Section from './Section.astro';
+import Container from '../atoms/Container.astro';
+import Row from '../atoms/Row.astro';
+import Col from '../atoms/Col.astro';
+import SectionIntro from './SectionIntro.astro';
+import Accordion from '../molecules/Accordion.astro';
+
+interface Props {
+  title: string;
+  text?: string;
+  items: { vraag: string; antwoord: string }[];
+}
+
+const { title, text, items } = Astro.props;
+---
+
+<Section paddingTop="none" paddingBottom="none">
+  <Container>
+    <SectionIntro title={title} text={text} />
+    <div class="u-mt-lg">
+      <Row justify="center">
+        <Col lg={8} md={12}>
+          <Accordion items={items} />
+        </Col>
+      </Row>
+    </div>
+  </Container>
+</Section>

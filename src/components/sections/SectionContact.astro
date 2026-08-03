@@ -1,0 +1,57 @@
+---
+import Section from './Section.astro';
+import Container from '../atoms/Container.astro';
+import Row from '../atoms/Row.astro';
+import Col from '../atoms/Col.astro';
+import Heading from '../atoms/Heading.astro';
+import Text from '../atoms/Text.astro';
+import Icon from '../atoms/Icon.astro';
+import TaxatieForm from '../molecules/TaxatieForm.astro';
+import { contact } from '../../data/site';
+
+/** Tekst links, taxatieformulier rechts. Staat op /, /inkoopprijzen en /contact. */
+interface Props {
+  title: string;
+  text: string;
+  formId?: string;
+  paddingTop?: 'default' | 'none';
+  paddingBottom?: 'default' | 'none';
+}
+
+const { title, text, formId = 'taxatie', paddingTop = 'none', paddingBottom = 'none' } = Astro.props;
+---
+
+<Section paddingTop={paddingTop} paddingBottom={paddingBottom}>
+  <Container>
+    <Row>
+      <Col lg={6} md={12}>
+        <div class="u-mb-md">
+          <Heading level={2}>{title}</Heading>
+          <Text>{text}</Text>
+        </div>
+        <a class="contact__whatsapp" href={contact.whatsapp} target="_blank" rel="noopener">
+          <Icon name="whatsapp" size="lg" label="Neem contact op via WhatsApp" />
+        </a>
+      </Col>
+      <Col lg={6} md={12}>
+        <div class="contact__form">
+          <TaxatieForm id={formId} />
+        </div>
+      </Col>
+    </Row>
+  </Container>
+</Section>
+
+<style>
+  .contact__whatsapp {
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    color: var(--primary--accent);
+  }
+
+  .contact__form {
+    padding: 2rem;
+    background-color: var(--primary--background-secondary);
+  }
+</style>

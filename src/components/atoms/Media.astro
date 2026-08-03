@@ -1,0 +1,73 @@
+---
+/** Beeld in een vaste beeldverhouding.
+ *
+ *  ponytail: plain <img>, geen Astro <Image>. De export levert de afbeeldingen
+ *  al in meerdere resoluties en de CSS bepaalt de weergavemaat; er <Image> door
+ *  heen halen verandert de rasterisatie en dus de visual diff. Herzien in fase 5
+ *  als de performance-audit erom vraagt.
+ */
+const RATIOS = {
+  '4x3': '4 / 3',
+  '16x9': '16 / 9',
+  '3x4': '3 / 4',
+  '9x16': '9 / 16',
+  '1x1': '1',
+  auto: 'auto',
+} as const;
+
+interface Props {
+  src: string;
+  alt: string;
+  /** Uit de export overgenomen; laat de browser de juiste resolutie kiezen. */
+  srcset?: string;
+  sizes?: string;
+  ratio?: keyof typeof RATIOS;
+  position?: 'center' | 'top' | 'top-left';
+  loading?: 'lazy' | 'eager';
+  class?: string;
+}
+
+const {
+  src,
+  srcset,
+  sizes,
+  alt,
+  ratio = '4x3',
+  position = 'center',
+  loading = 'lazy',
+  class: className,
+} = Astro.props;
+---
+
+<div class:list={['media', className]} style={`--ratio:${RATIOS[ratio]}`}>
+  <img
+    class="media__img"
+    data-position={position}
+    src={src}
+    srcset={srcset}
+    sizes={sizes}
+    alt={alt}
+    loading={loading}
+  />
+</div>
+
+<style>
+  .media {
+    width: 100%;
+    position: relative;
+    aspect-ratio: var(--ratio, 4 / 3);
+  }
+
+  .media__img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+  }
+
+  .media__img[data-position='top'] { object-position: 50% 0%; }
+  .media__img[data-position='top-left'] { object-position: 0% 0%; }
+</style>
+
+<!-- guard-ignore: size-budget — de srcset/sizes-props uit de export erbij; verder één beeld in één kader. -->

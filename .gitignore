@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.astro/
+.vercel/
+.env
+.DS_Store
+
+# Referentiemateriaal en meetresultaten — geen broncode, wel groot.
+# _webflow_source is de originele Webflow-export (16 MB); scripts/wf-audit.mjs en
+# scripts/visual-diff.mjs lezen eruit. Bewaar hem lokaal tot de fidelity-QA klaar is.
+_webflow_source/
+# fidelity/ is 152 MB aan screenshots, opnieuw te genereren met visual-diff.mjs.
+fidelity/

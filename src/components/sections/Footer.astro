@@ -1,0 +1,180 @@
+---
+import Container from '../atoms/Container.astro';
+import Row from '../atoms/Row.astro';
+import Col from '../atoms/Col.astro';
+import Heading from '../atoms/Heading.astro';
+import Text from '../atoms/Text.astro';
+import Icon from '../atoms/Icon.astro';
+import Logo from '../atoms/Logo.astro';
+import { footerLinks, openingstijden, contact } from '../../data/site';
+
+const jaar = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <Container>
+    <Row justify="between">
+      <Col lg={5} md={12}>
+        <Heading level={2} size={3}>
+          Dé edelmetalen-specialist in Friesland, Groningen en Drenthe.
+        </Heading>
+        <Text tone="secondary">
+          Plan een gratis en vrijblijvende taxatie bij ons in de winkel of aan huis. Eerlijke
+          prijzen, persoonlijke service en directe uitbetaling.
+        </Text>
+        <a class="footer__whatsapp" href={contact.whatsapp} target="_blank" rel="noopener">
+          <Icon name="whatsapp" size="lg" label="Neem contact op via WhatsApp" />
+        </a>
+      </Col>
+
+      <Col lg={5} md={12}>
+        <div class="footer__right">
+          <nav class="footer__group" aria-labelledby="footer-paginas">
+            <p class="footer__header" id="footer-paginas">Pagina's</p>
+            <ul class="footer__list">
+              {
+                footerLinks.map((l) => (
+                  <li class="footer__li">
+                    <a class="footer__link" href={l.href}>{l.label}</a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+
+          <div class="footer__group">
+            <p class="footer__header">Openingstijden</p>
+            <ul class="footer__list">
+              {
+                openingstijden.map((o) => (
+                  <li class="footer__opening">
+                    <span>{o.dag}:</span>
+                    <span>{o.uren}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </Col>
+    </Row>
+
+    <Row justify="center" class="u-mt-lg u-mb-lg">
+      <a class="footer__logo" href="/"><Logo variant="wordmark" label="RPM Edelmetaal" /></a>
+    </Row>
+
+    <div class="footer__bottom">
+      <Row justify="between">
+        <Col lg={4} md={12}>
+          <Text size="sm" tone="secondary" flush>Copyright {jaar} RPM Edelmetaal</Text>
+        </Col>
+        <Col lg={4} md={12}>
+          <div class="footer__flits">
+            <Text size="sm" tone="secondary" flush>Website door</Text>
+            <span class="footer__flits-logo"><Icon name="flits" label="Flits Digital" /></span>
+          </div>
+        </Col>
+      </Row>
+    </div>
+  </Container>
+</footer>
+
+<style>
+  .footer {
+    position: relative;
+    margin-top: auto;
+    padding-top: var(--_components---section--padding);
+    padding-bottom: var(--_components---section--padding-half);
+    background-color: var(--primary--background);
+    color: var(--primary--text);
+  }
+
+  .footer__whatsapp {
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    color: var(--primary--accent);
+  }
+
+  .footer__right {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .footer__group {
+    display: flex;
+    flex-flow: column;
+    gap: 1rem;
+  }
+
+  .footer__header {
+    margin: 0;
+    color: var(--primary--accent);
+    font-weight: 700;
+  }
+
+  .footer__list {
+    margin: 0;
+    padding-left: 0;
+  }
+
+  .footer__li,
+  .footer__opening {
+    margin-bottom: .5em;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .footer__opening {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .5em;
+  }
+
+  .footer__link {
+    text-decoration: none;
+  }
+
+  .footer__link:hover {
+    text-decoration: underline;
+  }
+
+  .footer__logo {
+    display: block;
+    /* 12rem, niet 5rem: het origineel gebruikt hier `.nav-logo_link`.
+       De klasse `.footer-logo_link` (5rem) staat wél in de Webflow-CSS maar
+       wordt op geen enkele pagina gebruikt. */
+    width: 12rem;
+    line-height: 1;
+    color: var(--primary--accent);
+  }
+
+  .footer__bottom {
+    padding-top: var(--_layout---spacing--margin-lg);
+    border-top: 1px solid var(--_color---neutral--neutral-400);
+  }
+
+  .footer__flits {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: .5em;
+    color: var(--primary--text-secondary);
+  }
+
+  .footer__flits-logo {
+    display: block;
+    width: 4rem;
+  }
+
+  @media screen and (max-width: 479px) {
+    .footer__right {
+      flex-flow: column;
+      gap: var(--_layout---spacing--margin-md);
+    }
+
+    .footer__flits {
+      justify-content: flex-start;
+    }
+  }
+</style>

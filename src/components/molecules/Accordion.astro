@@ -1,0 +1,159 @@
+---
+import Icon from '../atoms/Icon.astro';
+
+/** FAQ-accordeon. Open/dicht via de `grid-template-rows: 0fr → 1fr`-truc uit de
+ *  export, zodat de hoogte animeert zonder JS-metingen. De trigger is hier een
+ *  echte `<button>` met `aria-expanded`; in de export was het een `<div>` en
+ *  daarmee niet bedienbaar met het toetsenbord. Zie FIDELITY.md. */
+interface Props {
+  items: { vraag: string; antwoord: string }[];
+  /** Sluit andere items bij het openen — `data-accordion-close-siblings` in de export. */
+  closeSiblings?: boolean;
+  /** Index van het item dat open begint; -1 voor allemaal dicht. */
+  openIndex?: number;
+  id?: string;
+}
+
+const { items, closeSiblings = true, openIndex = 0, id = 'faq' } = Astro.props;
+---
+
+<ul class="acc" data-close-siblings={closeSiblings ? 'true' : 'false'}>
+  {
+    items.map((item, i) => (
+      <li class="acc__item" data-status={i === openIndex ? 'active' : 'not-active'}>
+        <button
+          class="acc__top"
+          type="button"
+          aria-expanded={i === openIndex ? 'true' : 'false'}
+          aria-controls={`${id}-panel-${i}`}
+        >
+          <h3 class="acc__h3">{item.vraag}</h3>
+          <span class="acc__icon"><Icon name="chevron" /></span>
+        </button>
+        <div class="acc__bottom" id={`${id}-panel-${i}`} role="region">
+          <div class="acc__wrap">
+            <div class="acc__content">
+              <p class="acc__p">{item.antwoord}</p>
+            </div>
+          </div>
+        </div>
+      </li>
+    ))
+  }
+</ul>
+
+<script>
+  // Astro voert dit één keer per pagina uit, niet per instantie — vandaar de
+  // querySelectorAll over alle accordeons (astro-gotchas §6).
+  document.querySelectorAll<HTMLElement>('.acc').forEach((acc) => {
+    acc.addEventListener('click', (event) => {
+      const btn = (event.target as HTMLElement).closest<HTMLButtonElement>('.acc__top');
+      if (!btn || !acc.contains(btn)) return;
+
+      const item = btn.closest<HTMLElement>('.acc__item');
+      if (!item) return;
+
+      const wasActive = item.dataset.status === 'active';
+      if (!wasActive && acc.dataset.closeSiblings === 'true') {
+        acc.querySelectorAll<HTMLElement>('.acc__item[data-status="active"]').forEach((sib) => {
+          sib.dataset.status = 'not-active';
+          sib.querySelector('.acc__top')?.setAttribute('aria-expanded', 'false');
+        });
+      }
+      item.dataset.status = wasActive ? 'not-active' : 'active';
+      btn.setAttribute('aria-expanded', String(!wasActive));
+    });
+  });
+</script>
+
+<style>
+  .acc {
+    display: flex;
+    flex-flow: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .acc__item {
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--_color---neutral--neutral-400);
+    list-style: none;
+  }
+
+  .acc__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1em;
+    width: 100%;
+    padding: 1.5em 1em 1.5em 1.5em;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .acc__top:focus-visible {
+    outline: 2px solid var(--primary--accent);
+    outline-offset: -2px;
+  }
+
+  .acc__h3 {
+    margin: 0;
+    font-size: 1.125em;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .acc__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    color: var(--primary--accent);
+    transform: rotate(180deg);
+    transition: transform .6s cubic-bezier(.625, .05, 0, 1);
+  }
+
+  .acc__item[data-status='active'] .acc__icon {
+    transform: rotate(0.001deg);
+  }
+
+  .acc__bottom {
+    display: grid;
+    grid-template-rows: 0fr;
+    position: relative;
+    overflow: hidden;
+    transition: grid-template-rows .6s cubic-bezier(.625, .05, 0, 1);
+  }
+
+  .acc__item[data-status='active'] .acc__bottom {
+    grid-template-rows: 1fr;
+  }
+
+  .acc__wrap {
+    display: flex;
+    flex-flow: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .acc__content {
+    padding: 0 1.5em 1.5em;
+  }
+
+  .acc__p {
+    margin: 0;
+    color: var(--primary--text-secondary);
+  }
+</style>
+
+<!-- guard-ignore: size-budget — markup, toetsenbordgedrag en de open/dicht-animatie
+     van één accordeon. Een AccordionItem afsplitsen zou het script alsnog hier
+     laten staan (Astro bindt per pagina, niet per instantie) en levert alleen een
+     extra bestand op. -->

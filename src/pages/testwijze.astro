@@ -1,0 +1,81 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionContent from '../components/sections/SectionContent.astro';
+import SectionCta from '../components/sections/SectionCta.astro';
+import Section from '../components/sections/Section.astro';
+import Container from '../components/atoms/Container.astro';
+import SectionIntro from '../components/sections/SectionIntro.astro';
+import SectionDivider from '../components/atoms/SectionDivider.astro';
+import { seo, cta } from '../data/content';
+import { images } from '../data/images';
+import { haalPrijzen } from '../data/prijzen';
+const { topPrijzen } = await haalPrijzen();
+---
+
+<PageLayout
+  title={seo.testwijze.title}
+  description={seo.testwijze.description}
+  canonical="https://www.rpmedelmetaal.nl/testwijze"
+  current="/testwijze"
+  prijzen={topPrijzen}
+>
+  <SectionContent
+    eyebrow="Testwijze"
+    title="Een betrouwbare en eerlijke testwijze voor al uw edelmetalen"
+    level={1}
+    size={2}
+    html="<p>Het toetsen van edelmetalen is een nauwkeurig- middel om het gehalte te bepalen van het gouden object. Gehaltes zoals 8,14,18 en 21,6 krt kan je op die manier op benadering keuren en zo toch een indicatie krijgen om wat voor gehalte het gaat. </p><p>‍We onderscheiden twee grote onderzoeksmethodes:</p>"
+    bullets={['XRF-analyseapparaat', 'De Strijkproef', 'De Vuurproef']}
+    ctaLabel="Gratis taxatie aanvragen"
+    ctaHref="/contact"
+    image={images.goudenSieraden}
+  />
+
+  <SectionDivider />
+  <Section paddingTop="none">
+    <Container>
+      <SectionIntro
+        title="Een betrouwbare en gecertificeerde testwijze voor edelmetalen"
+        text="Bij RPM Edelmetaal combineren we gecertificeerde apparatuur met erkende analysemethoden om het gehalte van uw edelmetalen nauwkeurig te bepalen. Dankzij spectroscopische analyse en jarenlange ervaring kunt u rekenen op een betrouwbare en eerlijke waardebepaling."
+      />
+    </Container>
+  </Section>
+  <SectionDivider />
+
+  <SectionContent
+    title="De strijkproef"
+    html="<p>Gouden kettingen, armbanden en andere samengestelde gouden voorwerpen worden op meerdere plaatsen getest. Dit is belangrijk omdat sieraden vaak bestaan uit verschillende onderdelen of door slijtage ongelijk van samenstelling kunnen zijn.</p><p>Voor het testen maken wij gebruik van een toetssteen en professioneel toetswater. Door het goud licht over de steen te halen en de toetsstreep te behandelen met toetswater, kunnen wij het karaatgehalte betrouwbaar bepalen. Deze methode wordt al jarenlang toegepast binnen de edelmetaalhandel en geeft snel een duidelijk resultaat.</p><p>Door op meerdere plekken te testen, zorgen wij voor een eerlijke en nauwkeurige beoordeling van uw goud. Zo weet u zeker dat de waardebepaling klopt en u een correcte prijs ontvangt bij de inkoop.</p>"
+    ctaLabel="Gratis taxatie aanvragen"
+    ctaHref="/contact"
+    image={images.goudenRing}
+  />
+
+  <SectionContent
+    title="Hoe werkt de strijkproef?"
+    html="<p>Voor het testen wordt eerst een klein, onopvallend stukje van het goud licht aangevijld. Met dit metaal worden vervolgens drie duidelijke strepen op de toetssteen aangebracht. Deze strepen worden elk behandeld met een verschillend toetswater.</p><p>Wanneer de streep verdwijnt bij 18-karaats toetswater, betekent dit dat het goud een lager gehalte heeft dan 18 karaat. Verdwijnt de streep ook bij 14-karaats toetswater, dan is het goud eveneens lager dan 14 karaat. Indien de streep zelfs bij 9-karaats toetswater oplost, dan betreft het een onedel metaal of goud met een gehalte lager dan 9 karaat.</p><p>Blijft de streep zichtbaar bij een bepaald toetswater, bijvoorbeeld bij 18 karaat, dan komt het karaatgehalte van het goud overeen met dat niveau.</p>"
+    ctaLabel="Gratis taxatie aanvragen"
+    ctaHref="/contact"
+    image={images.goudenSieraden}
+    imagePosition="left"
+  />
+
+  <SectionContent
+    title="XRF-analyse"
+    html="<p>Naast de traditionele toetsmethode maken wij gebruik van XRF-analyse (röntgenfluorescentie). Met deze moderne meetmethode kunnen wij de exacte samenstelling van uw goud snel en volledig niet-destructief analyseren.</p><p>Een XRF-analyse bepaalt nauwkeurig welke edelmetalen en legeringselementen aanwezig zijn, zoals goud, zilver, koper en palladium. Hierdoor krijgen we een betrouwbaar en objectief inzicht in het karaatgehalte, zonder het sieraad te beschadigen.</p><p>De XRF-analyse is bijzonder geschikt voor:</p><p>• Samengestelde of moderne sieraden<br>• Witgoud en speciale legeringen<br>• Grotere partijen of baren</p><p>Door de combinatie van XRF-analyse en fysieke toetsing kunnen wij uw goud zo eerlijk en transparant mogelijk beoordelen. Dit zorgt ervoor dat u altijd een correcte waardebepaling ontvangt bij de inkoop van uw goud.</p>"
+    ctaLabel="Gratis taxatie aanvragen"
+    ctaHref="/contact"
+    image={images.taxatie}
+  />
+
+  <SectionContent
+    title="Ontdek wat uw goud werkelijk waard is"
+    html="<p>Of het nu gaat om de oud en vertrouwde strijkproef of om een hypermoderne XRF-analyse: wij nemen u graag alle zorgen uit handen bij het verkopen van uw goud.<br>Wij combineren vakkennis, ervaring en moderne meetapparatuur om het karaatgehalte en de samenstelling van uw goud zo eerlijk en nauwkeurig mogelijk vast te stellen. <br><br>U krijgt daarbij altijd volledige transparantie en een eerlijke inkoopprijs. Zo weet u precies waar u aan toe bent en verkoopt u uw goud met een gerust gevoel.</p>"
+    ctaLabel="Gratis taxatie aanvragen"
+    ctaHref="/contact"
+    image={images.achtergrond}
+    imagePosition="left"
+  />
+
+  <SectionDivider />
+  <SectionCta title={cta.title} text={cta.text} />
+</PageLayout>

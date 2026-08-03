@@ -1,0 +1,52 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionInkoopprijzen from '../components/sections/SectionInkoopprijzen.astro';
+import Section from '../components/sections/Section.astro';
+import Container from '../components/atoms/Container.astro';
+import SectionIntro from '../components/sections/SectionIntro.astro';
+import SectionPrijstabel from '../components/sections/SectionPrijstabel.astro';
+import SectionCta from '../components/sections/SectionCta.astro';
+import SectionContact from '../components/sections/SectionContact.astro';
+import SectionDivider from '../components/atoms/SectionDivider.astro';
+import { seo, cta, contactSectie } from '../data/content';
+import { haalPrijzen } from '../data/prijzen';
+const { groepen, topPrijzen, topKaarten } = await haalPrijzen();
+---
+
+<PageLayout
+  title={seo.inkoopprijzen.title}
+  description={seo.inkoopprijzen.description}
+  canonical="https://www.rpmedelmetaal.nl/inkoopprijzen"
+  current="/inkoopprijzen"
+  prijzen={topPrijzen}
+>
+  <SectionInkoopprijzen
+    level={1}
+    title="Actuele inkoopprijzen van goud, zilver, platina en palladium"
+    text="Krijg snel inzicht in de waarde van uw edelmetalen. Bezoek onze ‘inkoopprijzen’ pagina voor het volledige overzicht van alle actuele inkoopprijzen."
+    kaarten={topKaarten}
+    paddingTop="default"
+    knop={false}
+  />
+
+  <SectionDivider />
+  <Section paddingBottom="none">
+    <Container>
+      <SectionIntro
+        level={1}
+        title="Snel en eerlijk inzicht in uw edelmetalen"
+        text="Klik op de tabs om de actuele inkoopprijzen van uw goud, zilver, platina en palladium te bekijken. Zo weet u altijd wat uw kostbaarheden waard zijn."
+      />
+    </Container>
+  </Section>
+
+  <SectionPrijstabel groepen={groepen} id="prijzen" />
+
+  <SectionCta title={cta.title} text={cta.text} />
+
+  <SectionContact
+    title={contactSectie.title}
+    text={contactSectie.text}
+    formId="taxatie-inkoopprijzen"
+  />
+</PageLayout>

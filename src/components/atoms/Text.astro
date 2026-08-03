@@ -1,0 +1,45 @@
+---
+/** Lopende tekst in de vier maten uit de export.
+ *  De schaal zelf staat als `.p-xl`…`.p-sm` in base.css — zie Heading. */
+interface Props {
+  size?: 'xl' | 'lg' | 'body' | 'sm';
+  tone?: 'default' | 'secondary' | 'accent';
+  align?: 'left' | 'center' | 'right';
+  element?: 'p' | 'div' | 'span';
+  flush?: boolean;
+  class?: string;
+}
+
+const {
+  size = 'body',
+  tone = 'default',
+  align = 'left',
+  element = 'p',
+  flush = false,
+  class: className,
+} = Astro.props;
+const Tag = element;
+---
+
+<Tag
+  class:list={['text', `p-${size}`, className]}
+  data-tone={tone}
+  data-align={align}
+  data-flush={flush ? '' : undefined}
+>
+  <slot />
+</Tag>
+
+<style>
+  .text {
+    margin-top: 0;
+  }
+
+  .text[data-align='center'] { text-align: center; }
+  .text[data-align='right'] { text-align: right; }
+
+  .text[data-tone='secondary'] { color: var(--primary--text-secondary); }
+  .text[data-tone='accent'] { color: var(--primary--accent); }
+
+  .text[data-flush] { margin-bottom: 0; }
+</style>

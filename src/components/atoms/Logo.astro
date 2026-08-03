@@ -1,0 +1,32 @@
+---
+import { logos, type LogoVariant } from '../../data/icons';
+
+/** RPM-logo. `wordmark` staat in de nav (12rem breed), `mark` in de
+ *  section-divider. Beide erven hun kleur van de ouder via currentColor. */
+interface Props {
+  variant?: LogoVariant;
+  label?: string;
+  class?: string;
+}
+
+const { variant = 'wordmark', label, class: className } = Astro.props;
+const logo = logos[variant];
+---
+
+<svg
+  class:list={['logo', className]}
+  viewBox={logo.viewBox}
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  set:html={logo.inner}
+/>
+
+<style>
+  .logo {
+    width: 100%;
+    height: auto;
+  }
+</style>

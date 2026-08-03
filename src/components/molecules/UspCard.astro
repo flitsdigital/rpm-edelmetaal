@@ -1,0 +1,43 @@
+---
+import Icon from '../atoms/Icon.astro';
+import Heading from '../atoms/Heading.astro';
+import Text from '../atoms/Text.astro';
+import type { IconName } from '../../data/icons';
+
+/** Icoon + kop + regel uitleg. Komt 9× voor op de homepage en over-ons. */
+interface Props {
+  icon: IconName;
+  title: string;
+  text: string;
+}
+
+const { icon, title, text } = Astro.props;
+---
+
+<div class="usp">
+  <div class="usp__icon"><Icon name={icon} size="lg" /></div>
+  <div>
+    <Heading level={3} size={6} class="u-mb-xs">{title}</Heading>
+    <Text tone="secondary" flush>{text}</Text>
+  </div>
+</div>
+
+<style>
+  .usp {
+    display: flex;
+    flex-flow: column;
+    gap: var(--_layout---grid--gap-md);
+  }
+
+  .usp__icon {
+    color: var(--primary--accent);
+  }
+
+  @media screen and (max-width: 479px) {
+    .usp {
+      justify-content: flex-start;
+      align-items: center;
+      text-align: center;
+    }
+  }
+</style>

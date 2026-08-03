@@ -1,0 +1,38 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Section from '../components/sections/Section.astro';
+import Container from '../components/atoms/Container.astro';
+import Row from '../components/atoms/Row.astro';
+import Col from '../components/atoms/Col.astro';
+import Heading from '../components/atoms/Heading.astro';
+import Text from '../components/atoms/Text.astro';
+import Button from '../components/atoms/Button.astro';
+import { seo } from '../data/content';
+import { haalPrijzen } from '../data/prijzen';
+const { topPrijzen } = await haalPrijzen();
+---
+
+<PageLayout title={seo.notFound.title} current="/404" prijzen={topPrijzen} noindex>
+  <Section paddingTop="double" paddingBottom="double">
+    <Container>
+      <Row justify="center">
+        <Col lg={6} md={12}>
+          <div class="nf">
+            <Heading level={1} align="center">404</Heading>
+            <Heading level={2} size={3} align="center">Pagina niet gevonden</Heading>
+            <Text align="center" tone="secondary">
+              De pagina die u zoekt bestaat niet of is verplaatst.
+            </Text>
+            <Button href="/">Naar de homepage</Button>
+          </div>
+        </Col>
+      </Row>
+    </Container>
+  </Section>
+</PageLayout>
+
+<style>
+  .nf {
+    text-align: center;
+  }
+</style>

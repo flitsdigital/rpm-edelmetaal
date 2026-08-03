@@ -1,0 +1,236 @@
+/* tokens.css — laag 1: primitives
+ *
+ * Overgenomen uit de Webflow Variables van de export, met de originele namen —
+ * dat maakt elke vergelijking met het origineel triviaal.
+ * Componenten consumeren deze NIET direct; die gebruiken de semantische tokens
+ * uit themes.css.
+ *
+ * Eén naamswijziging t.o.v. de export: Webflow exporteerde 17 variabelen als
+ * `--_x---y\<deleted|variable-<uuid>\>` (restanten van in de Designer verwijderde
+ * variabelen). Ze worden alle 17 nog écht gebruikt, dus ze blijven staan — maar
+ * onder hun bedoelde naam zonder het uuid-achtervoegsel.
+ */
+
+@layer tokens {
+  :root {
+    /* ---------------------------------------------------------------- kleur */
+    --_color---neutral--neutral-100: white;
+    --_color---neutral--neutral-200: #999;
+    --_color---neutral--neutral-300: #666;
+    --_color---neutral--neutral-400: #141414;
+    --_color---neutral--neutral-500: black;
+    --_color---neutral--black: #1d1c1a;
+
+    --_color---primary--gold-100: #faf7f0;
+    --_color---primary--gold-500: #947848;
+    --_color---primary--gold-600: #816636;
+
+    --_color---secondary--yellow: #f8d47a;
+
+    /* Uit `.form-error` in de export; geen Webflow-variabele, wel de enige
+       foutkleur op de site. */
+    --_color---feedback--error: #e31700;
+    --_color---secondary--blue: #0073e6;
+
+    /* Uit de custom-code van de nav; geen Webflow-variabele. */
+    --color-dark: #2b1d15;
+
+    /* ------------------------------------------------------------ typografie */
+    --_typography---fonts--heading-font: Cinzel, Georgia, sans-serif;
+    --_typography---fonts--primary-font: "Open Sans", Arial, sans-serif;
+
+    /* Fluid-schaal: elke font-size interpoleert tussen --fluid--min en
+     * --fluid--max viewportbreedte. De clamp()-formules hieronder zijn
+     * letterlijk die van Webflow — niet vereenvoudigen, dat wijkt meetbaar af. */
+    --_layout---fluid--min: 20;
+    --_layout---fluid--max: 85;
+
+    --_typography---h1--font-size-min-rem: 2;
+    --_typography---h1--font-size-max-rem: 3.5;
+    --_typography---h2--font-size-min-rem: 2;
+    --_typography---h2--font-size-max-rem: 3;
+    --_typography---h3--font-size-min-rem: 1.5;
+    --_typography---h3--font-size-max-rem: 2.3;
+    --_typography---h4--font-size-min-rem: 1.3;
+    --_typography---h4--font-size-max-rem: 1.5;
+    --_typography---h5--font-size-min-rem: 1.1;
+    --_typography---h5--font-size-max-rem: 1.2;
+    --_typography---h6--font-size-min-rem: 1;
+    --_typography---h6--font-size-max-rem: 1.25;
+    --_typography---paragraph-xl--font-size-min-rem: 1.2;
+    --_typography---paragraph-xl--font-size-max-rem: 1.5;
+    --_typography---paragraph-lg--font-size-min-rem: 1.1;
+    --_typography---paragraph-lg--font-size-max-rem: 1.25;
+    --_typography---paragraph-body--font-size-min-rem: .9;
+    --_typography---paragraph-body--font-size-max-rem: 1;
+    --_typography---paragraph-sm--font-size-min-rem: .8;
+    --_typography---paragraph-sm--font-size-max-rem: .9;
+    --_typography---eyebrow--font-size-min-rem: .7;
+    --_typography---eyebrow--font-size-max-rem: .8;
+
+    --_typography---h1--font: var(--_typography---fonts--heading-font);
+    --_typography---h1--font-size: clamp(var(--_typography---h1--font-size-min-rem) * 1rem, ((var(--_typography---h1--font-size-min-rem) - ((var(--_typography---h1--font-size-max-rem) - var(--_typography---h1--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * 1rem + ((var(--_typography---h1--font-size-max-rem) - var(--_typography---h1--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_typography---h1--font-size-max-rem) * 1rem);
+    --_typography---h1--line-height: 1.2;
+    --_typography---h1--font-weight: 400;
+    --_typography---h1--letter-spacing: -.02em;
+    --_typography---h1--bottom-margin: .2em;
+
+    --_typography---h2--font: var(--_typography---fonts--heading-font);
+    --_typography---h2--font-size: clamp(var(--_typography---h2--font-size-min-rem) * 1rem, ((var(--_typography---h2--font-size-min-rem) - ((var(--_typography---h2--font-size-max-rem) - var(--_typography---h2--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * 1rem + ((var(--_typography---h2--font-size-max-rem) - var(--_typography---h2--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_typography---h2--font-size-max-rem) * 1rem);
+    --_typography---h2--line-height: 1.2;
+    --_typography---h2--font-weight: 400;
+    --_typography---h2--letter-spacing: -.02em;
+    --_typography---h2--bottom-margin: .2em;
+
+    --_typography---h3--font: var(--_typography---fonts--heading-font);
+    --_typography---h3--font-size: clamp(var(--_typography---h3--font-size-min-rem) * 1rem, ((var(--_typography---h3--font-size-min-rem) - ((var(--_typography---h3--font-size-max-rem) - var(--_typography---h3--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * 1rem + ((var(--_typography---h3--font-size-max-rem) - var(--_typography---h3--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_typography---h3--font-size-max-rem) * 1rem);
+    --_typography---h3--line-height: 1.2;
+    --_typography---h3--font-weight: 400;
+    --_typography---h3--letter-spacing: 0em;
+    --_typography---h3--bottom-margin: .3em;
+
+    --_typography---h4--font: var(--_typography---fonts--heading-font);
+    --_typography---h4--font-size: clamp(var(--_typography---h4--font-size-min-rem) * 1rem, ((var(--_typography---h4--font-size-min-rem) - ((var(--_typography---h4--font-size-max-rem) - var(--_typography---h4--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * 1rem + ((var(--_typography---h4--font-size-max-rem) - var(--_typography---h4--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_typography---h4--font-size-max-rem) * 1rem);
+    --_typography---h4--line-height: 1.4;
+    --_typography---h4--font-weight: 400;
+    --_typography---h4--letter-spacing: 0em;
+    --_typography---h4--bottom-margin: .4em;
+
+    --_typography---h5--font: var(--_typography---fonts--heading-font);
+    --_typography---h5--font-size: clamp(var(--_typography---h5--font-size-min-rem) * 1rem, ((var(--_typography---h5--font-size-min-rem) - ((var(--_typography---h5--font-size-max-rem) - var(--_typography---h5--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * 1rem + ((var(--_typography---h5--font-size-max-rem) - var(--_typography---h5--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_typography---h5--font-size-max-rem) * 1rem);
+    --_typography---h5--line-height: 1.4;
+    --_typography---h5--font-weight: 400;
+    --_typography---h5--letter-spacing: 0em;
+    --_typography---h5--bottom-margin: .5em;
+
+    --_typography---h6--font: var(--_typography---fonts--heading-font);
+    --_typography---h6--font-size: clamp(var(--_typography---h6--font-size-min-rem) * 1rem, ((var(--_typography---h6--font-size-min-rem) - ((var(--_typography---h6--font-size-max-rem) - var(--_typography---h6--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * 1rem + ((var(--_typography---h6--font-size-max-rem) - var(--_typography---h6--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_typography---h6--font-size-max-rem) * 1rem);
+    --_typography---h6--line-height: 1.2;
+    --_typography---h6--font-weight: 400;
+    --_typography---h6--letter-spacing: 0em;
+    --_typography---h6--bottom-margin: .6em;
+
+    --_typography---paragraph-xl--font: var(--_typography---fonts--primary-font);
+    --_typography---paragraph-xl--font-size: clamp(var(--_typography---paragraph-xl--font-size-min-rem) * 1rem, ((var(--_typography---paragraph-xl--font-size-min-rem) - ((var(--_typography---paragraph-xl--font-size-max-rem) - var(--_typography---paragraph-xl--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * 1rem + ((var(--_typography---paragraph-xl--font-size-max-rem) - var(--_typography---paragraph-xl--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_typography---paragraph-xl--font-size-max-rem) * 1rem);
+    --_typography---paragraph-xl--line-height: 1.4;
+    --_typography---paragraph-xl--font-weight: 400;
+    --_typography---paragraph-xl--letter-spacing: 0em;
+    --_typography---paragraph-xl--bottom-margin: 1em;
+
+    --_typography---paragraph-lg--font: var(--_typography---fonts--primary-font);
+    --_typography---paragraph-lg--font-size: clamp(var(--_typography---paragraph-lg--font-size-min-rem) * 1rem, ((var(--_typography---paragraph-lg--font-size-min-rem) - ((var(--_typography---paragraph-lg--font-size-max-rem) - var(--_typography---paragraph-lg--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * 1rem + ((var(--_typography---paragraph-lg--font-size-max-rem) - var(--_typography---paragraph-lg--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_typography---paragraph-lg--font-size-max-rem) * 1rem);
+    --_typography---paragraph-lg--line-height: 1.5;
+    --_typography---paragraph-lg--font-weight: 400;
+    --_typography---paragraph-lg--letter-spacing: 0em;
+    --_typography---paragraph-lg--bottom-margin: 1em;
+
+    --_typography---paragraph-body--font: var(--_typography---fonts--primary-font);
+    --_typography---paragraph-body--font-size: clamp(var(--_typography---paragraph-body--font-size-min-rem) * 1rem, ((var(--_typography---paragraph-body--font-size-min-rem) - ((var(--_typography---paragraph-body--font-size-max-rem) - var(--_typography---paragraph-body--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * 1rem + ((var(--_typography---paragraph-body--font-size-max-rem) - var(--_typography---paragraph-body--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_typography---paragraph-body--font-size-max-rem) * 1rem);
+    --_typography---paragraph-body--line-height: 1.6;
+    --_typography---paragraph-body--font-weight: 400;
+    --_typography---paragraph-body--letter-spacing: 0em;
+    --_typography---paragraph-body--bottom-margin: 1em;
+
+    --_typography---paragraph-sm--font: var(--_typography---fonts--primary-font);
+    --_typography---paragraph-sm--font-size: clamp(var(--_typography---paragraph-sm--font-size-min-rem) * 1rem, ((var(--_typography---paragraph-sm--font-size-min-rem) - ((var(--_typography---paragraph-sm--font-size-max-rem) - var(--_typography---paragraph-sm--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * 1rem + ((var(--_typography---paragraph-sm--font-size-max-rem) - var(--_typography---paragraph-sm--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_typography---paragraph-sm--font-size-max-rem) * 1rem);
+    --_typography---paragraph-sm--line-height: 1.5;
+    --_typography---paragraph-sm--font-weight: 400;
+    --_typography---paragraph-sm--letter-spacing: 0em;
+    --_typography---paragraph-sm--bottom-margin: 1em;
+
+    --_typography---eyebrow--font: var(--_typography---fonts--heading-font);
+    --_typography---eyebrow--font-size: clamp(var(--_typography---eyebrow--font-size-min-rem) * 1rem, ((var(--_typography---eyebrow--font-size-min-rem) - ((var(--_typography---eyebrow--font-size-max-rem) - var(--_typography---eyebrow--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * 1rem + ((var(--_typography---eyebrow--font-size-max-rem) - var(--_typography---eyebrow--font-size-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_typography---eyebrow--font-size-max-rem) * 1rem);
+    --_typography---eyebrow--line-height: 1.2;
+    --_typography---eyebrow--font-weight: 400;
+    --_typography---eyebrow--letter-spacing: .1em;
+    --_typography---eyebrow--bottom-margin: 1.5em;
+
+    /* Alleen gebruikt in de responsive overrides van paragraph-lg / -sm. */
+    --_typography---type-paragraph-lg--font-size-md: 1.25rem;
+    --_typography---type-paragraph-lg--font-size-sm: 1.1rem;
+    --_typography---type-paragraph-lg--font-size-xs: 1.1rem;
+    --_typography---type-paragraph-sm--font-size-md: .9rem;
+    --_typography---type-paragraph-sm--font-size-sm: .9rem;
+    --_typography---type-paragraph-sm--font-size-xs: .9rem;
+
+    /* --------------------------------------------------------------- layout */
+    --_layout---grid--gap-main: 1.5rem;
+    --_layout---grid--gap-md: 1rem;
+    --_layout---grid--gap-sm: .75rem;
+    --_layout---grid--gap-button: 1rem;
+
+    --_layout---spacing--margin-xs: .5em;
+    --_layout---spacing--margin-sm: 1em;
+    --_layout---spacing--margin-md: 2em;
+    --_layout---spacing--margin-lg: 3em;
+    --_layout---spacing--margin-xxl: 8em;
+
+    /* --------------------------------------------------------------- maten */
+    --_size---0rem: 0rem;
+    --_size---0-25rem: .25rem;
+    --_size---0-5rem: .5rem;
+    --_size---1-5rem: 1.5rem;
+    --_size---2rem: 2rem;
+    --_size---3rem: 3rem;
+
+    /* ---------------------------------------------------------- componenten */
+    --_components---container--max-width: calc(var(--_layout---fluid--max) * 1rem);
+
+    --_components---section--padding-min-rem: 3;
+    --_components---section--padding-max-rem: 5;
+    --_components---section--padding: clamp(var(--_components---section--padding-min-rem) * 1rem, ((var(--_components---section--padding-min-rem) - ((var(--_components---section--padding-max-rem) - var(--_components---section--padding-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * 1rem + ((var(--_components---section--padding-max-rem) - var(--_components---section--padding-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_components---section--padding-max-rem) * 1rem);
+
+    /* De CTA-secties gebruiken een dubbele en de footer een halve sectiepadding.
+       Let op: dat is NIET `padding * 2` — in de export worden alleen de rem-delen
+       en de clamp-grenzen geschaald, de vw-component blijft gelijk. Op 1280px
+       scheelt dat 39px (116 i.p.v. 155). Formule daarom letterlijk overgenomen. */
+    --_components---section--padding-double: clamp(var(--_components---section--padding-min-rem) * 2rem, ((var(--_components---section--padding-min-rem) - ((var(--_components---section--padding-max-rem) - var(--_components---section--padding-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * 2rem + ((var(--_components---section--padding-max-rem) - var(--_components---section--padding-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_components---section--padding-max-rem) * 2rem);
+    --_components---section--padding-half: clamp(var(--_components---section--padding-min-rem) * .5rem, ((var(--_components---section--padding-min-rem) - ((var(--_components---section--padding-max-rem) - var(--_components---section--padding-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * .5rem + ((var(--_components---section--padding-max-rem) - var(--_components---section--padding-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_components---section--padding-max-rem) * .5rem);
+
+    --_components---button--vertical-padding: .75em;
+    --_components---button--horizontal-padding: 1.5em;
+    --_components---button--border-radius: 0rem;
+    --_components---button--font: var(--_typography---fonts--primary-font);
+    --_components---button--font-size: 1rem;
+    --_components---button--line-height: 1.3em;
+    --_components---button--font-weight: 400;
+    --_components---button--letter-spacing: 0em;
+
+    --_components---card--border-radius: .5rem;
+    --_components---card--padding-min-rem: 1;
+    --_components---card--padding-max-rem: 1.5;
+    --_components---card--padding: clamp(var(--_components---card--padding-min-rem) * 1rem, ((var(--_components---card--padding-min-rem) - ((var(--_components---card--padding-max-rem) - var(--_components---card--padding-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * 1rem + ((var(--_components---card--padding-max-rem) - var(--_components---card--padding-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_components---card--padding-max-rem) * 1rem);
+    --_components---card--card-body-padding-sm: 20px;
+
+    --_components---input--border-radius: 0rem;
+    --_components---input--bottom-margin: 1rem;
+    --_components---input--font: var(--_typography---fonts--primary-font);
+    --_components---input--font-size: 1rem;
+    --_components---input--line-height: 1.5em;
+    --_components---input--font-weight: 400;
+    --_components---input--letter-spacing: 0em;
+
+    --_components---input-label--font: var(--_typography---fonts--primary-font);
+    --_components---input-label--font-size: .9rem;
+    --_components---input-label--line-height: 1em;
+    --_components---input-label--font-weight: 400;
+    --_components---input-label--letter-spacing: 0em;
+
+    --_components---nav--banner-size: 3rem;
+
+    --_responsive---padding--card: 1.5rem;
+
+    /* ---------------------------------------------------------------- motion */
+    --cubic-default: cubic-bezier(0.525, 0, 0, 1);
+    --duration-fast: 0.2s;
+    --duration-normal: 0.450s;
+  }
+
+  /* Responsive overrides. De export herhaalde deze twee blokken 24× (één keer
+   * per pagina); hier staan ze één keer. */
+  @media (max-width: 768px) {
+    :root {
+      --_layout---spacing--margin-xxl: 5em;
+    }
+  }
+}

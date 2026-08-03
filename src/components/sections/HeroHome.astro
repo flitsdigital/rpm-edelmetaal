@@ -1,0 +1,63 @@
+---
+import Container from '../atoms/Container.astro';
+import Row from '../atoms/Row.astro';
+import Col from '../atoms/Col.astro';
+import Heading from '../atoms/Heading.astro';
+import Text from '../atoms/Text.astro';
+import Button from '../atoms/Button.astro';
+import BgImage from '../atoms/BgImage.astro';
+import ReviewsBadge from '../molecules/ReviewsBadge.astro';
+import { images, type Afbeelding } from '../../data/images';
+
+/** Hero van de homepage: schermvullend beeld met de tekst onderin. */
+interface Props {
+  title: string;
+  text: string;
+  image?: Afbeelding;
+}
+
+const { title, text, image = images.achtergrond } = Astro.props;
+---
+
+<section class="hero">
+  <BgImage src={image.src} srcset={image.srcset} sizes={image.sizes} alt={image.alt} loading="eager" />
+  <Container>
+    <Row>
+      <Col lg={8} md={12}>
+        <div class="u-mb-md">
+          <Heading level={1}>{title}</Heading>
+          <div class="hero__text"><Text flush>{text}</Text></div>
+        </div>
+        <div class="hero__buttons u-mb-lg">
+          <Button href="/contact">Gratis taxatie aanvragen</Button>
+          <Button variant="secondary" href="/over-ons">Over ons</Button>
+        </div>
+        <ReviewsBadge />
+      </Col>
+    </Row>
+  </Container>
+</section>
+
+<style>
+  .hero {
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-end;
+    align-items: stretch;
+    min-height: 100vh;
+    position: relative;
+    padding-top: var(--_components---section--padding);
+    padding-bottom: var(--_components---section--padding);
+    background-color: transparent;
+  }
+
+  .hero__text {
+    max-width: 60ch;
+  }
+
+  .hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--_layout---grid--gap-button);
+  }
+</style>

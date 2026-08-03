@@ -1,0 +1,44 @@
+---
+import { icons, type IconName } from '../../data/icons';
+
+/** Inline SVG uit src/data/icons.ts. Maten komen uit de export:
+ *  sm = 1em (`.icon`), md = 1.5em (`.icon-md`), lg = 2.5em (`.icon-lg`).
+ *  Zonder `label` is het icoon decoratief en dus verborgen voor screenreaders. */
+interface Props {
+  name: IconName;
+  size?: 'sm' | 'md' | 'lg';
+  tone?: 'inherit' | 'accent' | 'secondary';
+  label?: string;
+}
+
+const { name, size = 'sm', tone = 'inherit', label } = Astro.props;
+const icon = icons[name];
+---
+
+<svg
+  class="icon"
+  data-size={size}
+  data-tone={tone}
+  viewBox={icon.viewBox}
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  set:html={icon.inner}
+/>
+
+<style>
+  .icon {
+    display: inline-flex;
+    font-size: 1em;
+    font-style: normal;
+  }
+
+  .icon[data-size='sm'] { width: 1em; }
+  .icon[data-size='md'] { width: 1.5em; }
+  .icon[data-size='lg'] { width: 2.5em; }
+
+  .icon[data-tone='accent'] { color: var(--primary--accent); }
+  .icon[data-tone='secondary'] { color: var(--primary--text-secondary); }
+</style>

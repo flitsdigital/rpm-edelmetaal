@@ -1,0 +1,64 @@
+---
+/** Eén token als visueel staaltje + naam + waarde + berekende waarde.
+ *  Gebruikt door /styleguide voor kleuren, de semantische laag en radii. */
+interface Props {
+  name: string;
+  value: string;
+  /** 'color' vult het vlak, 'radius' toont de afronding op een accentvlak. */
+  shape?: 'color' | 'radius';
+  /** Toon ook de door de browser berekende waarde (lost var()-aliassen op). */
+  showResolved?: boolean;
+}
+
+const { name, value, shape = 'color', showResolved = false } = Astro.props;
+const style = shape === 'radius' ? `border-radius:var(${name})` : `background:var(${name}, ${value})`;
+---
+
+<figure class="swatch">
+  <div class:list={['swatch__chip', `swatch__chip--${shape}`]} style={style}></div>
+  <figcaption>
+    <code>{name}</code>
+    <span>{value}</span>
+    {showResolved && <span class="swatch__resolved" data-resolved-for={name}></span>}
+  </figcaption>
+</figure>
+
+<style>
+  .swatch {
+    margin: 0;
+  }
+
+  .swatch__chip {
+    block-size: 5rem;
+    border: 1px solid var(--primary--text-secondary);
+    border-radius: var(--_components---card--border-radius);
+  }
+
+  .swatch__chip--radius {
+    background: var(--primary--accent);
+    border-color: transparent;
+  }
+
+  figcaption {
+    display: flex;
+    flex-direction: column;
+    gap: var(--_size---0-25rem);
+    margin-block-start: var(--_size---0-5rem);
+    font-size: var(--_typography---paragraph-sm--font-size);
+    text-align: start;
+    overflow-wrap: anywhere;
+  }
+
+  figcaption span {
+    color: var(--primary--text-secondary);
+  }
+
+  .swatch__resolved {
+    color: var(--primary--accent-light);
+  }
+
+  code {
+    font-family: ui-monospace, monospace;
+    font-size: .85em;
+  }
+</style>

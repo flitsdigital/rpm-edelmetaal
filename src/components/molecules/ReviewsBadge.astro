@@ -1,0 +1,61 @@
+---
+import { reviews } from '../../data/site';
+
+/** Google-logo + score + sterren + aantal. Staat in de hero en op elke CTA. */
+---
+
+<div class="badge">
+  <img class="badge__logo" src="/images/Google-Logo.png" alt="Google" width="32" height="32" loading="lazy" />
+  <div class="badge__content">
+    <div class="badge__top">
+      <p class="badge__score">{reviews.score}</p>
+      <p class="badge__stars" aria-hidden="true">{reviews.sterren}</p>
+    </div>
+    <p class="badge__count">{reviews.aantal}</p>
+  </div>
+</div>
+
+<style>
+  .badge {
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  .badge__logo {
+    display: block;
+    width: auto;
+    height: 2rem;
+  }
+
+  .badge__content {
+    font-size: var(--_typography---paragraph-sm--font-size);
+  }
+
+  .badge__top {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  .badge__score,
+  .badge__stars,
+  .badge__count {
+    margin: 0;
+  }
+
+  .badge__score {
+    font-weight: 700;
+  }
+
+  .badge__stars {
+    /* guard-ignore: sterrengeel uit de export; geen token, komt nergens anders voor */
+    color: #fbb004;
+  }
+
+  .badge__count {
+    opacity: .7;
+  }
+</style>

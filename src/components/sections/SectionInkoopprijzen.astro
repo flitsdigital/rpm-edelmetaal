@@ -1,0 +1,50 @@
+---
+import Section from './Section.astro';
+import Container from '../atoms/Container.astro';
+import Row from '../atoms/Row.astro';
+import Col from '../atoms/Col.astro';
+import Button from '../atoms/Button.astro';
+import SectionIntro from './SectionIntro.astro';
+import InkoopCard from '../molecules/InkoopCard.astro';
+
+/** Compacte prijzenrij op de homepage: vier kaarten plus een doorverwijzing. */
+interface Props {
+  title: string;
+  text?: string;
+  kaarten: { symbool: string; atoomnummer: number; naam: string; prijs: string }[];
+  level?: 1 | 2;
+  /** De doorverwijsknop staat alleen op de homepage. */
+  knop?: boolean;
+  paddingTop?: 'default' | 'none';
+}
+
+const { title, text, kaarten, level = 2, knop = true, paddingTop = 'none' } = Astro.props;
+---
+
+<Section paddingTop={paddingTop}>
+  <Container>
+    <SectionIntro title={title} text={text} level={level} />
+
+    <div class="u-mt-lg">
+      <Row gap="md">
+        {
+          kaarten.map((k) => (
+            <Col lg={3} md={12}>
+              <InkoopCard {...k} accent={k.naam === 'Goud'} />
+            </Col>
+          ))
+        }
+      </Row>
+    </div>
+
+    {
+      knop && (
+        <div class="u-mt-lg">
+          <Row justify="center">
+            <Button variant="secondary" href="/inkoopprijzen">Bekijk alle inkoopprijzen</Button>
+          </Row>
+        </div>
+      )
+    }
+  </Container>
+</Section>

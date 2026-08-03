@@ -1,0 +1,64 @@
+---
+/** Eén typografie-stap: voorbeeldtekst op ware grootte + de tokenwaarden ernaast. */
+interface Props {
+  /** Sleutel binnen --_typography---<key>--*, bv. 'h1' of 'paragraph-lg'. */
+  token: string;
+  sample: string;
+  meta: { minRem?: string; maxRem?: string; lineHeight?: string; letterSpacing?: string };
+}
+
+const { token, sample, meta } = Astro.props;
+const v = (prop: string) => `var(--_typography---${token}--${prop})`;
+const style = `font-family:${v('font')};font-size:${v('font-size')};line-height:${v('line-height')};font-weight:${v('font-weight')};letter-spacing:${v('letter-spacing')}`;
+---
+
+<div class="specimen">
+  <div style={style}>{sample}</div>
+  <dl>
+    <div><dt>token</dt><dd><code>{token}</code></dd></div>
+    <div><dt>schaal</dt><dd>{meta.minRem}–{meta.maxRem} rem</dd></div>
+    <div><dt>line-height</dt><dd>{meta.lineHeight}</dd></div>
+    <div><dt>letter-spacing</dt><dd>{meta.letterSpacing}</dd></div>
+  </dl>
+</div>
+
+<style>
+  .specimen {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: var(--_layout---grid--gap-main);
+    align-items: baseline;
+    padding-block: var(--_layout---spacing--margin-sm);
+    border-block-end: 1px solid var(--primary--background-secondary);
+  }
+
+  dl {
+    margin: 0;
+    font-size: var(--_typography---paragraph-sm--font-size);
+    color: var(--primary--text-secondary);
+  }
+
+  dl > div {
+    display: flex;
+    gap: var(--_size---0-5rem);
+  }
+
+  dt {
+    min-inline-size: 8em;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  code {
+    font-family: ui-monospace, monospace;
+    font-size: .85em;
+  }
+
+  @media (max-width: 767px) {
+    .specimen {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

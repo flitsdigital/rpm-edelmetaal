@@ -1,0 +1,93 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import HeroHome from '../components/sections/HeroHome.astro';
+import SectionContent from '../components/sections/SectionContent.astro';
+import SectionOver from '../components/sections/SectionOver.astro';
+import SectionUsp from '../components/sections/SectionUsp.astro';
+import SectionCta from '../components/sections/SectionCta.astro';
+import SectionFaq from '../components/sections/SectionFaq.astro';
+import SectionContact from '../components/sections/SectionContact.astro';
+import SectionInkoopprijzen from '../components/sections/SectionInkoopprijzen.astro';
+import SectionDivider from '../components/atoms/SectionDivider.astro';
+import { seo, uspsHome, uspsTaxatie, faq, cta, contactSectie } from '../data/content';
+import { images } from '../data/images';
+import { haalPrijzen } from '../data/prijzen';
+const { topPrijzen, topKaarten } = await haalPrijzen();
+---
+
+<PageLayout
+  title={seo.home.title}
+  description={seo.home.description}
+  canonical="https://www.rpmedelmetaal.nl/"
+  current="/"
+  prijzen={topPrijzen}
+  navRuimte={false}
+>
+  <HeroHome
+    title="dé edelmetalen-specialist in Friesland, Groningen en Drenthe."
+    text="Als dé edelmetalen-specialist van Nederland verzorgen wij de inkoop vangoud, zilver en andere edelmetalen in onze winkel in Sneek."
+  />
+
+  <SectionOver
+    eyebrow="Over ons"
+    title="Meer dan 20 jaar passie voor sieraden en edelmetalen"
+    html="<p>RPM Edelmetaal is een gerenommeerd familiebedrijf metjarenlange ervaring in de inkoop van waardevolle sieraden en objecten. Dit jaar zijn we ook druk bezig geweest met het realiseren van een prachtige winkel/kantoor in de winkelstraat van Sneek. Een droom die werkelijkheid werd.<br><br>En u bent natuurlijk van harte welkom in ons goudwisselkantoor voor een gratis en vrijblijvende taxatie, onder het genot van een van een kopje koffie of thee.</p>"
+    ctaLabel="Lees meer over ons"
+    ctaHref="/over-ons"
+    images={[images.portretVader, images.portretZoon]}
+  />
+
+  <SectionUsp items={uspsHome} />
+
+  <SectionUsp
+    banner={images.taxatieAanHuis}
+    title="Eerlijke taxatie en inkoop van goud, zilver en sieraden"
+    text="Wij kopen goud, zilver en andere edelmetalen in – eerlijk, transparant en met persoonlijke aandacht. Kom langs in onze winkel in Sneek of laat uw sieraden gratis en vrijblijvend taxeren."
+    items={uspsTaxatie}
+    paddingTop="none"
+  />
+
+  <SectionCta title={cta.title} text={cta.text} />
+
+  <SectionContent
+    eyebrow="Testwijze"
+    title="Zo bepalen wij snel en betrouwbaar de waarde van uw sieraden"
+    html="<p>Bij RPM Edelmetaal beoordelen we elk sieraad nauwkeurig en professioneel. Met onze beproefde testmethode, zoals de strijkproef, krijgt u snel een eerste indicatie van het karaatgehalte – eerlijk, betrouwbaar en met persoonlijke uitleg.</p>"
+    bullets={['XRF-analyseapparaat', 'De Strijkproef', 'De Vuurproef']}
+    ctaLabel="Bekijk onze testwijze"
+    ctaHref="/testwijze"
+    image={images.goudenSieraden}
+  />
+
+  <SectionContent
+    eyebrow="Taxatie aan huis"
+    title="Gratis en vrijblijvende taxatie gewoon bij u thuis"
+    html="<p>Bij RPM Edelmetaal hoeft u uw sieraden niet over straat te dragen. Wij komen bij u langs voor een professionele, gratis en vrijblijvende taxatie van uw goud, zilver en andere edelmetalen. Persoonlijke aandacht en eerlijke prijzen staan altijd voorop.</p>"
+    bullets={['Eerlijke prijzen', 'Snel en flexibel', 'Persoonlijk advies']}
+    ctaLabel="Gratis taxatie aanvragen"
+    ctaHref="/contact"
+    image={images.goudsmid}
+    imagePosition="left"
+    paddingBottom="none"
+  />
+
+  <SectionDivider />
+  <SectionInkoopprijzen
+    title="Actuele inkoopprijzen van goud, zilver, platina en palladium"
+    text="Krijg snel inzicht in de waarde van uw edelmetalen. Bezoek onze ‘inkoopprijzen’ pagina voor het volledige overzicht van alle actuele inkoopprijzen."
+    kaarten={topKaarten}
+  />
+
+  <SectionCta title={cta.title} text={cta.text} />
+
+  <SectionDivider />
+  <SectionFaq
+    title="Wij helpen u graag met al uw vragen over onze service."
+    text="Heeft u vragen over taxatie, verkoop of onze werkwijze? Hieronder vindt u de antwoorden op de meest gestelde vragen. Staat uw vraag er niet bij? Neem gerust contact met ons op."
+    items={faq}
+  />
+
+  <SectionDivider />
+  <SectionContact title={contactSectie.title} text={contactSectie.text} formId="taxatie-home" />
+  <SectionDivider />
+</PageLayout>

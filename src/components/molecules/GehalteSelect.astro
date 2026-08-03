@@ -1,0 +1,58 @@
+---
+import Field from './Field.astro';
+import { gehaltesPerMetaal, metalen } from '../../data/site';
+
+/** Het gehalte-veld dat meebeweegt met het gekozen metaal.
+ *
+ *  Alle vier de lijsten staan in de HTML; alleen de actieve is zichtbaar,
+ *  `required` en ingeschakeld. In de export werden ze bij elke wijziging uit de
+ *  DOM geknipt en weer ingeplakt — hetzelfde resultaat, veel meer manieren om
+ *  stuk te gaan. Uitgeschakelde velden worden bovendien niet meegestuurd, dus
+ *  de inzending bevat precies één gehalte.
+ */
+interface Props {
+  /** Naam van de select waar dit veld op reageert. */
+  bron: string;
+}
+
+const { bron } = Astro.props;
+---
+
+<div class="gehalte" data-bron={bron}>
+  {
+    metalen.map((m, i) => (
+      <div class="gehalte__groep" data-metaal={m} hidden={i > 0}>
+        <Field
+          name={`gehalte-${m.toLowerCase()}`}
+          label={m === 'Goud' ? 'Karaat' : 'Gehalte'}
+          control="select"
+          placeholder="Selecteer een…"
+          options={gehaltesPerMetaal[m].map((g) => ({ value: `${m} ${g}`, label: `${m} ${g}` }))}
+          required={i === 0}
+        />
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.gehalte').forEach((wrap) => {
+    const form = wrap.closest('form');
+    const bron = form?.querySelector<HTMLSelectElement>(`select[name="${wrap.dataset.bron}"]`);
+    const groepen = [...wrap.querySelectorAll<HTMLElement>('.gehalte__groep')];
+
+    const sync = () => {
+      groepen.forEach((groep) => {
+        const actief = groep.dataset.metaal === bron?.value;
+        groep.hidden = !actief;
+        const select = groep.querySelector('select');
+        if (!select) return;
+        select.required = actief;
+        select.disabled = !actief;
+      });
+    };
+
+    bron?.addEventListener('change', sync);
+    sync();
+  });
+</script>

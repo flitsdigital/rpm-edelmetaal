@@ -1,0 +1,139 @@
+---
+import Field from './Field.astro';
+import Button from '../atoms/Button.astro';
+import Row from '../atoms/Row.astro';
+import Col from '../atoms/Col.astro';
+import GehalteSelect from './GehalteSelect.astro';
+import { metalen } from '../../data/site';
+
+/** Het taxatieformulier — staat op /, /inkoopprijzen en /contact.
+ *  Webflow's endpoint is dood na export; `action` wijst naar de eigen
+ *  API-route, die de inzending doorzet naar n8n (beslissing 7).
+ *  Het meebewegende gehalte-veld zit in GehalteSelect. */
+interface Props {
+  action?: string;
+  id?: string;
+}
+
+const { action = '/api/taxatie', id = 'taxatie' } = Astro.props;
+const bron = Astro.url.pathname;
+const metaalOpties = metalen.map((m) => ({ value: m, label: m }));
+---
+
+<div class="formblock" data-state="idle">
+  <form class="form" id={id} action={action} method="post" novalidate>
+    <Row gap="md">
+      <Col lg={6} sm={12}>
+        <Field name="naam" label="Naam" placeholder="bv. Jan Jansen" required autocomplete="name" />
+      </Col>
+      <Col lg={6} sm={12}>
+        <Field name="email" label="E-mail" control="email" placeholder="jan@mail.nl" required autocomplete="email" />
+      </Col>
+    </Row>
+
+    <Field
+      name="adres"
+      label="Adres, postcode en woonplaats"
+      placeholder="Voorbeeldstraat 1, 8601 BE Sneek"
+      required
+      autocomplete="street-address"
+    />
+
+    <Row gap="md">
+      <Col lg={6} sm={12}>
+        <Field name="metaal" label="Wat gaat u verkopen?" control="select" options={metaalOpties} required />
+      </Col>
+      <Col lg={6} sm={12}>
+        <GehalteSelect bron="metaal" />
+      </Col>
+    </Row>
+
+    <Field name="bericht" label="Bericht" control="textarea" placeholder="Waar kunnen we mee helpen?" />
+
+    <!-- Honeypot: het origineel had geen spambescherming. Verborgen voor mensen,
+         ingevuld door bots — de API-route weigert de inzending dan. -->
+    <div class="formblock__hp" aria-hidden="true">
+      <label for={`${id}-website`}>Laat dit veld leeg</label>
+      <input id={`${id}-website`} name="website" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+    <input type="hidden" name="bron" value={bron} />
+
+    <Button type="submit">Gratis taxatie aanvragen</Button>
+  </form>
+
+  <div class="formblock__done" role="status" hidden>
+    <p>Bedankt! We nemen binnen 24 uur contact met u op.</p>
+  </div>
+  <div class="formblock__fail" role="alert" hidden>
+    <p>Er ging iets mis bij het versturen. Probeer het opnieuw of bel ons op +31 85 060 1486.</p>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.formblock').forEach((block) => {
+    const form = block.querySelector('form');
+    if (!form) return;
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      form.setAttribute('aria-busy', 'true');
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      }).catch(() => null);
+      form.removeAttribute('aria-busy');
+
+      const ok = Boolean(res?.ok);
+      block.dataset.state = ok ? 'done' : 'fail';
+      const melding = block.querySelector<HTMLElement>(ok ? '.formblock__done' : '.formblock__fail');
+      if (ok) form.hidden = true;
+      if (melding) {
+        melding.hidden = false;
+        // Focus verplaatsen, anders merkt een screenreader de wissel niet.
+        melding.setAttribute('tabindex', '-1');
+        melding.focus();
+      }
+    });
+  });
+</script>
+
+<style>
+  .formblock {
+    width: 100%;
+    position: relative;
+  }
+
+  .formblock__hp {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .formblock__done,
+  .formblock__fail {
+    padding: var(--_components---card--padding);
+    border: 1px solid var(--primary--text-secondary);
+  }
+
+  .formblock__done p,
+  .formblock__fail p {
+    margin: 0;
+  }
+
+  .formblock__fail {
+    border-color: var(--_color---feedback--error);
+    color: var(--_color---feedback--error);
+  }
+
+  .formblock__done:focus-visible,
+  .formblock__fail:focus-visible {
+    outline: 2px solid var(--primary--accent);
+    outline-offset: 2px;
+  }
+</style>

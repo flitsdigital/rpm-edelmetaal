@@ -1,0 +1,60 @@
+---
+import type { MetaalPrijs } from '../../data/site';
+
+/** De actuele inkoopprijs per metaal in de balk boven de nav.
+ *  Kwam in de export uit een Webflow CMS-lijst; komt straks uit
+ *  `v_prijzen_publiek`. Lege lijst = niets tonen, geen lege balk. */
+interface Props {
+  metalen: MetaalPrijs[];
+}
+
+const { metalen } = Astro.props;
+---
+
+{
+  metalen.length > 0 && (
+    <ul class="ticker">
+      {metalen.map((m) => (
+        <li class="ticker__item">
+          <span class="ticker__badge" aria-hidden="true">{m.symbool}</span>
+          <span class="ticker__text">{m.naam}: €{m.prijs} p/gram</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .ticker {
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ticker__item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: 0;
+  }
+
+  .ticker__badge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid var(--_color---neutral--neutral-200);
+    font-family: var(--_typography---fonts--heading-font);
+    font-size: .675rem;
+    font-weight: var(--_typography---h1--font-weight);
+  }
+
+  .ticker__text {
+    opacity: .6;
+    font-size: var(--_typography---paragraph-sm--font-size);
+  }
+</style>

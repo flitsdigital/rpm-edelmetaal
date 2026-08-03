@@ -1,0 +1,137 @@
+---
+/** Eén formulierveld: label + control, met de gedeelde `.input`-styling uit de
+ *  export. Eén component in plaats van Input/Select/Textarea, omdat die alle
+ *  drie exact dezelfde 25 regels styling zouden dragen.
+ *
+ *  ponytail: geen Checkbox/Radio — de export heeft daar wel CSS voor, maar geen
+ *  enkel formulier op de 7 pagina's gebruikt ze. Toevoegen wanneer dat verandert.
+ */
+interface Props {
+  name: string;
+  label: string;
+  control?: 'text' | 'email' | 'tel' | 'select' | 'textarea';
+  placeholder?: string;
+  required?: boolean;
+  options?: { value: string; label: string }[];
+  rows?: number;
+  autocomplete?: string;
+}
+
+const {
+  name,
+  label,
+  control = 'text',
+  placeholder,
+  required = false,
+  options = [],
+  rows,
+  autocomplete,
+} = Astro.props;
+---
+
+<div class="field" data-control={control}>
+  <label class="field__label" for={name}>{label}</label>
+
+  {
+    control === 'select' ? (
+      <select class="field__input" id={name} name={name} required={required}>
+        {placeholder && <option value="">{placeholder}</option>}
+        {options.map((o) => (
+          <option value={o.value}>{o.label}</option>
+        ))}
+      </select>
+    ) : control === 'textarea' ? (
+      <textarea
+        class="field__input"
+        id={name}
+        name={name}
+        rows={rows}
+        placeholder={placeholder}
+        required={required}
+        autocomplete={autocomplete}
+      />
+    ) : (
+      <input
+        class="field__input"
+        id={name}
+        name={name}
+        type={control}
+        maxlength="256"
+        placeholder={placeholder}
+        required={required}
+        autocomplete={autocomplete}
+      />
+    )
+  }
+</div>
+
+<style>
+  .field {
+    display: block;
+    position: relative;
+    padding-top: 1px;
+    padding-right: 1px;
+    text-align: left;
+  }
+
+  .field[data-control='textarea'] {
+    min-height: 9rem;
+  }
+
+  .field__label {
+    display: block;
+    z-index: 1;
+    margin-bottom: 1rem;
+    position: relative;
+    font-family: var(--_components---input-label--font);
+    font-size: var(--_components---input-label--font-size);
+    line-height: var(--_components---input-label--line-height);
+    font-weight: var(--_components---input-label--font-weight);
+    letter-spacing: var(--_components---input-label--letter-spacing);
+    color: var(--primary--text);
+  }
+
+  .field__input {
+    display: block;
+    width: 100%;
+    min-height: 4rem;
+    margin-bottom: 1.75rem;
+    padding: .5rem 1rem;
+    border: 1px solid color-mix(in hsl, var(--_color---neutral--neutral-100) 10%, transparent 90%);
+    border-radius: var(--_components---input--border-radius);
+    background-color: transparent;
+    color: var(--primary--text);
+    font-family: var(--_components---input--font);
+    font-size: var(--_components---input--font-size);
+    line-height: var(--_components---input--line-height);
+    font-weight: var(--_components---input--font-weight);
+    letter-spacing: var(--_components---input--letter-spacing);
+    transition: border-color .3s cubic-bezier(.165, .84, .44, 1);
+  }
+
+  .field__input:hover {
+    border-color: var(--primary--accent);
+  }
+
+  .field__input:focus {
+    border-color: var(--_color---primary--gold-500);
+  }
+
+  .field__input:focus-visible {
+    outline: 2px solid var(--primary--accent);
+    outline-offset: 2px;
+  }
+
+  .field__input::placeholder {
+    color: var(--_color---neutral--neutral-300);
+  }
+
+  .field[data-control='select'] .field__input {
+    padding-right: 2.5rem;
+  }
+
+  .field[data-control='textarea'] .field__input {
+    min-height: 12rem;
+    resize: vertical;
+  }
+</style>

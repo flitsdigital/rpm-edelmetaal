@@ -1,0 +1,90 @@
+---
+import Section from './Section.astro';
+import Container from '../atoms/Container.astro';
+import Row from '../atoms/Row.astro';
+import Col from '../atoms/Col.astro';
+import Heading from '../atoms/Heading.astro';
+import Eyebrow from '../atoms/Eyebrow.astro';
+import Button from '../atoms/Button.astro';
+import Media from '../atoms/Media.astro';
+import RichText from '../molecules/RichText.astro';
+import type { Afbeelding } from '../../data/images';
+
+/** Tekst aan de ene kant, beeld aan de andere. Het meest hergebruikte
+ *  sectiepatroon: 7 keer over drie pagina's, met alleen de kant van het beeld
+ *  en de inhoud als verschil. */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  html: string;
+  bullets?: string[];
+  ctaLabel?: string;
+  ctaHref?: string;
+  image: Afbeelding;
+  imagePosition?: 'left' | 'right';
+  paddingTop?: 'default' | 'none';
+  paddingBottom?: 'default' | 'none';
+  level?: 1 | 2 | 3;
+  /** Visuele schaal, los van het element. Standaard gelijk aan `level`. */
+  size?: 1 | 2 | 3;
+}
+
+const {
+  eyebrow,
+  title,
+  html,
+  bullets = [],
+  ctaLabel,
+  ctaHref,
+  image,
+  imagePosition = 'right',
+  paddingTop = 'default',
+  paddingBottom = 'default',
+  level = 2,
+  size,
+} = Astro.props;
+---
+
+<Section paddingTop={paddingTop} paddingBottom={paddingBottom}>
+  <Container>
+    <Row justify="between">
+      {
+        imagePosition === 'left' && (
+          <Col lg={6} md={12}>
+            <Media src={image.src} srcset={image.srcset} sizes={image.sizes} alt={image.alt} ratio="3x4" />
+          </Col>
+        )
+      }
+
+      <Col lg={5} md={12}>
+        {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+        <Heading level={level} size={size ?? level}>{title}</Heading>
+        <RichText html={html} />
+        {
+          bullets.length > 0 && (
+            <ul>
+              {bullets.map((b) => (
+                <li>{b}</li>
+              ))}
+            </ul>
+          )
+        }
+        {ctaLabel && ctaHref && <div class="content__cta"><Button href={ctaHref}>{ctaLabel}</Button></div>}
+      </Col>
+
+      {
+        imagePosition === 'right' && (
+          <Col lg={6} md={12}>
+            <Media src={image.src} srcset={image.srcset} sizes={image.sizes} alt={image.alt} ratio="3x4" />
+          </Col>
+        )
+      }
+    </Row>
+  </Container>
+</Section>
+
+<style>
+  .content__cta {
+    margin-top: var(--_layout---grid--gap-button);
+  }
+</style>

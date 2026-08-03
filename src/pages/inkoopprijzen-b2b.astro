@@ -1,0 +1,58 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Section from '../components/sections/Section.astro';
+import Container from '../components/atoms/Container.astro';
+import SectionIntro from '../components/sections/SectionIntro.astro';
+import SectionPrijstabel from '../components/sections/SectionPrijstabel.astro';
+import SectionCta from '../components/sections/SectionCta.astro';
+import { seo, cta } from '../data/content';
+import { haalPrijzenB2b } from '../data/prijzen';
+
+/* Server-side, niet prerendered — deze pagina hangt af van wie er kijkt.
+ *
+ * Twee sloten, en dat is bewust:
+ *
+ *   1. De middleware stuurt iedereen zonder sessie naar /auth/login. Dat is de
+ *      vriendelijke kant: een redirect in plaats van een foutmelding.
+ *   2. De grant in Supabase. `v_prijzen_b2b` is ingetrokken voor `anon`, dus de
+ *      query zelf faalt zonder sessie. Zelfs als de middleware wegvalt of iemand
+ *      een route eromheen vindt, komt er geen zakelijke prijs uit de database.
+ *
+ * Het buitenste slot mag falen. Dat is precies wat er nu op de live site misgaat:
+ * daar is de afscherming één client-side Memberstack-redirect, en die omzeil je
+ * door één script te blokkeren.
+ *
+ * De client komt uit de middleware en draagt de sessie van deze bezoeker mee —
+ * niet de anonieme build-time client.
+ */
+export const prerender = false;
+
+const { supabase } = Astro.locals;
+if (!supabase) return Astro.redirect('/auth/login', 302);
+
+const { groepen, topPrijzen } = await haalPrijzenB2b(supabase);
+---
+
+<PageLayout
+  title={seo.b2b.title}
+  canonical="https://www.rpmedelmetaal.nl/inkoopprijzen-b2b"
+  current="/inkoopprijzen-b2b"
+  prijzen={topPrijzen}
+  isB2b
+  noindex
+>
+  <Section paddingBottom="none">
+    <Container>
+      <SectionIntro
+        level={1}
+        size={2}
+        title="Snel en eerlijk inzicht in uw edelmetalen"
+        text="Onze zakelijke inkoopprijzen per gram. Deze pagina is alleen zichtbaar voor ingelogde zakelijke klanten."
+      />
+    </Container>
+  </Section>
+
+  <SectionPrijstabel groepen={groepen} id="prijzen-b2b" />
+
+  <SectionCta title={cta.title} text={cta.text} />
+</PageLayout>

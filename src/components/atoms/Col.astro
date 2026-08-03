@@ -1,0 +1,58 @@
+---
+/** Kolom van het 12-koloms grid. Per breekpunt een aantal van 12; ontbreekt een
+ *  breekpunt, dan erft hij die van het breekpunt erboven.
+ *
+ *  De export had hiervoor 48 losse klassen (.col-lg-1 … .col-xs-12) met
+ *  hardgecodeerde percentages. Hier is dat één formule per breekpunt. De
+ *  afronding verschilt daardoor in de vierde decimaal (33.3333% i.p.v. 33.33%),
+ *  wat bij de breedste container 0,04px scheelt — onder de ruisdrempel van de
+ *  visual diff.
+ */
+interface Props {
+  lg?: number;
+  md?: number;
+  sm?: number;
+  xs?: number;
+  class?: string;
+}
+
+const { lg = 12, md, sm, xs, class: className } = Astro.props;
+
+const vars = [
+  `--col-lg:${lg}`,
+  md !== undefined && `--col-md:${md}`,
+  sm !== undefined && `--col-sm:${sm}`,
+  xs !== undefined && `--col-xs:${xs}`,
+]
+  .filter(Boolean)
+  .join(';');
+---
+
+<div class:list={['col', className]} style={vars}>
+  <slot />
+</div>
+
+<style>
+  .col {
+    padding-inline: calc(var(--_layout---grid--gap-main) / 2);
+    flex-flow: column;
+    display: flex;
+    position: relative;
+
+    --col: var(--col-lg, 12);
+    flex: 1 1 calc(var(--col) / 12 * 100%);
+    max-width: calc(var(--col) / 12 * 100%);
+  }
+
+  @media screen and (max-width: 991px) {
+    .col { --col: var(--col-md, var(--col-lg, 12)); }
+  }
+
+  @media screen and (max-width: 767px) {
+    .col { --col: var(--col-sm, var(--col-md, var(--col-lg, 12))); }
+  }
+
+  @media screen and (max-width: 479px) {
+    .col { --col: var(--col-xs, var(--col-sm, var(--col-md, var(--col-lg, 12)))); }
+  }
+</style>

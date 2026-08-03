@@ -1,0 +1,396 @@
+---
+import Container from '../atoms/Container.astro';
+import Logo from '../atoms/Logo.astro';
+import Icon from '../atoms/Icon.astro';
+import Button from '../atoms/Button.astro';
+import SectionDivider from '../atoms/SectionDivider.astro';
+import NavLink from '../molecules/NavLink.astro';
+import PriceTicker from '../molecules/PriceTicker.astro';
+import { navLinks, b2bLinks, contact, type MetaalPrijs } from '../../data/site';
+
+/** Vaste navigatie: prijsbalk + logo + links + CTA, met burgermenu onder 768px.
+ *
+ *  Uit de export overgenomen: `data-menu-status` op de nav, en de
+ *  scrollrichting op `<body>` (BaseLayout) waardoor de nav krimpt bij omlaag
+ *  scrollen.
+ *
+ *  Bewust NIET overgenomen: het multilevel-dropdownsysteem uit het nav-script
+ *  (~150 regels). Er staat op geen enkele pagina een `[data-dropdown-toggle]`
+ *  in de markup — het is ongebruikte template-code van Mast.
+ *
+ *  De B2B-link stond in de export achter `data-ms-content` (Memberstack,
+ *  client-side). Vanaf fase 4 komt `isB2b` uit de sessie in de middleware.
+ */
+interface Props {
+  current?: string;
+  prijzen?: MetaalPrijs[];
+  isB2b?: boolean;
+}
+
+const { current, prijzen = [], isB2b = false } = Astro.props;
+const links = [...navLinks, ...b2bLinks];
+---
+
+<div class="global-nav">
+  <div class="nav-banner">
+    <Container>
+      <div class="nav-banner__row">
+        <PriceTicker metalen={prijzen} />
+        <div class="nav-banner__contact">
+          <a class="nav-banner__item" href={contact.telefoonHref}>
+            <Icon name="phone" />
+            <span class="nav-banner__label">{contact.telefoon}</span>
+          </a>
+          <a class="nav-banner__item" href={contact.emailHref}>
+            <Icon name="mail" />
+            <span class="nav-banner__label">{contact.email}</span>
+          </a>
+        </div>
+      </div>
+    </Container>
+  </div>
+
+  <nav class="nav" data-menu-status="closed" aria-label="Hoofdnavigatie">
+    <Container variant="nav">
+      <div class="nav__inner">
+        <a class="nav__logo" href="/" aria-current={current === '/' ? 'page' : undefined}>
+          <Logo variant="wordmark" label="RPM Edelmetaal — naar de homepage" />
+        </a>
+
+        <div class="nav__center" id="nav-menu">
+          <ul class="nav__list">
+            {
+              links.map((l) => (
+                <li>
+                  <NavLink href={l.href} current={current === l.href}>
+                    {l.label}
+                  </NavLink>
+                </li>
+              ))
+            }
+            <li>
+              {
+                isB2b ? (
+                  <form class="nav__logout" method="post" action="/auth/logout">
+                    <button class="nav__logout-knop" type="submit">
+                      <span class="nav-link__label">Uitloggen</span>
+                    </button>
+                  </form>
+                ) : (
+                  <NavLink href="/auth/login">Inloggen</NavLink>
+                )
+              }
+            </li>
+          </ul>
+
+          <div class="nav__mobile-divider"><SectionDivider /></div>
+          <div class="nav__mobile-cta"><Button href="/contact">Gratis taxatie aanvragen</Button></div>
+        </div>
+
+        <div class="nav__end">
+          <div class="nav__cta"><Button href="/contact">Gratis taxatie aanvragen</Button></div>
+          <button class="menu-button" type="button" aria-label="Menu openen" aria-expanded="false" aria-controls="nav-menu">
+            <span class="menu-button__line"></span>
+            <span class="menu-button__line"></span>
+          </button>
+        </div>
+      </div>
+    </Container>
+    <div class="page-bg"></div>
+  </nav>
+</div>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('.nav');
+  const btn = document.querySelector<HTMLButtonElement>('.menu-button');
+
+  btn?.addEventListener('click', () => {
+    const open = nav?.dataset.menuStatus === 'open';
+    if (nav) nav.dataset.menuStatus = open ? 'closed' : 'open';
+    btn.setAttribute('aria-expanded', String(!open));
+    btn.setAttribute('aria-label', open ? 'Menu openen' : 'Menu sluiten');
+  });
+
+  // Scrollrichting op <body>; de nav krimpt bij omlaag scrollen. Drempels uit
+  // de export: 10px verschil om te wisselen, 50px vanaf de bovenkant om te starten.
+  let last = 0;
+  addEventListener(
+    'scroll',
+    () => {
+      const now = window.scrollY;
+      if (Math.abs(last - now) < 10) return;
+      document.body.dataset.scrollingDirection = now > last ? 'down' : 'up';
+      document.body.dataset.scrollingStarted = String(now > 50);
+      last = now;
+    },
+    { passive: true }
+  );
+</script>
+
+<style>
+  .global-nav {
+    z-index: 999;
+    position: fixed;
+    inset: 0 0 auto;
+    background-color: color-mix(in hsl, var(--primary--background) 35%, transparent 65%);
+    backdrop-filter: blur(5px);
+  }
+
+  .nav-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--_components---nav--banner-size);
+    /* guard-ignore: transparant wit uit de export; geen token, alleen hier gebruikt */
+    border-bottom: 1px solid #ffffff1a;
+  }
+
+  .nav-banner__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-banner__contact {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .nav-banner__item {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .nav-banner__label {
+    opacity: .7;
+  }
+
+  /* guard-ignore: global-css — de scrollrichting staat op <body>, buiten dit component */
+  :global(body[data-scrolling-started='true'][data-scrolling-direction='down']) .nav {
+    padding-block: 1rem;
+  }
+
+  .nav {
+    z-index: 999;
+    width: 100%;
+    padding-block: 1.5rem;
+    color: var(--primary--text);
+    background-color: transparent;
+    transition: padding var(--duration-normal) var(--cubic-default);
+  }
+
+  .nav__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    position: relative;
+  }
+
+  .nav__logo {
+    width: 12rem;
+    color: var(--primary--accent);
+    line-height: 1;
+  }
+
+  .nav__list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .nav__list li {
+    margin-bottom: 0;
+  }
+
+  /* Uitloggen is een POST — een GET zou door een prefetch uitgevoerd kunnen
+     worden. Ziet eruit als de andere navlinks. */
+  .nav__logout-knop {
+    padding: .5rem 1rem;
+    border: 0;
+    background: transparent;
+    color: currentColor;
+    font: inherit;
+    opacity: .6;
+    cursor: pointer;
+    transition: opacity .3s cubic-bezier(.165, .84, .44, 1);
+  }
+
+  .nav__logout-knop:hover { opacity: .8; }
+
+  .nav__logout-knop:focus-visible {
+    outline: 2px solid var(--primary--accent);
+    outline-offset: 2px;
+  }
+
+  .nav__end {
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch;
+    gap: .75em;
+  }
+
+  .nav__cta {
+    flex: none;
+    margin-left: auto;
+  }
+
+  .menu-button {
+    display: none;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    gap: .25em;
+    width: 3em;
+    height: 3em;
+    padding: .5em;
+    border: 0;
+    border-radius: .25em;
+    background-color: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .menu-button__line {
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    transition: all var(--duration-normal) var(--cubic-default);
+  }
+
+  .menu-button:focus-visible {
+    outline: 2px solid var(--primary--accent);
+    outline-offset: 2px;
+  }
+
+  .nav__mobile-divider,
+  .nav__mobile-cta {
+    display: none;
+  }
+
+  .page-bg {
+    z-index: 0;
+    position: absolute;
+    inset: 0 0 auto;
+    width: 100%;
+    height: 100vh;
+    opacity: .01;
+    pointer-events: none;
+    background-color: var(--_color---neutral--neutral-500);
+    transition: opacity var(--duration-fast) var(--cubic-default);
+  }
+
+  /* De divider staat in de nav lichter dan in een sectie. */
+  .nav :global(.divider__line), /* guard-ignore: global-css — SectionDivider draagt zijn eigen scope-hash */
+  .nav :global(.divider__logo) { /* guard-ignore: global-css — idem */
+    opacity: .4;
+    color: var(--_color---neutral--neutral-100);
+    background-color: var(--_color---neutral--neutral-100);
+  }
+
+  @media screen and (max-width: 991px) {
+    .nav-banner {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .menu-button {
+      display: flex;
+    }
+
+    .nav__end {
+      z-index: 2;
+      position: relative;
+    }
+
+    .nav__center {
+      z-index: 0;
+      position: absolute;
+      top: 0;
+      left: -1.25em;
+      right: -1.25em;
+      height: 100dvh;
+      opacity: 0;
+      visibility: hidden;
+      transform: translate(0, 1em);
+      transition:
+        all var(--duration-normal) var(--cubic-default),
+        opacity var(--duration-fast) var(--cubic-default);
+    }
+
+    .nav__list {
+      flex-flow: column;
+      justify-content: flex-start;
+      align-items: stretch;
+      height: 100%;
+      padding-top: 8em;
+      overflow: hidden scroll;
+    }
+
+    .nav__mobile-divider {
+      display: block;
+    }
+
+    .nav__mobile-cta {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .nav[data-menu-status='open'] .menu-button__line:nth-of-type(1) {
+      transform: translate(0, 0.125em) rotate(135deg);
+    }
+
+    .nav[data-menu-status='open'] .menu-button__line:nth-of-type(2) {
+      transform: translate(0, -0.175em) rotate(-135deg);
+    }
+
+    .nav[data-menu-status='open'] .nav__center {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(0, 0);
+      transition-delay: .1s;
+    }
+
+    .nav[data-menu-status='open'] .page-bg {
+      opacity: .9;
+    }
+  }
+
+  @media screen and (max-width: 479px) {
+    .nav__logo {
+      width: 100%;
+      max-width: 12rem;
+    }
+
+    .nav__cta {
+      display: none;
+    }
+
+    .nav__end {
+      gap: .5em;
+    }
+
+    .menu-button {
+      width: 2.5em;
+      height: 2.5em;
+    }
+
+    .nav__list {
+      justify-content: flex-start;
+      align-items: center;
+      height: auto;
+    }
+  }
+</style>
+
+<!-- guard-ignore: size-budget — nav met prijsbalk, desktoplinks, burgermenu en drie
+     breekpunten. De onderdelen zijn al uitgesplitst naar NavLink, PriceTicker,
+     Logo, Button en SectionDivider; wat overblijft is het responsieve gedrag. -->

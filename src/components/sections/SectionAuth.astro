@@ -3,17 +3,17 @@ import Container from '../atoms/Container.astro';
 import Row from '../atoms/Row.astro';
 import Col from '../atoms/Col.astro';
 import Heading from '../atoms/Heading.astro';
-import Text from '../atoms/Text.astro';
+import BgImage from '../atoms/BgImage.astro';
+import { images } from '../../data/images';
 
-/** De kaart op de auth-pagina's. Overgenomen uit `.section_auth` en
- *  `.auth-card` in de Webflow-export: schermvullend, gecentreerd, met een
- *  half-transparante kaart en blur erachter. */
+/** De auth-kaart, overgenomen uit `.section_auth` + `.auth-card`:
+ *  schermvullend, links uitgelijnd, half-transparante kaart met blur, over de
+ *  achtergrondfoto die ook op de hero staat. */
 interface Props {
   title: string;
-  text?: string;
 }
 
-const { title, text } = Astro.props;
+const { title } = Astro.props;
 ---
 
 <section class="auth">
@@ -23,23 +23,26 @@ const { title, text } = Astro.props;
         <div class="auth__card">
           <div class="u-mb-md">
             <Heading level={1} size={2}>{title}</Heading>
-            {text && <Text tone="secondary" flush>{text}</Text>}
+            <slot name="intro" />
           </div>
           <slot />
         </div>
       </Col>
     </Row>
   </Container>
+  <BgImage {...images.achtergrond} />
 </section>
 
 <style>
+  /* `.section_auth.section` uit de export: schermvullend en verticaal
+     gecentreerd. De nav ligt er transparant overheen. */
   .auth {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    min-height: 100vh;
-    padding-block: var(--_components---section--padding);
-    background-color: var(--primary--background);
+    height: 100vh;
+    position: relative;
+    overflow: clip;
   }
 
   .auth__card {

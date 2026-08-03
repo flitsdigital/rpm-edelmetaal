@@ -1,0 +1,108 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionAuth from '../../components/sections/SectionAuth.astro';
+import Field from '../../components/molecules/Field.astro';
+import Button from '../../components/atoms/Button.astro';
+import Text from '../../components/atoms/Text.astro';
+import Melding from '../../components/molecules/Melding.astro';
+import { maakServerClient } from '../../lib/supabase-server';
+
+/* Eén pagina voor twee momenten, want het is dezelfde handeling vanuit de
+ * bezoeker gezien: "ik moet een wachtwoord hebben."
+ *
+ *   - Mét sessie (binnengekomen via een invite- of herstelmail): nieuw
+ *     wachtwoord instellen.
+ *   - Zonder sessie: herstelmail aanvragen.
+ *
+ * Het origineel had hier een onafgemaakte Memberstack-placeholder ("Step 1 of
+ * 4"), dus er is niets om na te bouwen.
+ */
+export const prerender = false;
+
+const supabase = maakServerClient(Astro);
+const { data } = await supabase.auth.getUser();
+const heeftSessie = Boolean(data.user);
+
+let melding: { soort: 'ok' | 'fout'; tekst: string } | null = null;
+let klaar = false;
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+
+  if (heeftSessie) {
+    const wachtwoord = String(form.get('Password') ?? '');
+    // Minimum uit Supabase Auth; korter wordt daar toch geweigerd.
+    if (wachtwoord.length < 8) {
+      melding = { soort: 'fout', tekst: 'Kies een wachtwoord van minstens 8 tekens.' };
+    } else {
+      const { error } = await supabase.auth.updateUser({ password: wachtwoord });
+      if (error) melding = { soort: 'fout', tekst: 'Instellen mislukt. Probeer het opnieuw.' };
+      else return Astro.redirect('/inkoopprijzen-b2b', 302);
+    }
+  } else {
+    await supabase.auth.resetPasswordForEmail(String(form.get('Email') ?? '').trim(), {
+      redirectTo: new URL('/auth/callback?terug=%2Fauth%2Fwachtwoord', Astro.url).href,
+    });
+    // Bewust geen onderscheid tussen bekend en onbekend: anders is dit een
+    // manier om accounts op te sommen.
+    klaar = true;
+    melding = {
+      soort: 'ok',
+      tekst: 'Als dit adres bij ons bekend is, staat er een herstellink in uw mailbox.',
+    };
+  }
+}
+
+---
+
+<PageLayout
+  title={heeftSessie ? 'Wachtwoord instellen | RPM Edelmetaal' : 'Wachtwoord vergeten | RPM Edelmetaal'}
+  banner={false}
+  navRuimte={false}
+  footer={false}
+  noindex
+>
+  <SectionAuth title={heeftSessie ? 'Wachtwoord instellen' : 'Wachtwoord vergeten'}>
+    <Text slot="intro" tone="secondary" flush>
+      {
+        heeftSessie
+          ? 'Kies een wachtwoord waarmee u voortaan inlogt.'
+          : 'Vul uw e-mailadres in, dan sturen we u een herstellink.'
+      }
+    </Text>
+
+    {melding && <Melding soort={melding.soort}>{melding.tekst}</Melding>}
+
+    {
+      !klaar && (
+        <form method="post">
+          {heeftSessie ? (
+            <Field
+              name="Password"
+              label="Nieuw wachtwoord"
+              control="password"
+              required
+              autocomplete="new-password"
+            />
+          ) : (
+            <Field
+              name="Email"
+              label="Email"
+              control="email"
+              placeholder="bijv. naam@mail.com"
+              required
+              autocomplete="email"
+            />
+          )}
+          <Button type="submit">{heeftSessie ? 'Opslaan' : 'Stuur herstellink'}</Button>
+        </form>
+      )
+    }
+
+    <div class="u-mt-md">
+      <Text size="sm" tone="secondary" flush>
+        <a href="/auth/login">Terug naar inloggen</a>
+      </Text>
+    </div>
+  </SectionAuth>
+</PageLayout>

@@ -21,6 +21,9 @@ interface Props {
    *  eerste sectie daar bewust achter door moet lopen: de schermvullende hero op
    *  de homepage, of een section-divider die de ruimte zelf al levert. */
   navRuimte?: boolean;
+  /** De auth-pagina's hebben wél de nav maar geen footer — schermvullende kaart. */
+  footer?: boolean;
+  banner?: boolean;
 }
 
 const {
@@ -32,16 +35,18 @@ const {
   prijzen = [],
   isB2b = false,
   navRuimte = true,
+  footer = true,
+  banner = true,
 } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description} canonical={canonical} noindex={noindex}>
   <div class="page">
-    <Navbar current={current} prijzen={prijzen} isB2b={isB2b} />
+    <Navbar current={current} prijzen={prijzen} isB2b={isB2b} banner={banner} />
     <main class="page__main" data-nav-ruimte={navRuimte ? '' : undefined}>
       <slot />
     </main>
-    <Footer />
+    {footer && <Footer />}
   </div>
 </BaseLayout>
 

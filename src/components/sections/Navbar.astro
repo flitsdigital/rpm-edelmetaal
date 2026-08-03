@@ -25,30 +25,36 @@ interface Props {
   current?: string;
   prijzen?: MetaalPrijs[];
   isB2b?: boolean;
+  /** De auth-pagina's tonen geen prijsbalk — daar wordt ingelogd, niet gekeken. */
+  banner?: boolean;
 }
 
-const { current, prijzen = [], isB2b = false } = Astro.props;
+const { current, prijzen = [], isB2b = false, banner = true } = Astro.props;
 const links = [...navLinks, ...b2bLinks];
 ---
 
 <div class="global-nav">
-  <div class="nav-banner">
-    <Container>
-      <div class="nav-banner__row">
-        <PriceTicker metalen={prijzen} />
-        <div class="nav-banner__contact">
-          <a class="nav-banner__item" href={contact.telefoonHref}>
-            <Icon name="phone" />
-            <span class="nav-banner__label">{contact.telefoon}</span>
-          </a>
-          <a class="nav-banner__item" href={contact.emailHref}>
-            <Icon name="mail" />
-            <span class="nav-banner__label">{contact.email}</span>
-          </a>
-        </div>
+  {
+    banner && (
+      <div class="nav-banner">
+        <Container>
+          <div class="nav-banner__row">
+            <PriceTicker metalen={prijzen} />
+            <div class="nav-banner__contact">
+              <a class="nav-banner__item" href={contact.telefoonHref}>
+                <Icon name="phone" />
+                <span class="nav-banner__label">{contact.telefoon}</span>
+              </a>
+              <a class="nav-banner__item" href={contact.emailHref}>
+                <Icon name="mail" />
+                <span class="nav-banner__label">{contact.email}</span>
+              </a>
+            </div>
+          </div>
+        </Container>
       </div>
-    </Container>
-  </div>
+    )
+  }
 
   <nav class="nav" data-menu-status="closed" aria-label="Hoofdnavigatie">
     <Container variant="nav">
@@ -77,7 +83,9 @@ const links = [...navLinks, ...b2bLinks];
                     </button>
                   </form>
                 ) : (
-                  <NavLink href="/auth/login">Inloggen</NavLink>
+                  <NavLink href="/auth/login" current={current === '/auth/login'}>
+                    Inloggen
+                  </NavLink>
                 )
               }
             </li>

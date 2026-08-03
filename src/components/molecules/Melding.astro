@@ -1,0 +1,26 @@
+---
+/** Formuliermelding boven een auth-formulier. Fouten schreeuwen (`alert`),
+ *  bevestigingen niet (`status`). */
+interface Props {
+  soort: 'ok' | 'fout';
+}
+
+const { soort } = Astro.props;
+---
+
+<div class="melding" data-soort={soort} role={soort === 'fout' ? 'alert' : 'status'}>
+  <slot />
+</div>
+
+<style>
+  .melding {
+    margin-bottom: var(--_layout---spacing--margin-md);
+    padding: var(--_components---card--padding);
+    border: 1px solid var(--primary--accent);
+  }
+
+  .melding[data-soort='fout'] {
+    border-color: var(--_color---feedback--error);
+    color: var(--_color---feedback--error);
+  }
+</style>

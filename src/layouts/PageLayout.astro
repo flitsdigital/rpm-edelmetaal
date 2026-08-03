@@ -24,6 +24,7 @@ interface Props {
   /** De auth-pagina's hebben wél de nav maar geen footer — schermvullende kaart. */
   footer?: boolean;
   banner?: boolean;
+  jsonLd?: object[];
 }
 
 const {
@@ -37,10 +38,11 @@ const {
   navRuimte = true,
   footer = true,
   banner = true,
+  jsonLd,
 } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description} canonical={canonical} noindex={noindex}>
+<BaseLayout title={title} description={description} canonical={canonical} noindex={noindex} jsonLd={jsonLd}>
   <div class="page">
     <Navbar current={current} prijzen={prijzen} isB2b={isB2b} banner={banner} />
     <main class="page__main" data-nav-ruimte={navRuimte ? '' : undefined}>

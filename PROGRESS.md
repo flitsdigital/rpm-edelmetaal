@@ -111,12 +111,12 @@
 
 | # | Vraag | Voorstel |
 |---|---|---|
-| 8 | **Zes typefouten uit de live teksten corrigeren?** ("inkoop van**goud**", "met**jarenlange**", "jaren lange", "nauwkeurig- middel", "**op** benadering", "de **oud** en vertrouwde"). Nu letterlijk overgenomen. Lijst staat in AUDIT.md. | corrigeren |
+| ~~8~~ | ✅ **Zes typefouten gecorrigeerd** op 03-08-2026. Oorspronkelijk: **Zes typefouten uit de live teksten corrigeren?** ("inkoop van**goud**", "met**jarenlange**", "jaren lange", "nauwkeurig- middel", "**op** benadering", "de **oud** en vertrouwde"). Nu letterlijk overgenomen. Lijst staat in AUDIT.md. | corrigeren |
 | 9 | **Decimaalteken**: nu een punt (`€ 34.70`), zoals live. Een komma is voor een Nederlandse site gebruikelijker. Eén formatter in `src/data/prijzen.ts`. | komma |
 | 10 | ~~**Publieke signup?**~~ Niet gebouwd. `signInWithOtp` staat op `shouldCreateUser: false`, dus zelfregistratie kan ook niet per ongeluk. | ✅ invite-only |
 | 11 | **De vijf `/dev/*`-pagina's** staan in de live sitemap en zijn mogelijk geïndexeerd. Ze vervallen. | laten 404'en |
 | 12 | **`og:image` ontbreekt overal** — ook live. Delen op social media levert geen afbeelding op. | aanleveren |
-| 13 | **JSON-LD** (`LocalBusiness`, `FAQPage`) ontbreekt. | ná livegang, zodat de migratie attribueerbaar blijft |
+| ~~13~~ | ✅ **JSON-LD toegevoegd** op 03-08-2026: `JewelryStore` op elke indexeerbare pagina (één vaste `@id`), `FAQPage` op de homepage uit dezelfde bron als de accordeon. Bewust géén `aggregateRating` — de Google-score van 4,9 mag je niet op je eigen site markeren. | ✅ |
 
 ### Afmaken
 

@@ -25,17 +25,18 @@ lijstitems, links, afbeeldingen, iframes en meta-tags.
 
 ## Tekstwijzigingen die ik had aangebracht — nu teruggedraaid
 
-Ik had zes typefouten stil gecorrigeerd. Dat hoort niet bij een technische
-migratie: dan is een tekstverschil niet meer te herleiden. **Alles staat nu
-letterlijk zoals live.** Wil je ze alsnog gecorrigeerd hebben, dan is het één
-regel per stuk.
+Ik had zes typefouten stil gecorrigeerd, dat teruggedraaid, en ze op 3 augustus
+2026 op verzoek van Jordi alsnog gecorrigeerd. Ze staan hier zodat een
+tekstverschil met de oude site herleidbaar blijft.
 
-| Pagina | Live (nu ook in de nieuwe site) | Voorstel |
+**Status: gecorrigeerd.**
+
+| Pagina | Live (oud) | Nu |
 |---|---|---|
-| home | "de inkoop van**goud**, zilver" | spatie erbij |
-| home | "familiebedrijf **met**jarenlange ervaring" | spatie erbij |
+| home | "de inkoop van**goud**, zilver" | "van goud" |
+| home | "familiebedrijf **met**jarenlange ervaring" | "met jarenlange" |
 | over-ons | "familiebedrijf met **jaren lange** ervaring" | "jarenlange" |
-| testwijze | "is een **nauwkeurig-** middel" | streepje weg |
+| testwijze | "is een **nauwkeurig-** middel" | "nauwkeurig middel" |
 | testwijze | "kan je op die manier **op** benadering keuren" | "bij benadering" |
 | testwijze | "om de **oud** en vertrouwde strijkproef" | "oude" |
 

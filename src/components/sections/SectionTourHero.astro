@@ -105,7 +105,9 @@ const { eyebrow, chips = [], title, text } = Astro.props;
     background-color: color-mix(in hsl, var(--_color---neutral--neutral-400) 30%, transparent 70%);
     color: var(--primary--accent-light);
     font-family: var(--_typography---eyebrow--font);
-    font-size: var(--_typography---h6--font-size);
+    /* Vast 1rem, niet de H6-schaal: die loopt op tot 1.25rem en dan wordt
+       de chip groter dan de bedoeling. */
+    font-size: 1rem;
     line-height: 1.2;
   }
 

@@ -4,9 +4,14 @@ import Icon from '../atoms/Icon.astro';
 /** Eén uitklapbaar item. De inhoud van het paneel komt via de slot, zodat er
  *  ook een lijst met tourstops in kan en niet alleen een alinea.
  *
- *  Het gedrag staat hier en niet in Accordion: Astro bindt een `<script>` per
+ *  Het gedrag staat hier en niet in Accordion: Astro bindt een scripttag per
  *  pagina, niet per instantie, dus één keer opnemen is genoeg — waar het item
- *  ook vandaan komt. */
+ *  ook vandaan komt.
+ *
+ *  Schrijf hierboven geen letterlijke scripttag met punthaken: de
+ *  dependency-scanner van Vite zoekt daar met een regex naar en slikt dan de
+ *  hele frontmatter op als JavaScript. Dat faalt met "Expected ; but found $"
+ *  op de eerste template literal, en alleen bij een lege .vite-cache. */
 interface Props {
   vraag: string;
   open?: boolean;
@@ -14,14 +19,15 @@ interface Props {
 }
 
 const { vraag, open = false, id } = Astro.props;
+const paneelId = `${id}-panel`;
 ---
 
 <li class="acc__item" data-status={open ? 'active' : 'not-active'}>
-  <button class="acc__top" type="button" aria-expanded={open ? 'true' : 'false'} aria-controls={`${id}-panel`}>
+  <button class="acc__top" type="button" aria-expanded={open ? 'true' : 'false'} aria-controls={paneelId}>
     <h3 class="acc__h3">{vraag}</h3>
     <span class="acc__icon"><Icon name="chevron" /></span>
   </button>
-  <div class="acc__bottom" id={`${id}-panel`} role="region">
+  <div class="acc__bottom" id={paneelId} role="region">
     <div class="acc__wrap">
       <div class="acc__content"><slot /></div>
     </div>

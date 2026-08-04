@@ -1,4 +1,7 @@
-/** RPM on Tour — de rijdende taxatiebalie.
+/** RPM on Tour — taxeren op locatie.
+ *
+ *  Noem het vervoermiddel niet in de teksten. Het gaat erom dát we langskomen,
+ *  niet waarin. Dus "wij komen naar u toe", nooit "wij komen met … naar u toe".
  *
  *  Eén bron voor zowel /goud-verkopen als /goud-verkopen/[stad]. De stops op de
  *  overzichtspagina en die op de stadspagina komen dus uit hetzelfde object en
@@ -21,7 +24,7 @@ export interface Stop {
    *  Ontbreekt bij een plaatshouder — dan is het geen datum en dus ook geen
    *  `<time>`, en komt de stop niet in de Event-markup terecht. */
   datumISO?: string;
-  /** Waar de camper staat, bv. 'Plus Klazienaveen'. */
+  /** Waar we staan, bv. 'Plus Klazienaveen'. */
   locatie: string;
   /** Bv. '17.30 - 18.30'. */
   tijd: string;
@@ -36,10 +39,10 @@ export interface TourStad {
   postcode?: string;
   /** Eén zin onder de H1 op de stadspagina. */
   intro: string;
-  /** Welke foto van de wagen deze pagina toont. Per stad een andere, zodat de
+  /** Welke foto deze pagina toont. Per stad een andere, zodat de
    *  pagina's niet identiek zijn — dat leest prettiger en scheelt in de
    *  beoordeling als bijna-duplicaat. Sleutel uit `images`. */
-  foto: 'tourWagen' | 'tourZijkant' | 'tourAchter';
+  foto: 'tourOpLocatie' | 'tourZijkant' | 'tourAchter';
   stops: Stop[];
 }
 
@@ -53,7 +56,7 @@ export const mapsUrl = (stad: TourStad) => {
 };
 
 const intro = (naam: string) =>
-  `Onze taxateurs komen met de camper naar ${naam}. Laat uw goud, zilver en andere edelmetalen gratis en vrijblijvend taxeren, vlak bij u in de buurt.`;
+  `Wij komen naar ${naam} toe. Laat uw goud, zilver en andere edelmetalen gratis en vrijblijvend taxeren, vlak bij u in de buurt.`;
 
 /** ⚠️ De stops hieronder zijn plaatshouders, geen echte data.
  *
@@ -69,10 +72,10 @@ const plaatshouder: Stop[] = [
   { datum: 'Datum volgt', locatie: 'Locatie volgt', tijd: 'Tijd volgt' },
 ];
 export const tourSteden: TourStad[] = [
-  { slug: 'klazienaveen', naam: 'Klazienaveen', intro: intro('Klazienaveen'), foto: 'tourWagen', stops: plaatshouder },
+  { slug: 'klazienaveen', naam: 'Klazienaveen', intro: intro('Klazienaveen'), foto: 'tourOpLocatie', stops: plaatshouder },
   { slug: 'erica', naam: 'Erica', intro: intro('Erica'), foto: 'tourZijkant', stops: plaatshouder },
   { slug: 'emmer-compascuum', naam: 'Emmer-Compascuum', intro: intro('Emmer-Compascuum'), foto: 'tourAchter', stops: plaatshouder },
-  { slug: 'westerbork', naam: 'Westerbork', intro: intro('Westerbork'), foto: 'tourWagen', stops: plaatshouder },
+  { slug: 'westerbork', naam: 'Westerbork', intro: intro('Westerbork'), foto: 'tourOpLocatie', stops: plaatshouder },
   { slug: 'beilen', naam: 'Beilen', intro: intro('Beilen'), foto: 'tourZijkant', stops: plaatshouder },
 ];
 
@@ -83,7 +86,7 @@ export const tour = {
   hoofdpagina: {
     title: 'Goud verkopen bij u in de buurt | RPM Edelmetaal',
     description:
-      'RPM Edelmetaal komt met een rijdende taxatiebalie naar u toe. Bekijk de locaties en data, en laat uw goud gratis en vrijblijvend taxeren.',
+      'RPM Edelmetaal komt naar u toe. Bekijk onze locaties en data, en laat uw goud gratis en vrijblijvend taxeren, vlak bij u in de buurt.',
     h1: 'Goud verkopen, bij jou in de buurt',
     locatiesTitel: 'Onze locaties',
     locatiesTekst: 'Goud verkopen bij jou in de buurt? Bekijk onze locaties.',
@@ -92,7 +95,7 @@ export const tour = {
   uitleg: {
     titel: 'Wij komen naar u toe',
     tekst:
-      'Onze experts in de taxatie van gouden voorwerpen reizen door heel Nederland in een speciaal uitgeruste camper en maken korte stops op zoveel mogelijk locaties, zodat u uw gouden voorwerpen eenvoudig kunt laten taxeren.\n\nDoor van tevoren een afspraak te boeken, verzekert u zich van persoonlijke service bij de stop van uw keuze.',
+      'Onze experts in de taxatie van gouden voorwerpen reizen door heel Nederland en maken korte stops op zoveel mogelijk locaties, zodat u uw gouden voorwerpen eenvoudig kunt laten taxeren — dicht bij huis, zonder dat u ervoor hoeft te reizen.\n\nDoor van tevoren een afspraak te boeken, verzekert u zich van persoonlijke service bij de stop van uw keuze.',
   },
 
   contact: {

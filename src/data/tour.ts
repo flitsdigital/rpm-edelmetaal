@@ -17,8 +17,10 @@ import type { Usp } from './content';
 export interface Stop {
   /** Zoals getoond: '28 november 2026'. */
   datum: string;
-  /** ISO-datum, voor sortering en voor <time datetime>. */
-  datumISO: string;
+  /** ISO-datum, voor sortering en voor <time datetime>.
+   *  Ontbreekt bij een plaatshouder — dan is het geen datum en dus ook geen
+   *  `<time>`, en komt de stop niet in de Event-markup terecht. */
+  datumISO?: string;
   /** Waar de camper staat, bv. 'Plus Klazienaveen'. */
   locatie: string;
   /** Bv. '17.30 - 18.30'. */
@@ -49,15 +51,25 @@ export const mapsUrl = (stad: TourStad) => {
 const intro = (naam: string) =>
   `Onze taxateurs komen met de camper naar ${naam}. Laat uw goud, zilver en andere edelmetalen gratis en vrijblijvend taxeren, vlak bij u in de buurt.`;
 
-/** ⚠️ Adressen, data en tijden ontbreken nog — die moeten van RPM komen.
- *  Er staat bewust niets ingevuld: een verzonnen adres of datum stuurt mensen
- *  naar een plek waar niemand is, en dat is erger dan een pagina zonder data. */
+/** ⚠️ De stops hieronder zijn plaatshouders, geen echte data.
+ *
+ *  Ze staan er zodat de opmaak compleet is; de tekst zegt met zoveel woorden
+ *  dat er nog niets vaststaat. Bewust géén plausibel ogende datum of adres:
+ *  dat leest als een toezegging en stuurt mensen naar een leeg parkeerterrein.
+ *
+ *  Vervangen zodra RPM de route rond heeft. Zet dan ook `datumISO` erbij —
+ *  zonder die waarde komt een stop niet in de Event-markup en dus niet in de
+ *  zoekresultaten. */
+const plaatshouder: Stop[] = [
+  { datum: 'Datum volgt', locatie: 'Locatie volgt', tijd: 'Tijd volgt' },
+  { datum: 'Datum volgt', locatie: 'Locatie volgt', tijd: 'Tijd volgt' },
+];
 export const tourSteden: TourStad[] = [
-  { slug: 'klazienaveen', naam: 'Klazienaveen', intro: intro('Klazienaveen'), stops: [] },
-  { slug: 'erica', naam: 'Erica', intro: intro('Erica'), stops: [] },
-  { slug: 'emmer-compascuum', naam: 'Emmer-Compascuum', intro: intro('Emmer-Compascuum'), stops: [] },
-  { slug: 'westerbork', naam: 'Westerbork', intro: intro('Westerbork'), stops: [] },
-  { slug: 'beilen', naam: 'Beilen', intro: intro('Beilen'), stops: [] },
+  { slug: 'klazienaveen', naam: 'Klazienaveen', intro: intro('Klazienaveen'), stops: plaatshouder },
+  { slug: 'erica', naam: 'Erica', intro: intro('Erica'), stops: plaatshouder },
+  { slug: 'emmer-compascuum', naam: 'Emmer-Compascuum', intro: intro('Emmer-Compascuum'), stops: plaatshouder },
+  { slug: 'westerbork', naam: 'Westerbork', intro: intro('Westerbork'), stops: plaatshouder },
+  { slug: 'beilen', naam: 'Beilen', intro: intro('Beilen'), stops: plaatshouder },
 ];
 
 /** Presentatietekst van de tour. Staat hier zodat de pagina's alleen structuur bevatten. */

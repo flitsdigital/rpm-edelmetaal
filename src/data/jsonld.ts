@@ -74,7 +74,9 @@ export const faqPage = {
  *  bron, dus markup en zichtbare datum kunnen niet uiteenlopen. */
 export const tourEvenementen = (steden: TourStad[]) =>
   steden.flatMap((stad) =>
-    stad.stops.map((stop) => ({
+    stad.stops
+      .filter((stop) => stop.datumISO)
+      .map((stop) => ({
       '@context': 'https://schema.org',
       '@type': 'Event',
       name: `RPM on Tour — ${stad.naam}`,

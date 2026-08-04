@@ -18,7 +18,7 @@ const { stop, href } = Astro.props;
   <div class="stop__meta">
     <span class="stop__item">
       <Icon name="calendar" size="md" />
-      <time datetime={stop.datumISO}>{stop.datum}</time>
+      {stop.datumISO ? <time datetime={stop.datumISO}>{stop.datum}</time> : stop.datum}
     </span>
     <span class="stop__streep" aria-hidden="true"></span>
     <span class="stop__item">

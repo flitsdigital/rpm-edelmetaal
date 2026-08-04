@@ -112,3 +112,53 @@ export const tourUsps: Usp[] = [
   { icon: 'flexibel', title: 'Flexibele tijden', text: 'We plannen de afspraak wanneer het u het beste uitkomt.' },
 ];
 
+
+/** FAQ voor een tourlocatie.
+ *
+ *  De antwoorden komen uit wat de site elders al belooft — gratis en
+ *  vrijblijvend, direct een reëel bod, taxatie aan huis, prijzen per gram op
+ *  basis van de dagkoers. Niets verzonnen: waar iets niet vaststaat (zoals de
+ *  wijze van uitbetalen) staat er geen vraag over.
+ *
+ *  Dezelfde tekst gaat als FAQPage de JSON-LD in, dus wat hier staat is precies
+ *  wat een zoekmachine te zien krijgt. */
+export const tourFaq = (naam: string) => [
+  {
+    vraag: 'Moet ik een afspraak maken?',
+    antwoord: `Dat hoeft niet, u kunt gewoon langskomen tijdens onze stop in ${naam}. Met een afspraak weet u wel zeker dat er tijd voor u is en hoeft u niet te wachten.`,
+  },
+  {
+    vraag: 'Wat moet ik meenemen?',
+    antwoord:
+      'Uw sieraden of voorwerpen en een geldig identiteitsbewijs. Dat laatste zijn wij als edelmetaalhandelaar verplicht te controleren en vast te leggen.',
+  },
+  {
+    vraag: 'Wat kost een taxatie?',
+    antwoord:
+      'Niets. De taxatie is gratis en volledig vrijblijvend — u beslist zelf of u wilt verkopen.',
+  },
+  {
+    vraag: 'Hoe snel weet ik wat mijn goud waard is?',
+    antwoord:
+      'Meteen. Wij taxeren ter plekke en doen daarna een direct reëel bod, dus u weet binnen enkele minuten waar u aan toe bent.',
+  },
+  {
+    vraag: 'Hoe bepalen jullie de prijs?',
+    antwoord:
+      'Wij rekenen per gram, op basis van het karaat of gehalte en de actuele marktprijs van die dag. Onze inkoopprijzen staan op deze pagina en worden meerdere keren per dag bijgewerkt.',
+  },
+  {
+    vraag: 'Koopt u ook kapotte of onvolledige sieraden?',
+    antwoord:
+      'Ja. Een losse oorbel, een gebroken ketting of een verbogen ring is voor ons net zoveel waard als een heel sieraad: wij betalen op basis van het gewicht en het gehalte, niet op basis van het uiterlijk.',
+  },
+  {
+    vraag: 'Welke edelmetalen koopt u in?',
+    antwoord:
+      'Goud, zilver, platina en palladium — als sieraad, als munt of als schroot. Twijfelt u of iets edelmetaal is? Neem het gerust mee, testen is gratis.',
+  },
+  {
+    vraag: `Ik kan niet op de datum dat u in ${naam} bent. Wat nu?`,
+    antwoord: `Dan kunt u terecht bij een van onze andere stops, in onze winkel in Sneek, of u laat ons kosteloos bij u thuis langskomen voor een taxatie.`,
+  },
+];

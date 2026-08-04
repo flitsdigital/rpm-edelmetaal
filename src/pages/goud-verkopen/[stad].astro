@@ -8,10 +8,9 @@ import SectionUsp from '../../components/sections/SectionUsp.astro';
 import SectionFaq from '../../components/sections/SectionFaq.astro';
 import SectionContact from '../../components/sections/SectionContact.astro';
 import Button from '../../components/atoms/Button.astro';
-import { tourSteden, tour, tourUsps, mapsUrl, type TourStad } from '../../data/tour';
-import { faq } from '../../data/content';
+import { tourSteden, tour, tourUsps, tourFaq, mapsUrl, type TourStad } from '../../data/tour';
 import { haalPrijzen } from '../../data/prijzen';
-import { tourEvenementen } from '../../data/jsonld';
+import { tourEvenementen, faqPageVan } from '../../data/jsonld';
 
 /* Eén landingspagina per tourlocatie.
  *
@@ -48,7 +47,8 @@ const chips = [
   ...(stad.adres ? [{ icon: 'pin' as const, label: stad.adres }] : []),
 ];
 
-const evenementen = tourEvenementen([stad]);
+const vragen = tourFaq(stad.naam);
+const evenementen = [...tourEvenementen([stad]), faqPageVan(vragen)];
 ---
 
 <PageLayout
@@ -95,8 +95,8 @@ const evenementen = tourEvenementen([stad]);
 
   <SectionFaq
     title="Wij helpen u graag met al uw vragen over onze service"
-    text="Staat uw vraag er niet bij? Neem gerust contact met ons op."
-    items={faq}
+    text={`Alles over taxeren en verkopen tijdens onze stop in ${stad.naam}. Staat uw vraag er niet bij? Neem gerust contact op.`}
+    items={vragen}
     paddingBottom="default"
   />
 

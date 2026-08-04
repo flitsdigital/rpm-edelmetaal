@@ -57,15 +57,17 @@ export const localBusiness = {
 /** Alleen op de homepage — daar staat de accordeon ook. Dezelfde bron, dus de
  *  markup kan niet uit de pas lopen met wat de bezoeker leest. Dat is de eis:
  *  gestructureerde data moet overeenkomen met de zichtbare pagina. */
-export const faqPage = {
+export const faqPageVan = (items: { vraag: string; antwoord: string }[]) => ({
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: faq.map(({ vraag, antwoord }) => ({
+  mainEntity: items.map(({ vraag, antwoord }) => ({
     '@type': 'Question',
     name: vraag,
     acceptedAnswer: { '@type': 'Answer', text: antwoord },
   })),
-};
+});
+
+export const faqPage = faqPageVan(faq);
 
 /** Eén `Event` per stop van een tourlocatie.
  *

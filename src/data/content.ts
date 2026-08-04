@@ -38,7 +38,7 @@ export const seo = {
   notFound: { title: 'Not Found', description: undefined },
 } as const;
 
-type Usp = { icon: IconName; title: string; text: string };
+export type Usp = { icon: IconName; title: string; text: string };
 
 export const uspsHome: Usp[] = [
   {

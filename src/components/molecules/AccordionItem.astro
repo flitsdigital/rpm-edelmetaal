@@ -1,0 +1,127 @@
+---
+import Icon from '../atoms/Icon.astro';
+
+/** Eén uitklapbaar item. De inhoud van het paneel komt via de slot, zodat er
+ *  ook een lijst met tourstops in kan en niet alleen een alinea.
+ *
+ *  Het gedrag staat hier en niet in Accordion: Astro bindt een `<script>` per
+ *  pagina, niet per instantie, dus één keer opnemen is genoeg — waar het item
+ *  ook vandaan komt. */
+interface Props {
+  vraag: string;
+  open?: boolean;
+  id: string;
+}
+
+const { vraag, open = false, id } = Astro.props;
+---
+
+<li class="acc__item" data-status={open ? 'active' : 'not-active'}>
+  <button class="acc__top" type="button" aria-expanded={open ? 'true' : 'false'} aria-controls={`${id}-panel`}>
+    <h3 class="acc__h3">{vraag}</h3>
+    <span class="acc__icon"><Icon name="chevron" /></span>
+  </button>
+  <div class="acc__bottom" id={`${id}-panel`} role="region">
+    <div class="acc__wrap">
+      <div class="acc__content"><slot /></div>
+    </div>
+  </div>
+</li>
+
+<script>
+  // Eén luisteraar per accordeon, gedelegeerd. `closest` werkt over
+  // componentgrenzen heen — de <ul> komt uit een ander component dan de <li>.
+  document.querySelectorAll<HTMLElement>('.acc').forEach((acc) => {
+    acc.addEventListener('click', (event) => {
+      const btn = (event.target as HTMLElement).closest<HTMLButtonElement>('.acc__top');
+      if (!btn || !acc.contains(btn)) return;
+
+      const item = btn.closest<HTMLElement>('.acc__item');
+      if (!item) return;
+
+      const wasActive = item.dataset.status === 'active';
+      if (!wasActive && acc.dataset.closeSiblings === 'true') {
+        acc.querySelectorAll<HTMLElement>('.acc__item[data-status="active"]').forEach((sib) => {
+          sib.dataset.status = 'not-active';
+          sib.querySelector('.acc__top')?.setAttribute('aria-expanded', 'false');
+        });
+      }
+      item.dataset.status = wasActive ? 'not-active' : 'active';
+      btn.setAttribute('aria-expanded', String(!wasActive));
+    });
+  });
+</script>
+
+<style>
+  .acc__item {
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--_color---neutral--neutral-400);
+    list-style: none;
+  }
+
+  .acc__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1em;
+    width: 100%;
+    padding: 1.5em 1em 1.5em 1.5em;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .acc__top:focus-visible {
+    outline: 2px solid var(--primary--accent);
+    outline-offset: -2px;
+  }
+
+  .acc__h3 {
+    margin: 0;
+    font-size: 1.125em;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .acc__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    color: var(--primary--accent);
+    transform: rotate(180deg);
+    transition: transform .6s cubic-bezier(.625, .05, 0, 1);
+  }
+
+  .acc__item[data-status='active'] .acc__icon {
+    transform: rotate(0.001deg);
+  }
+
+  .acc__bottom {
+    display: grid;
+    grid-template-rows: 0fr;
+    position: relative;
+    overflow: hidden;
+    transition: grid-template-rows .6s cubic-bezier(.625, .05, 0, 1);
+  }
+
+  .acc__item[data-status='active'] .acc__bottom {
+    grid-template-rows: 1fr;
+  }
+
+  .acc__wrap {
+    display: flex;
+    flex-flow: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .acc__content {
+    padding: 0 1.5em 1.5em;
+  }
+</style>

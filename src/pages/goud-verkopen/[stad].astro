@@ -1,0 +1,101 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionTourHero from '../../components/sections/SectionTourHero.astro';
+import SectionDivider from '../../components/atoms/SectionDivider.astro';
+import SectionPrijstabel from '../../components/sections/SectionPrijstabel.astro';
+import SectionContent from '../../components/sections/SectionContent.astro';
+import SectionUsp from '../../components/sections/SectionUsp.astro';
+import SectionReviews from '../../components/sections/SectionReviews.astro';
+import SectionFaq from '../../components/sections/SectionFaq.astro';
+import SectionContact from '../../components/sections/SectionContact.astro';
+import Button from '../../components/atoms/Button.astro';
+import { tourSteden, tour, tourUsps, tourReviews, type TourStad } from '../../data/tour';
+import { faq } from '../../data/content';
+import { haalPrijzen } from '../../data/prijzen';
+import { tourEvenementen } from '../../data/jsonld';
+
+/* Eén landingspagina per tourlocatie.
+ *
+ * Dynamische route in plaats van een bestand per stad: de steden staan al in
+ * src/data/tour.ts, en een tweede lijst in de vorm van bestandsnamen zou daar
+ * onvermijdelijk van gaan afwijken. Een stad toevoegen is nu één object.
+ *
+ * De prijzen komen uit dezelfde Supabase-view als /inkoopprijzen — een
+ * landingspagina met eigen, afwijkende prijzen is erger dan geen prijzen. */
+export async function getStaticPaths() {
+  return tourSteden.map((stad) => ({ params: { stad: stad.slug }, props: { stad } }));
+}
+
+interface Props {
+  stad: TourStad;
+}
+
+const { stad } = Astro.props;
+const { groepen, topPrijzen } = await haalPrijzen();
+
+const eersteStop = stad.stops[0];
+const url = `https://www.rpmedelmetaal.nl/goud-verkopen/${stad.slug}`;
+
+const chips = [
+  ...(eersteStop
+    ? [{ icon: 'calendar' as const, label: eersteStop.datum, datetime: eersteStop.datumISO }]
+    : []),
+  { icon: 'pin' as const, label: stad.adres },
+];
+
+const evenementen = tourEvenementen([stad]);
+---
+
+<PageLayout
+  title={`Goud verkopen in ${stad.naam} | RPM Edelmetaal`}
+  description={`RPM Edelmetaal komt met een rijdende taxatiebalie naar ${stad.naam}. Bekijk de data en laat uw goud gratis en vrijblijvend taxeren.`}
+  canonical={url}
+  current="/goud-verkopen"
+  prijzen={topPrijzen}
+  navRuimte={false}
+  jsonLd={evenementen}
+>
+  <SectionTourHero chips={chips} title={`Goud verkopen in ${stad.naam}`} text={stad.intro}>
+    <Button href={stad.maps}>Bekijk de locatie op Google</Button>
+    <Button variant="secondary" href="#taxatie-stad">Alvast een offerte aanvragen</Button>
+  </SectionTourHero>
+
+  <SectionDivider />
+
+  <SectionPrijstabel
+    groepen={groepen}
+    id={`prijzen-${stad.slug}`}
+    title="Onze actuele inkoopprijzen"
+    text={`Goud verkopen in ${stad.naam}? Dan bent u bij ons aan het juiste adres.`}
+  />
+
+  <SectionContent
+    eyebrow={tour.eyebrow}
+    title={tour.uitleg.titel}
+    html={tour.uitleg.tekst
+      .split('\n\n')
+      .map((p) => `<p>${p}</p>`)
+      .join('')}
+    image={{ src: '/images/tour-taxatie.png', alt: 'Taxatie van gouden sieraden in de camper' }}
+  />
+
+  <SectionUsp
+    title="Eerlijke taxatie en inkoop van goud, zilver en sieraden"
+    text="Wij kopen goud, zilver en andere edelmetalen in — eerlijk, transparant en met persoonlijke aandacht. Kom langs bij een van onze stops of laat uw sieraden gratis en vrijblijvend taxeren."
+    items={tourUsps}
+  />
+
+  <SectionReviews
+    title="Echte ervaringen van onze klanten"
+    text="Lees wat onze klanten zeggen over hun ervaringen met taxaties en service bij RPM Edelmetaal."
+    items={tourReviews}
+  />
+
+  <SectionFaq
+    title="Wij helpen u graag met al uw vragen over onze service"
+    text="Staat uw vraag er niet bij? Neem gerust contact met ons op."
+    items={faq}
+  />
+
+  <SectionContact title={tour.contact.titel} text={tour.contact.tekst} formId="taxatie-stad" />
+</PageLayout>

@@ -1,0 +1,108 @@
+---
+import Section from './Section.astro';
+import Container from '../atoms/Container.astro';
+import Row from '../atoms/Row.astro';
+import Col from '../atoms/Col.astro';
+import SectionIntro from './SectionIntro.astro';
+import Button from '../atoms/Button.astro';
+import Text from '../atoms/Text.astro';
+import { reviews as reviewsMeta } from '../../data/site';
+
+/** Raster van klantreviews.
+ *
+ *  ⚠️ De reviews hieronder komen als voorbeeldtekst uit het ontwerp en zijn
+ *  géén echte klantuitspraken. Ze staan hier zodat de pagina compleet is; vóór
+ *  livegang moeten ze vervangen worden door echte reviews of door een koppeling
+ *  met het Google Bedrijfsprofiel.
+ *
+ *  Om dezelfde reden staat er geen `aggregateRating` in de JSON-LD: andermans
+ *  reviews markeren op je eigen site is tegen de richtlijnen van Google. */
+interface Props {
+  title: string;
+  text?: string;
+  items: { tekst: string; naam: string; wanneer: string }[];
+  ctaHref?: string;
+  ctaLabel?: string;
+}
+
+const { title, text, items, ctaHref, ctaLabel } = Astro.props;
+---
+
+<Section>
+  <Container>
+    <SectionIntro title={title} text={text} />
+
+    {
+      ctaHref && ctaLabel && (
+        <div class="reviews__cta">
+          <Button variant="secondary" href={ctaHref}>
+            {ctaLabel}
+          </Button>
+        </div>
+      )
+    }
+
+    <div class="u-mt-lg">
+      <Row>
+        {
+          items.map((review) => (
+            <Col lg={4} md={6} sm={12}>
+              <figure class="review">
+                <div class="review__sterren" aria-label={`${reviewsMeta.score}`}>
+                  {reviewsMeta.sterren}
+                </div>
+                <blockquote class="review__quote">
+                  <Text flush>{review.tekst}</Text>
+                </blockquote>
+                <figcaption class="review__wie">
+                  <span class="review__naam">{review.naam}</span>
+                  <Text size="sm" tone="secondary" flush>
+                    {review.wanneer}
+                  </Text>
+                </figcaption>
+              </figure>
+            </Col>
+          ))
+        }
+      </Row>
+    </div>
+  </Container>
+</Section>
+
+<style>
+  .reviews__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--_layout---spacing--margin-md);
+  }
+
+  .review {
+    display: flex;
+    flex-flow: column;
+    gap: var(--_layout---grid--gap-md);
+    height: 100%;
+    margin: 0;
+    padding: var(--_components---card--padding);
+    background-color: var(--primary--background-secondary);
+  }
+
+  .review__sterren {
+    color: var(--_color---secondary--yellow);
+    letter-spacing: .1em;
+  }
+
+  .review__quote {
+    margin: 0;
+    flex: 1;
+  }
+
+  .review__wie {
+    display: flex;
+    flex-flow: column;
+    gap: .125rem;
+  }
+
+  .review__naam {
+    font-weight: 600;
+  }
+</style>

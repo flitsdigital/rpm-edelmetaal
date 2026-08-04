@@ -1,0 +1,80 @@
+---
+import Section from './Section.astro';
+import Container from '../atoms/Container.astro';
+import Row from '../atoms/Row.astro';
+import Col from '../atoms/Col.astro';
+import SectionIntro from './SectionIntro.astro';
+import Button from '../atoms/Button.astro';
+import Accordion from '../molecules/Accordion.astro';
+import AccordionItem from '../molecules/AccordionItem.astro';
+import TourStop from '../molecules/TourStop.astro';
+import Text from '../atoms/Text.astro';
+import { tourSteden, tour } from '../../data/tour';
+
+/** De locaties van de tour, per stad uitklapbaar.
+ *
+ *  Gebruikt de bestaande Accordion via slots, zodat het open/dicht-gedrag, de
+ *  animatie en de toetsenbordbediening maar op één plek staan. */
+interface Props {
+  title: string;
+  text?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+const { title, text, ctaLabel, ctaHref } = Astro.props;
+---
+
+<Section>
+  <Container>
+    <SectionIntro title={title} text={text} />
+
+    {
+      ctaLabel && ctaHref && (
+        <div class="locaties__cta">
+          <Button href={ctaHref}>{ctaLabel}</Button>
+        </div>
+      )
+    }
+
+    <div class="u-mt-lg">
+      <Row justify="center">
+        <Col lg={10} md={12}>
+          <Accordion id="locaties">
+            {
+              tourSteden.map((stad, i) => (
+                <AccordionItem vraag={stad.naam} open={i === 0} id={`locaties-${i}`}>
+                  <div class="locaties__stops">
+                    {stad.stops.length > 0 ? (
+                      stad.stops.map((stop) => (
+                        <TourStop stop={stop} href={`/goud-verkopen/${stad.slug}`} />
+                      ))
+                    ) : (
+                      <Text tone="secondary" flush>
+                        {tour.geenStops}
+                      </Text>
+                    )}
+                  </div>
+                </AccordionItem>
+              ))
+            }
+          </Accordion>
+        </Col>
+      </Row>
+    </div>
+  </Container>
+</Section>
+
+<style>
+  .locaties__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--_layout---spacing--margin-md);
+  }
+
+  .locaties__stops {
+    display: flex;
+    flex-flow: column;
+    gap: var(--_layout---grid--gap-sm);
+  }
+</style>

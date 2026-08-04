@@ -6,6 +6,7 @@ import Col from '../atoms/Col.astro';
 import Heading from '../atoms/Heading.astro';
 import Text from '../atoms/Text.astro';
 import PriceRow from '../molecules/PriceRow.astro';
+import SectionIntro from './SectionIntro.astro';
 
 /** De grote prijstabel met een tab per metaal.
  *
@@ -38,13 +39,18 @@ export type Prijsgroep = {
 interface Props {
   groepen: Prijsgroep[];
   id?: string;
+  /** Kop boven de tabs. Op /inkoopprijzen staat die al in een eigen sectie
+   *  erboven; op de tourpagina's hoort hij bij de tabel zelf. */
+  title?: string;
+  text?: string;
 }
 
-const { groepen, id = 'prijzen' } = Astro.props;
+const { groepen, id = 'prijzen', title, text } = Astro.props;
 ---
 
 <Section>
   <Container>
+    {title && <div class="u-mb-lg"><SectionIntro title={title} text={text} /></div>}
     <div class="tabs">
       <div class="tabs__menu" role="tablist" aria-label="Kies een edelmetaal">
         {

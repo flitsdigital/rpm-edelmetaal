@@ -1,0 +1,55 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionTourHero from '../../components/sections/SectionTourHero.astro';
+import SectionDivider from '../../components/atoms/SectionDivider.astro';
+import SectionTourLocaties from '../../components/sections/SectionTourLocaties.astro';
+import SectionContent from '../../components/sections/SectionContent.astro';
+import SectionContact from '../../components/sections/SectionContact.astro';
+import Button from '../../components/atoms/Button.astro';
+import { haalPrijzen } from '../../data/prijzen';
+import { tourSteden, tour } from '../../data/tour';
+import { tourEvenementen } from '../../data/jsonld';
+
+/* Overzichtspagina van RPM on Tour.
+ *
+ * De stadspagina's eronder zijn de echte landingspagina's — die ranken op
+ * "goud verkopen <plaats>". Deze pagina bindt ze samen en is waar iemand
+ * binnenkomt die de plaatsnaam nog niet weet. */
+const { topPrijzen } = await haalPrijzen();
+const evenementen = tourEvenementen(tourSteden);
+---
+
+<PageLayout
+  title={tour.hoofdpagina.title}
+  description={tour.hoofdpagina.description}
+  canonical="https://www.rpmedelmetaal.nl/goud-verkopen"
+  current="/goud-verkopen"
+  prijzen={topPrijzen}
+  navRuimte={false}
+  jsonLd={evenementen}
+>
+  <SectionTourHero eyebrow={tour.eyebrow} title={tour.hoofdpagina.h1}>
+    <Button href="/contact">Gratis taxatie aanvragen</Button>
+  </SectionTourHero>
+
+  <SectionDivider />
+
+  <SectionTourLocaties
+    title={tour.hoofdpagina.locatiesTitel}
+    text={tour.hoofdpagina.locatiesTekst}
+    ctaLabel="Gratis taxatie aanvragen"
+    ctaHref="/contact"
+  />
+
+  <SectionContent
+    eyebrow={tour.eyebrow}
+    title={tour.uitleg.titel}
+    html={tour.uitleg.tekst
+      .split('\n\n')
+      .map((p) => `<p>${p}</p>`)
+      .join('')}
+    image={{ src: '/images/tour-taxatie.png', alt: 'Taxatie van gouden sieraden in de camper' }}
+  />
+
+  <SectionContact title={tour.contact.titel} text={tour.contact.tekst} formId="taxatie-tour" />
+</PageLayout>

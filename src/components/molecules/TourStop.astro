@@ -1,0 +1,90 @@
+---
+import Icon from '../atoms/Icon.astro';
+import Button from '../atoms/Button.astro';
+import type { Stop } from '../../data/tour';
+
+/** Eén stop van de tour: datum, locatie en tijd naast elkaar, met een knop naar
+ *  de stadspagina. De datum staat in een `<time>` zodat hij machineleesbaar is —
+ *  dit is de informatie waarvoor mensen de deur uitgaan. */
+interface Props {
+  stop: Stop;
+  href: string;
+}
+
+const { stop, href } = Astro.props;
+---
+
+<div class="stop">
+  <div class="stop__meta">
+    <span class="stop__item">
+      <Icon name="calendar" size="md" />
+      <time datetime={stop.datumISO}>{stop.datum}</time>
+    </span>
+    <span class="stop__streep" aria-hidden="true"></span>
+    <span class="stop__item">
+      <Icon name="pin" size="md" />
+      {stop.locatie}
+    </span>
+    <span class="stop__streep" aria-hidden="true"></span>
+    <span class="stop__item">
+      <Icon name="stopwatch" size="md" />
+      {stop.tijd}
+    </span>
+  </div>
+  <Button href={href} class="stop__knop">Meer informatie</Button>
+</div>
+
+<style>
+  .stop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--_layout---grid--gap-md);
+    padding: var(--_layout---grid--gap-md);
+    background-color: var(--primary--background-secondary);
+  }
+
+  .stop__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--_layout---grid--gap-md);
+    color: var(--primary--text-secondary);
+  }
+
+  .stop__item {
+    display: flex;
+    align-items: center;
+    gap: .625rem;
+  }
+
+  .stop__item :global(.icon) { /* guard-ignore: global-css — Icon draagt zijn eigen scope-hash */
+    color: var(--primary--accent);
+    flex: none;
+  }
+
+  .stop__streep {
+    width: 1px;
+    height: 1rem;
+    background-color: var(--_color---neutral--neutral-300);
+  }
+
+  @media screen and (max-width: 767px) {
+    .stop {
+      flex-flow: column;
+      align-items: stretch;
+    }
+
+    /* De scheidingsstreepjes staan tussen items die onder elkaar komen te
+       staan; dan scheiden ze niets meer. */
+    .stop__streep {
+      display: none;
+    }
+
+    .stop__meta {
+      flex-flow: column;
+      align-items: flex-start;
+      gap: .5rem;
+    }
+  }
+</style>

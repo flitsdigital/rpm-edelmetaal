@@ -1,5 +1,6 @@
 import { contact, openingstijden } from './site';
 import { faq } from './content';
+import type { TourStad } from './tour';
 
 const SITE = 'https://www.rpmedelmetaal.nl';
 
@@ -65,3 +66,33 @@ export const faqPage = {
     acceptedAnswer: { '@type': 'Answer', text: antwoord },
   })),
 };
+
+/** Eén `Event` per stop van een tourlocatie.
+ *
+ *  De data staan al in de accordeon, maar een zoekmachine leest die niet als
+ *  agenda. Zo kunnen ze wél in de resultaten verschijnen — en het is dezelfde
+ *  bron, dus markup en zichtbare datum kunnen niet uiteenlopen. */
+export const tourEvenementen = (steden: TourStad[]) =>
+  steden.flatMap((stad) =>
+    stad.stops.map((stop) => ({
+      '@context': 'https://schema.org',
+      '@type': 'Event',
+      name: `RPM on Tour — ${stad.naam}`,
+      startDate: stop.datumISO,
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      eventStatus: 'https://schema.org/EventScheduled',
+      url: `${SITE}/goud-verkopen/${stad.slug}`,
+      location: {
+        '@type': 'Place',
+        name: stop.locatie,
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: stad.adres,
+          postalCode: stad.postcode,
+          addressLocality: stad.naam,
+          addressCountry: 'NL',
+        },
+      },
+      organizer: { '@id': localBusiness['@id'] },
+    }))
+  );

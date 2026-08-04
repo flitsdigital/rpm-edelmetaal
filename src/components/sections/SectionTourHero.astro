@@ -1,0 +1,127 @@
+---
+import Container from '../atoms/Container.astro';
+import Row from '../atoms/Row.astro';
+import Col from '../atoms/Col.astro';
+import Heading from '../atoms/Heading.astro';
+import Text from '../atoms/Text.astro';
+import BgImage from '../atoms/BgImage.astro';
+import Icon from '../atoms/Icon.astro';
+import type { IconName } from '../../data/icons';
+
+/** Hero van de tourpagina's: beeld met een verloop naar zwart en de inhoud
+ *  gecentreerd erover.
+ *
+ *  Anders dan HeroHome, die links uitlijnt en de reviewbalk toont. Dit is een
+ *  landingspagina: één boodschap, één plek om te kijken.
+ *
+ *  De chips boven de kop dragen de feiten waarvoor iemand de deur uitgaat —
+ *  datum en adres. Daarom een `<time>` en geen losse tekst. */
+interface Props {
+  eyebrow?: string;
+  chips?: { icon: IconName; label: string; datetime?: string }[];
+  title: string;
+  text?: string;
+}
+
+const { eyebrow, chips = [], title, text } = Astro.props;
+---
+
+<section class="tour-hero">
+  <BgImage src="/images/tour-hero.png" alt="" loading="eager" />
+  <Container>
+    <Row justify="center">
+      <Col lg={10} md={12}>
+        <div class="tour-hero__inhoud">
+          {
+            (eyebrow || chips.length > 0) && (
+              <div class="tour-hero__chips">
+                {eyebrow && <span class="tour-hero__chip tour-hero__chip--eyebrow">{eyebrow}</span>}
+                {chips.map((chip) => (
+                  <span class="tour-hero__chip">
+                    <Icon name={chip.icon} size="md" />
+                    {chip.datetime ? <time datetime={chip.datetime}>{chip.label}</time> : chip.label}
+                  </span>
+                ))}
+              </div>
+            )
+          }
+
+          <Heading level={1} align="center">{title}</Heading>
+          {
+            text && (
+              <div class="tour-hero__tekst">
+                <Text size="lg" align="center" tone="secondary" flush>
+                  {text}
+                </Text>
+              </div>
+            )
+          }
+
+          <div class="tour-hero__acties"><slot /></div>
+        </div>
+      </Col>
+    </Row>
+  </Container>
+</section>
+
+<style>
+  .tour-hero {
+    display: flex;
+    align-items: center;
+    min-height: 37rem;
+    position: relative;
+    padding-block: var(--_components---section--padding-double);
+    overflow: clip;
+    background-color: var(--primary--background);
+  }
+
+  .tour-hero__inhoud {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    gap: var(--_layout---spacing--margin-sm);
+    position: relative;
+    z-index: 1;
+  }
+
+  .tour-hero__chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--_layout---grid--gap-sm);
+  }
+
+  .tour-hero__chip {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .375em .5em;
+    /* guard-ignore: hardcoded-color — half-transparant over de foto; met een
+       ondoorzichtig vlak verdwijnt het beeld eronder */
+    background-color: color-mix(in hsl, var(--_color---neutral--neutral-400) 30%, transparent 70%);
+    color: var(--primary--accent-light);
+    font-family: var(--_typography---eyebrow--font);
+    font-size: var(--_typography---h6--font-size);
+    line-height: 1.2;
+  }
+
+  .tour-hero__chip :global(.icon) { /* guard-ignore: global-css — Icon draagt zijn eigen scope-hash */
+    color: var(--primary--accent);
+  }
+
+  .tour-hero__chip--eyebrow {
+    color: var(--primary--accent-light);
+  }
+
+  .tour-hero__tekst {
+    max-width: 40rem;
+  }
+
+  .tour-hero__acties {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--_layout---grid--gap-button);
+    margin-top: var(--_layout---spacing--margin-sm);
+  }
+</style>

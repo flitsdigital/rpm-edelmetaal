@@ -84,6 +84,12 @@ const {
 </Section>
 
 <style>
+  /* RichText haalt de ondermarge van zijn laatste element weg, en een ul heeft
+     zelf geen bovenmarge. Zonder deze regel plakt de lijst tegen de tekst. */
+  ul {
+    margin-top: var(--_typography---paragraph-body--bottom-margin);
+  }
+
   .content__cta {
     margin-top: var(--_layout---grid--gap-button);
   }

@@ -87,8 +87,8 @@ export const tourEvenementen = (steden: TourStad[]) =>
         name: stop.locatie,
         address: {
           '@type': 'PostalAddress',
-          streetAddress: stad.adres,
-          postalCode: stad.postcode,
+          ...(stad.adres ? { streetAddress: stad.adres } : {}),
+          ...(stad.postcode ? { postalCode: stad.postcode } : {}),
           addressLocality: stad.naam,
           addressCountry: 'NL',
         },

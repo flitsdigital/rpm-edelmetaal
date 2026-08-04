@@ -8,7 +8,7 @@ import SectionUsp from '../../components/sections/SectionUsp.astro';
 import SectionFaq from '../../components/sections/SectionFaq.astro';
 import SectionContact from '../../components/sections/SectionContact.astro';
 import Button from '../../components/atoms/Button.astro';
-import { tourSteden, tour, tourUsps, type TourStad } from '../../data/tour';
+import { tourSteden, tour, tourUsps, mapsUrl, type TourStad } from '../../data/tour';
 import { faq } from '../../data/content';
 import { haalPrijzen } from '../../data/prijzen';
 import { tourEvenementen } from '../../data/jsonld';
@@ -39,11 +39,13 @@ const goud = groepen.filter((g) => g.metaal === 'Goud');
 const eersteStop = stad.stops[0];
 const url = `https://www.rpmedelmetaal.nl/goud-verkopen/${stad.slug}`;
 
+// Alleen tonen wat we écht weten. Zolang de datum of het adres ontbreekt, staat
+// er geen chip — een lege of gegokte waarde stuurt mensen de verkeerde kant op.
 const chips = [
   ...(eersteStop
     ? [{ icon: 'calendar' as const, label: eersteStop.datum, datetime: eersteStop.datumISO }]
     : []),
-  { icon: 'pin' as const, label: stad.adres },
+  ...(stad.adres ? [{ icon: 'pin' as const, label: stad.adres }] : []),
 ];
 
 const evenementen = tourEvenementen([stad]);
@@ -59,7 +61,7 @@ const evenementen = tourEvenementen([stad]);
   jsonLd={evenementen}
 >
   <SectionTourHero chips={chips} title={`Goud verkopen in ${stad.naam}`} text={stad.intro}>
-    <Button href={stad.maps}>Bekijk de locatie op Google</Button>
+    <Button href={mapsUrl(stad)}>Bekijk de locatie op Google</Button>
     <Button variant="secondary" href="#taxatie-stad">Alvast een offerte aanvragen</Button>
   </SectionTourHero>
 

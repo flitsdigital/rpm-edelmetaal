@@ -28,53 +28,36 @@ export interface Stop {
 export interface TourStad {
   slug: string;
   naam: string;
-  /** Straat en huisnummer van de vaste standplaats. */
-  adres: string;
-  postcode: string;
-  /** Volledige zoekterm voor Google Maps. */
-  maps: string;
+  /** Straat en huisnummer van de standplaats. Ontbreekt zolang die niet vaststaat —
+   *  liever geen adres dan een adres waar niemand staat. */
+  adres?: string;
+  postcode?: string;
   /** Eén zin onder de H1 op de stadspagina. */
   intro: string;
   stops: Stop[];
 }
 
-const mapsUrl = (zoekterm: string) =>
-  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(zoekterm)}`;
+/** Zoeklink naar Google Maps. Zonder adres valt de plaatsnaam terug — die is
+ *  altijd juist, alleen minder precies. */
+export const mapsUrl = (stad: TourStad) => {
+  const zoekterm = stad.adres
+    ? `${stad.adres}, ${stad.postcode ?? ''} ${stad.naam}`.replace(/\s+/g, ' ').trim()
+    : `${stad.naam}, Drenthe`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(zoekterm)}`;
+};
 
+const intro = (naam: string) =>
+  `Onze taxateurs komen met de camper naar ${naam}. Laat uw goud, zilver en andere edelmetalen gratis en vrijblijvend taxeren, vlak bij u in de buurt.`;
+
+/** ⚠️ Adressen, data en tijden ontbreken nog — die moeten van RPM komen.
+ *  Er staat bewust niets ingevuld: een verzonnen adres of datum stuurt mensen
+ *  naar een plek waar niemand is, en dat is erger dan een pagina zonder data. */
 export const tourSteden: TourStad[] = [
-  {
-    slug: 'klazienaveen',
-    naam: 'Klazienaveen',
-    adres: 'De Bukakkers 20',
-    postcode: '7891 XZ',
-    maps: mapsUrl('De Bukakkers 20, 7891 XZ Klazienaveen'),
-    intro:
-      'Als dé edelmetalen-specialist van Nederland verzorgen wij de inkoop van goud, zilver en andere edelmetalen — nu ook bij u in de buurt.',
-    stops: [
-      { datum: '28 november 2026', datumISO: '2026-11-28', locatie: 'Plus Klazienaveen', tijd: '17.30 - 18.30' },
-      { datum: '14 juli 2027', datumISO: '2027-07-14', locatie: 'Jumbo Klazienaveen', tijd: '17.30 - 18.30' },
-    ],
-  },
-  {
-    slug: 'westerbork',
-    naam: 'Westerbork',
-    adres: 'Hoofdstraat 12',
-    postcode: '9431 AE',
-    maps: mapsUrl('Hoofdstraat 12, 9431 AE Westerbork'),
-    intro:
-      'Onze taxateurs komen met de camper naar Westerbork. Laat uw goud en zilver gratis en vrijblijvend taxeren.',
-    stops: [],
-  },
-  {
-    slug: 'erica',
-    naam: 'Erica',
-    adres: 'Kerkweg 8',
-    postcode: '7887 BE',
-    maps: mapsUrl('Kerkweg 8, 7887 BE Erica'),
-    intro:
-      'Onze taxateurs komen met de camper naar Erica. Laat uw goud en zilver gratis en vrijblijvend taxeren.',
-    stops: [],
-  },
+  { slug: 'klazienaveen', naam: 'Klazienaveen', intro: intro('Klazienaveen'), stops: [] },
+  { slug: 'erica', naam: 'Erica', intro: intro('Erica'), stops: [] },
+  { slug: 'emmer-compascuum', naam: 'Emmer-Compascuum', intro: intro('Emmer-Compascuum'), stops: [] },
+  { slug: 'westerbork', naam: 'Westerbork', intro: intro('Westerbork'), stops: [] },
+  { slug: 'beilen', naam: 'Beilen', intro: intro('Beilen'), stops: [] },
 ];
 
 /** Presentatietekst van de tour. Staat hier zodat de pagina's alleen structuur bevatten. */

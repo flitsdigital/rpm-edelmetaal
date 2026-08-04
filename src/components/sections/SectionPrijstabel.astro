@@ -52,7 +52,8 @@ const { groepen, id = 'prijzen', title, text } = Astro.props;
   <Container>
     {title && <div class="u-mb-lg"><SectionIntro title={title} text={text} /></div>}
     <div class="tabs">
-      <div class="tabs__menu" role="tablist" aria-label="Kies een edelmetaal">
+      {/* Eén metaal betekent niets te kiezen; een tablist met één knop is ruis. */}
+      <div class="tabs__menu" role="tablist" aria-label="Kies een edelmetaal" hidden={groepen.length < 2}>
         {
           groepen.map((g, i) => (
             <button
@@ -158,6 +159,11 @@ const { groepen, id = 'prijzen', title, text } = Astro.props;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+  }
+
+  /* [hidden] is maar een attribuut; `display: flex` hierboven wint daarvan. */
+  .tabs__menu[hidden] {
+    display: none;
   }
 
   .tabs__link {

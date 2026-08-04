@@ -10,12 +10,16 @@ interface Props {
   title: string;
   text?: string;
   items: { vraag: string; antwoord: string }[];
+  /** Op de homepage sluit de FAQ direct aan op de sectie eronder; op de
+   *  tourpagina's staat er een eigen blok achter en is ruimte nodig. */
+  paddingTop?: 'default' | 'none';
+  paddingBottom?: 'default' | 'none';
 }
 
-const { title, text, items } = Astro.props;
+const { title, text, items, paddingTop = 'none', paddingBottom = 'none' } = Astro.props;
 ---
 
-<Section paddingTop="none" paddingBottom="none">
+<Section paddingTop={paddingTop} paddingBottom={paddingBottom}>
   <Container>
     <SectionIntro title={title} text={text} />
     <div class="u-mt-lg">

@@ -5,11 +5,10 @@ import SectionDivider from '../../components/atoms/SectionDivider.astro';
 import SectionPrijstabel from '../../components/sections/SectionPrijstabel.astro';
 import SectionContent from '../../components/sections/SectionContent.astro';
 import SectionUsp from '../../components/sections/SectionUsp.astro';
-import SectionReviews from '../../components/sections/SectionReviews.astro';
 import SectionFaq from '../../components/sections/SectionFaq.astro';
 import SectionContact from '../../components/sections/SectionContact.astro';
 import Button from '../../components/atoms/Button.astro';
-import { tourSteden, tour, tourUsps, tourReviews, type TourStad } from '../../data/tour';
+import { tourSteden, tour, tourUsps, type TourStad } from '../../data/tour';
 import { faq } from '../../data/content';
 import { haalPrijzen } from '../../data/prijzen';
 import { tourEvenementen } from '../../data/jsonld';
@@ -32,6 +31,10 @@ interface Props {
 
 const { stad } = Astro.props;
 const { groepen, topPrijzen } = await haalPrijzen();
+
+// Alleen goud: dit is een landingspagina voor "goud verkopen in <plaats>".
+// Zilver, platina en palladium staan op /inkoopprijzen.
+const goud = groepen.filter((g) => g.metaal === 'Goud');
 
 const eersteStop = stad.stops[0];
 const url = `https://www.rpmedelmetaal.nl/goud-verkopen/${stad.slug}`;
@@ -63,7 +66,7 @@ const evenementen = tourEvenementen([stad]);
   <SectionDivider />
 
   <SectionPrijstabel
-    groepen={groepen}
+    groepen={goud}
     id={`prijzen-${stad.slug}`}
     title="Onze actuele inkoopprijzen"
     text={`Goud verkopen in ${stad.naam}? Dan bent u bij ons aan het juiste adres.`}
@@ -85,17 +88,17 @@ const evenementen = tourEvenementen([stad]);
     items={tourUsps}
   />
 
-  <SectionReviews
-    title="Echte ervaringen van onze klanten"
-    text="Lees wat onze klanten zeggen over hun ervaringen met taxaties en service bij RPM Edelmetaal."
-    items={tourReviews}
-  />
+
+  <SectionDivider />
 
   <SectionFaq
     title="Wij helpen u graag met al uw vragen over onze service"
     text="Staat uw vraag er niet bij? Neem gerust contact met ons op."
     items={faq}
+    paddingBottom="default"
   />
 
   <SectionContact title={tour.contact.titel} text={tour.contact.tekst} formId="taxatie-stad" />
+
+  <SectionDivider />
 </PageLayout>

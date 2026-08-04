@@ -70,7 +70,11 @@ const { eyebrow, chips = [], title, text } = Astro.props;
     align-items: center;
     min-height: 37rem;
     position: relative;
-    padding-block: var(--_components---section--padding-double);
+    /* De nav staat vast bovenaan en ligt hier transparant overheen. De inhoud is
+       verticaal gecentreerd, dus zonder deze 8rem — dezelfde compensatie die
+       `.page__main[data-nav-ruimte]` gebruikt — schuift alles onder de nav. */
+    padding-top: calc(var(--_components---section--padding-double) + 8rem);
+    padding-bottom: var(--_components---section--padding-double);
     overflow: clip;
     background-color: var(--primary--background);
   }

@@ -117,13 +117,3 @@ export const tourUsps: Usp[] = [
   { icon: 'flexibel', title: 'Flexibele tijden', text: 'We plannen de afspraak wanneer het u het beste uitkomt.' },
 ];
 
-/** ⚠️ Voorbeeldteksten uit het ontwerp — géén echte klantuitspraken.
- *  Vervangen vóór livegang; zie de toelichting in SectionReviews.astro. */
-export const tourReviews = [
-  { tekst: '"Eerlijke service, snelle taxatie en een prettig gesprek erbij."', naam: 'Lisa J.', wanneer: '1 dag geleden' },
-  { tekst: '"Altijd duidelijke uitleg en een reëel bod. Echt top!"', naam: 'Mark D.', wanneer: '2 dagen geleden' },
-  { tekst: '"Professioneel en betrouwbaar, ik kom zeker terug."', naam: 'Sophie K.', wanneer: '3 dagen geleden' },
-  { tekst: '"Snelle taxatie aan huis en uitstekende service."', naam: 'Thomas B.', wanneer: '3 dagen geleden' },
-  { tekst: '"Persoonlijke aandacht en een eerlijk bod op al mijn sieraden."', naam: 'Emma L.', wanneer: '5 dagen geleden' },
-  { tekst: '"Vertrouwd familiebedrijf, eerlijk en deskundig."', naam: 'Peter S.', wanneer: '5 dagen geleden' },
-];

@@ -1,12 +1,4 @@
-/* base.css — laagvolgorde, reset en globale element-defaults.
- *
- * Hier staan ALLEEN element-defaults. Elk patroon dat een naam verdient is een
- * component. Componenten-CSS is unlayered en wint daarmee automatisch van alles
- * hier — dat is de reden dat er nergens !important nodig is.
- *
- * Overgenomen uit normalize.css (het deel dat in 2026 nog iets doet) en de
- * element-regels uit de Webflow site-CSS.
- */
+
 
 @layer reset, tokens, base, components, utilities;
 
@@ -39,9 +31,6 @@
     margin: 0;
   }
 
-  /* Bewust GEEN `svg { display: block }`: de export laat SVG's inline, en een
-     inline SVG krijgt regelhoogte-ruimte mee. Dat scheelt 7px per
-     section-divider — met vier dividers op de homepage is dat zichtbaar. */
 }
 
 @layer base {
@@ -121,11 +110,6 @@
     margin-bottom: var(--_typography---paragraph-body--bottom-margin);
   }
 
-  /* De typografische schaal ook als klasse, precies zoals de export dat deed
-     (`.h1`…`.h6`, `.paragraph-*`). Nodig omdat element en uiterlijk los van
-     elkaar gebruikt worden — een <h3> met de h6-schaal — en omdat RichText
-     CMS-HTML krijgt waar geen component omheen zit. Heading en Text zijn dunne
-     wrappers hierboven; hier staat de schaal één keer. */
   .h1 {
     margin-bottom: var(--_typography---h1--bottom-margin);
     font-family: var(--_typography---h1--font);
@@ -280,11 +264,7 @@
 }
 
 @layer utilities {
-  /* De verticale spacing-schaal blijft een utility, niet een prop.
-     Hij komt 200+ keer voor, op elk soort element, en is een schaal — geen
-     patroon. Er een prop van maken zou hem op ieder component moeten dupliceren.
-     Dit is de énige utility-set die globaal blijft; kleur, uitlijning en breedte
-     zijn wél props op het betreffende component. */
+
   .u-mt-0 { margin-top: 0; }
   .u-mt-xs { margin-top: var(--_layout---spacing--margin-xs); }
   .u-mt-sm { margin-top: var(--_layout---spacing--margin-sm); }
@@ -301,8 +281,6 @@
   .u-mb-lg { margin-bottom: var(--_layout---spacing--margin-lg); }
   .u-mb-auto { margin-bottom: auto; }
 
-  /* Enige echte globale utility uit de export (67×). De rest van de u-*-klassen
-     wordt een prop op het betreffende component. */
   .u-sr-only {
     position: absolute;
     width: 1px;
@@ -317,8 +295,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Bewuste afwijking van het origineel — zie FIDELITY.md.
-     Webflow negeerde de OS-instelling volledig. */
+
   *,
   *::before,
   *::after {

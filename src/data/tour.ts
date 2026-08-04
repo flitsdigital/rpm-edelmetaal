@@ -1,53 +1,31 @@
-/** RPM on Tour — taxeren op locatie.
- *
- *  Noem het vervoermiddel niet in de teksten. Het gaat erom dát we langskomen,
- *  niet waarin. Dus "wij komen naar u toe", nooit "wij komen met … naar u toe".
- *
- *  Eén bron voor zowel /goud-verkopen als /goud-verkopen/[stad]. De stops op de
- *  overzichtspagina en die op de stadspagina komen dus uit hetzelfde object en
- *  kunnen niet uit de pas lopen. Dat is hier extra belangrijk: iemand die op de
- *  verkeerde datum voor een dichte deur staat, komt niet terug.
- *
- *  Data staat bewust in code en niet in Supabase. De tourdata verandert een paar
- *  keer per jaar en wordt door één persoon bijgehouden; een tabel plus een
- *  beheerscherm zou meer onderhoud kosten dan het oplevert. Verandert dat, dan
- *  is dit bestand de plek om te vervangen — de componenten kennen alleen de
- *  types hieronder.
- */
+
 
 import type { Usp } from './content';
 
 export interface Stop {
-  /** Zoals getoond: '28 november 2026'. */
+
   datum: string;
-  /** ISO-datum, voor sortering en voor <time datetime>.
-   *  Ontbreekt bij een plaatshouder — dan is het geen datum en dus ook geen
-   *  `<time>`, en komt de stop niet in de Event-markup terecht. */
+
   datumISO?: string;
-  /** Waar we staan, bv. 'Plus Klazienaveen'. */
+
   locatie: string;
-  /** Bv. '17.30 - 18.30'. */
+
   tijd: string;
 }
 
 export interface TourStad {
   slug: string;
   naam: string;
-  /** Straat en huisnummer van de standplaats. Ontbreekt zolang die niet vaststaat —
-   *  liever geen adres dan een adres waar niemand staat. */
+
   adres?: string;
   postcode?: string;
-  /** Eén zin onder de H1 op de stadspagina. */
+
   intro: string;
-  /** Welke foto deze pagina toont. Per stad een andere, zodat de
-   *  pagina's niet identiek zijn — dat leest prettiger en scheelt in de
-   *  beoordeling als bijna-duplicaat. Sleutel uit `images`. */
+
   foto: 'tourOpLocatie' | 'tourZijkant' | 'tourAchter';
   stops: Stop[];
 }
 
-/** Zoeklink naar Google Maps. Zonder adres valt de plaatsnaam terug — die is
- *  altijd juist, alleen minder precies. */
 export const mapsUrl = (stad: TourStad) => {
   const zoekterm = stad.adres
     ? `${stad.adres}, ${stad.postcode ?? ''} ${stad.naam}`.replace(/\s+/g, ' ').trim()
@@ -58,15 +36,6 @@ export const mapsUrl = (stad: TourStad) => {
 const intro = (naam: string) =>
   `Wij komen naar ${naam} toe. Laat uw goud, zilver en andere edelmetalen gratis en vrijblijvend taxeren, vlak bij u in de buurt.`;
 
-/** ⚠️ De stops hieronder zijn plaatshouders, geen echte data.
- *
- *  Ze staan er zodat de opmaak compleet is; de tekst zegt met zoveel woorden
- *  dat er nog niets vaststaat. Bewust géén plausibel ogende datum of adres:
- *  dat leest als een toezegging en stuurt mensen naar een leeg parkeerterrein.
- *
- *  Vervangen zodra RPM de route rond heeft. Zet dan ook `datumISO` erbij —
- *  zonder die waarde komt een stop niet in de Event-markup en dus niet in de
- *  zoekresultaten. */
 const plaatshouder: Stop[] = [
   { datum: 'Datum volgt', locatie: 'Locatie volgt', tijd: 'Tijd volgt' },
   { datum: 'Datum volgt', locatie: 'Locatie volgt', tijd: 'Tijd volgt' },
@@ -79,7 +48,6 @@ export const tourSteden: TourStad[] = [
   { slug: 'beilen', naam: 'Beilen', intro: intro('Beilen'), foto: 'tourZijkant', stops: plaatshouder },
 ];
 
-/** Presentatietekst van de tour. Staat hier zodat de pagina's alleen structuur bevatten. */
 export const tour = {
   eyebrow: 'RPM on Tour',
 
@@ -109,7 +77,6 @@ export const tour = {
 
 export const vindStad = (slug: string) => tourSteden.find((s) => s.slug === slug);
 
-/** De zes redenen onder de stadspagina. Iconen komen uit de bestaande set. */
 export const tourUsps: Usp[] = [
   { icon: 'inkoop', title: 'Inkoop edelmetalen', text: 'Goud, zilver, platina, palladium en andere edelmetalen.' },
   { icon: 'taxatie', title: 'Eerlijke taxaties', text: 'Gratis en vrijblijvend, onder het genot van een kopje koffie.' },
@@ -119,16 +86,6 @@ export const tourUsps: Usp[] = [
   { icon: 'flexibel', title: 'Flexibele tijden', text: 'We plannen de afspraak wanneer het u het beste uitkomt.' },
 ];
 
-
-/** FAQ voor een tourlocatie.
- *
- *  De antwoorden komen uit wat de site elders al belooft — gratis en
- *  vrijblijvend, direct een reëel bod, taxatie aan huis, prijzen per gram op
- *  basis van de dagkoers. Niets verzonnen: waar iets niet vaststaat (zoals de
- *  wijze van uitbetalen) staat er geen vraag over.
- *
- *  Dezelfde tekst gaat als FAQPage de JSON-LD in, dus wat hier staat is precies
- *  wat een zoekmachine te zien krijgt. */
 export const tourFaq = (naam: string) => [
   {
     vraag: 'Moet ik een afspraak maken?',

@@ -1,25 +1,4 @@
-/* themes.css — laag 2: semantische tokens
- *
- * Dit is wat componenten consumeren. Nooit rechtstreeks een --_color---* in een
- * component: dan breekt elke latere themawijziging.
- *
- * De site is dark-only. Uit de export overgenomen na verificatie:
- *
- *  - `data-theme` komt nergens in de markup voor. De enige treffers waren
- *    `data-theme-toggle`-CSS uit het Mast-template, en die toggle bestaat niet
- *    in de body van welke pagina dan ook. Niet overgenomen.
- *
- *  - Webflow had drie componentvarianten die `--primary--background` en
- *    `--primary--background-secondary` omzetten naar `light-dark(neutral-200,
- *    neutral-500)` (in de export zichtbaar als de lightningcss-polyfill).
- *    Die varianten — `.section.secondary`, `.section.cc-footer` met variant en
- *    de nav-variant — worden op geen enkele echte pagina gebruikt. Ook de
- *    bijbehorende `.u-mode-dark` / `.u-mode-light` schakelaars komen nergens in
- *    de markup voor, waardoor `light-dark()` sowieso nooit resolveerde.
- *    Niet overgenomen. Zie ANALYSE.md §2.
- *
- * Komt er later wél een light mode, dan is dit het enige bestand dat wijzigt.
- */
+
 
 @layer tokens {
   :root {

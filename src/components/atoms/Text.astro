@@ -1,6 +1,4 @@
 ---
-/** Lopende tekst in de vier maten uit de export.
- *  De schaal zelf staat als `.p-xl`…`.p-sm` in base.css — zie Heading. */
 interface Props {
   size?: 'xl' | 'lg' | 'body' | 'sm';
   tone?: 'default' | 'secondary' | 'accent';
@@ -20,7 +18,6 @@ const {
 } = Astro.props;
 const Tag = element;
 ---
-
 <Tag
   class:list={['text', `p-${size}`, className]}
   data-tone={tone}

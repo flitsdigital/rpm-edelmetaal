@@ -1,5 +1,4 @@
 ---
-/** Navigatielink met de onderstreping die vanuit links inschuift bij hover. */
 interface Props {
   href: string;
   current?: boolean;
@@ -7,7 +6,6 @@ interface Props {
 
 const { href, current = false } = Astro.props;
 ---
-
 <a class="nav-link" href={href} aria-current={current ? 'page' : undefined}>
   <span class="nav-link__label"><slot /></span>
 </a>

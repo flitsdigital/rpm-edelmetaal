@@ -10,11 +10,6 @@ import Media from '../atoms/Media.astro';
 import RichText from '../molecules/RichText.astro';
 import type { Afbeelding } from '../../data/images';
 
-/** Kop links, tekst rechts (lager beginnend), en daaronder twee staande
- *  portretten naast elkaar waarvan de rechter is verspringt. Staat identiek op
- *  de homepage en op /over-ons.
- *
- *  Ook gebruikt op /contact, daar zonder de twee portretten. */
 interface Props {
   eyebrow?: string;
   title: string;
@@ -23,14 +18,13 @@ interface Props {
   ctaHref?: string;
   images?: [Afbeelding, Afbeelding];
   level?: 1 | 2;
-  /** Visuele schaal, los van het element — zie Heading. Standaard gelijk aan `level`. */
+
   size?: 1 | 2 | 3;
   paddingBottom?: 'default' | 'none';
 }
 
 const { eyebrow, title, html, ctaLabel, ctaHref, images, level = 2, size, paddingBottom = 'none' } = Astro.props;
 ---
-
 <Section paddingBottom={paddingBottom}>
   <Container>
     <Row>

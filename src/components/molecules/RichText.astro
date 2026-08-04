@@ -1,14 +1,4 @@
 ---
-/** Prose die als HTML binnenkomt (CMS-velden, blogtekst).
- *
- *  De koppen, alinea's, lijsten en blockquotes erven de element-regels uit
- *  `base.css` — daar staat de hele schaal al, precies zoals in de export. Hier
- *  staan alleen de dingen die daar níét in zitten.
- *
- *  Dit is de enige plek waar descendant-selectors legitiem zijn: de HTML wordt
- *  op runtime ingevoegd, dus er is geen element om te scopen. Astro's scoped
- *  styles bereiken `set:html`-inhoud niet (astro-gotchas §1).
- */
 interface Props {
   html: string;
   class?: string;
@@ -16,7 +6,6 @@ interface Props {
 
 const { html, class: className } = Astro.props;
 ---
-
 <div class:list={['richtext', className]} set:html={html} />
 
 <style>

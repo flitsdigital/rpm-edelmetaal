@@ -1,11 +1,4 @@
 ---
-/** Eén formulierveld: label + control, met de gedeelde `.input`-styling uit de
- *  export. Eén component in plaats van Input/Select/Textarea, omdat die alle
- *  drie exact dezelfde 25 regels styling zouden dragen.
- *
- *  ponytail: geen Checkbox/Radio — de export heeft daar wel CSS voor, maar geen
- *  enkel formulier op de 7 pagina's gebruikt ze. Toevoegen wanneer dat verandert.
- */
 interface Props {
   name: string;
   label: string;
@@ -28,7 +21,6 @@ const {
   autocomplete,
 } = Astro.props;
 ---
-
 <div class="field" data-control={control}>
   <label class="field__label" for={name}>{label}</label>
 

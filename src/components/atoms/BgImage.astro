@@ -1,19 +1,15 @@
 ---
-/** Achtergrondbeeld dat de hele sectie vult, met een gradient van zwart naar
- *  transparant zodat de tekst erboven leesbaar blijft. Staat op de hero en op
- *  de CTA-secties (4× in de export). */
 interface Props {
   src: string;
   srcset?: string;
   sizes?: string;
-  /** Leeg laten: decoratief. Alleen vullen als het beeld informatie draagt. */
+
   alt?: string;
   loading?: 'lazy' | 'eager';
 }
 
 const { src, srcset, sizes, alt = '', loading = 'lazy' } = Astro.props;
 ---
-
 <div class="bg-img">
   <img class="bg-img__img" src={src} srcset={srcset} sizes={sizes} alt={alt} loading={loading} />
   <div class="bg-img__overlay"></div>

@@ -6,10 +6,6 @@ import Col from '../atoms/Col.astro';
 import GehalteSelect from './GehalteSelect.astro';
 import { metalen } from '../../data/site';
 
-/** Het taxatieformulier — staat op /, /inkoopprijzen en /contact.
- *  Webflow's endpoint is dood na export; `action` wijst naar de eigen
- *  API-route, die de inzending doorzet naar n8n (beslissing 7).
- *  Het meebewegende gehalte-veld zit in GehalteSelect. */
 interface Props {
   action?: string;
   id?: string;
@@ -19,7 +15,6 @@ const { action = '/api/taxatie', id = 'taxatie' } = Astro.props;
 const bron = Astro.url.pathname;
 const metaalOpties = metalen.map((m) => ({ value: m, label: m }));
 ---
-
 <div class="formblock" data-state="idle">
   <form class="form" id={id} action={action} method="post" novalidate>
     <Row gap="md">
@@ -50,8 +45,6 @@ const metaalOpties = metalen.map((m) => ({ value: m, label: m }));
 
     <Field name="bericht" label="Bericht" control="textarea" placeholder="Waar kunnen we mee helpen?" />
 
-    <!-- Honeypot: het origineel had geen spambescherming. Verborgen voor mensen,
-         ingevuld door bots — de API-route weigert de inzending dan. -->
     <div class="formblock__hp" aria-hidden="true">
       <label for={`${id}-website`}>Laat dit veld leeg</label>
       <input id={`${id}-website`} name="website" type="text" tabindex="-1" autocomplete="off" />
@@ -92,7 +85,7 @@ const metaalOpties = metalen.map((m) => ({ value: m, label: m }));
       if (ok) form.hidden = true;
       if (melding) {
         melding.hidden = false;
-        // Focus verplaatsen, anders merkt een screenreader de wissel niet.
+
         melding.setAttribute('tabindex', '-1');
         melding.focus();
       }

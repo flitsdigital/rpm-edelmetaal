@@ -1,21 +1,19 @@
 ---
 import Heading from '../atoms/Heading.astro';
 
-/** Compacte prijskaart per metaal — de rij van vier op de homepage. */
 interface Props {
-  /** Elementsymbool, bv. 'AU'. */
+
   symbool: string;
-  /** Atoomnummer, bv. 79 — staat bovenaan de tegel. */
+
   atoomnummer: number;
   naam: string;
-  /** Marktprijs per gram, 4 decimalen. */
+
   prijs: string;
   accent?: boolean;
 }
 
 const { symbool, atoomnummer, naam, prijs, accent = false } = Astro.props;
 ---
-
 <div class="card" data-accent={accent ? '' : undefined}>
   <div class="card__icon">
     <div class="h6">{atoomnummer}</div>

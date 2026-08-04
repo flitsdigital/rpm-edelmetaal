@@ -9,7 +9,6 @@ import BgImage from '../atoms/BgImage.astro';
 import ReviewsBadge from '../molecules/ReviewsBadge.astro';
 import { images, type Afbeelding } from '../../data/images';
 
-/** Hero van de homepage: schermvullend beeld met de tekst onderin. */
 interface Props {
   title: string;
   text: string;
@@ -18,7 +17,6 @@ interface Props {
 
 const { title, text, image = images.achtergrond } = Astro.props;
 ---
-
 <section class="hero">
   <BgImage src={image.src} srcset={image.srcset} sizes={image.sizes} alt={image.alt} loading="eager" />
   <Container>

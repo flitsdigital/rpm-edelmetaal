@@ -2,19 +2,6 @@ import { supabase } from '../lib/supabase';
 import type { Prijsgroep } from '../components/sections/SectionPrijstabel.astro';
 import type { MetaalPrijs } from './site';
 
-/** Prijzen uit Supabase.
- *
- *  De berekening zit in de view (`bereken_prijs()` in de database), niet hier.
- *  Deze module doet alleen twee dingen: rijen ophalen en ze groeperen per
- *  metaal. Zodra er een tweede plek zou ontstaan waar een prijs uitgerekend
- *  wordt, is er iets mis.
- *
- *  Draait op build-time: de site is statisch, dus de prijzen worden bij elke
- *  build vastgelegd. Een nieuwe marktprijs landt op de site via de deploy-hook
- *  die de cron aanroept — zie supabase/08-deploy-hook.sql.
- */
-
-/** Presentatie per metaal. Dit is tekst, geen data — hoort niet in de database. */
 const PRESENTATIE = {
   goud: {
     label: 'Karaat',
@@ -62,9 +49,6 @@ type Rij = {
   prijs_zakelijk?: string | number;
 };
 
-/** Punt als decimaalteken, zoals de site het nu toont. Zie de openstaande vraag
- *  in PROGRESS.md — een komma is voor een Nederlandse site gebruikelijker, maar
- *  dat verandert wat klanten lezen. Wijzig je het, dan is dit de enige plek. */
 const bedrag = (n: string | number, decimalen = 2) => Number(n).toFixed(decimalen);
 
 const KOLOMMEN =
@@ -101,7 +85,6 @@ function groepeer(rijen: Rij[]): Prijsgroep[] {
   });
 }
 
-/** Publieke prijzen — zonder zakelijke kolom. Die bestaat in deze view niet. */
 export async function haalPrijzen() {
   const { data, error } = await supabase
     .from('v_prijzen_publiek')
@@ -109,8 +92,6 @@ export async function haalPrijzen() {
     .order('metaal_volgorde')
     .order('volgorde');
 
-  // Bewust hard falen: liever geen deploy dan een site met verouderde of lege
-  // prijzen. Bij een statische build stopt `astro build` hier.
   if (error) throw new Error(`Prijzen ophalen mislukt: ${error.message}`);
   if (!data?.length) throw new Error('Geen prijzen gevonden in v_prijzen_publiek.');
 
@@ -118,8 +99,6 @@ export async function haalPrijzen() {
   return { groepen, ...afgeleid(groepen) };
 }
 
-/** B2B-prijzen — inclusief zakelijke kolom. Alleen aanroepen met een ingelogde
- *  sessie; anon krijgt hier een permission error, en dat is de bedoeling. */
 export async function haalPrijzenB2b(client = supabase) {
   const { data, error } = await client
     .from('v_prijzen_b2b')
@@ -134,8 +113,6 @@ export async function haalPrijzenB2b(client = supabase) {
   return { groepen, ...afgeleid(groepen) };
 }
 
-/** De prijsbalk boven de nav en de vier kaarten tonen de marktprijs per metaal,
- *  niet de inkoopprijs van een gehalte. */
 function afgeleid(groepen: Prijsgroep[]) {
   const topPrijzen: MetaalPrijs[] = groepen.map((g) => ({
     symbool: g.symbool,

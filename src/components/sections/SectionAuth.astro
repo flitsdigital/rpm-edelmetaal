@@ -6,16 +6,12 @@ import Heading from '../atoms/Heading.astro';
 import BgImage from '../atoms/BgImage.astro';
 import { images } from '../../data/images';
 
-/** De auth-kaart, overgenomen uit `.section_auth` + `.auth-card`:
- *  schermvullend, links uitgelijnd, half-transparante kaart met blur, over de
- *  achtergrondfoto die ook op de hero staat. */
 interface Props {
   title: string;
 }
 
 const { title } = Astro.props;
 ---
-
 <section class="auth">
   <Container>
     <Row justify="center">
@@ -34,8 +30,6 @@ const { title } = Astro.props;
 </section>
 
 <style>
-  /* `.section_auth.section` uit de export: schermvullend en verticaal
-     gecentreerd. De nav ligt er transparant overheen. */
   .auth {
     display: flex;
     justify-content: flex-start;

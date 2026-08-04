@@ -1,8 +1,6 @@
 ---
 import { logos, type LogoVariant } from '../../data/icons';
 
-/** RPM-logo. `wordmark` staat in de nav (12rem breed), `mark` in de
- *  section-divider. Beide erven hun kleur van de ouder via currentColor. */
 interface Props {
   variant?: LogoVariant;
   label?: string;
@@ -12,7 +10,6 @@ interface Props {
 const { variant = 'wordmark', label, class: className } = Astro.props;
 const logo = logos[variant];
 ---
-
 <svg
   class:list={['logo', className]}
   viewBox={logo.viewBox}

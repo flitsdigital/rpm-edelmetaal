@@ -1,6 +1,4 @@
 ---
-/** Een groep tokens als balkjes op ware grootte — ruimte, gaps, maten.
- *  Zonder `bars` alleen naam + waarde (motion-tokens hebben geen breedte). */
 interface Props {
   label?: string;
   tokens: { name: string; value: string }[];
@@ -9,7 +7,6 @@ interface Props {
 
 const { label, tokens, bars = true } = Astro.props;
 ---
-
 {label && <h3>{label}</h3>}
 <div class="scale">
   {

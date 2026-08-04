@@ -1,19 +1,8 @@
-/* tokens.css — laag 1: primitives
- *
- * Overgenomen uit de Webflow Variables van de export, met de originele namen —
- * dat maakt elke vergelijking met het origineel triviaal.
- * Componenten consumeren deze NIET direct; die gebruiken de semantische tokens
- * uit themes.css.
- *
- * Eén naamswijziging t.o.v. de export: Webflow exporteerde 17 variabelen als
- * `--_x---y\<deleted|variable-<uuid>\>` (restanten van in de Designer verwijderde
- * variabelen). Ze worden alle 17 nog écht gebruikt, dus ze blijven staan — maar
- * onder hun bedoelde naam zonder het uuid-achtervoegsel.
- */
+
 
 @layer tokens {
   :root {
-    /* ---------------------------------------------------------------- kleur */
+
     --_color---neutral--neutral-100: white;
     --_color---neutral--neutral-200: #999;
     --_color---neutral--neutral-300: #666;
@@ -27,21 +16,14 @@
 
     --_color---secondary--yellow: #f8d47a;
 
-    /* Uit `.form-error` in de export; geen Webflow-variabele, wel de enige
-       foutkleur op de site. */
     --_color---feedback--error: #e31700;
     --_color---secondary--blue: #0073e6;
 
-    /* Uit de custom-code van de nav; geen Webflow-variabele. */
     --color-dark: #2b1d15;
 
-    /* ------------------------------------------------------------ typografie */
     --_typography---fonts--heading-font: Cinzel, Georgia, sans-serif;
     --_typography---fonts--primary-font: "Open Sans", Arial, sans-serif;
 
-    /* Fluid-schaal: elke font-size interpoleert tussen --fluid--min en
-     * --fluid--max viewportbreedte. De clamp()-formules hieronder zijn
-     * letterlijk die van Webflow — niet vereenvoudigen, dat wijkt meetbaar af. */
     --_layout---fluid--min: 20;
     --_layout---fluid--max: 85;
 
@@ -145,7 +127,6 @@
     --_typography---eyebrow--letter-spacing: .1em;
     --_typography---eyebrow--bottom-margin: 1.5em;
 
-    /* Alleen gebruikt in de responsive overrides van paragraph-lg / -sm. */
     --_typography---type-paragraph-lg--font-size-md: 1.25rem;
     --_typography---type-paragraph-lg--font-size-sm: 1.1rem;
     --_typography---type-paragraph-lg--font-size-xs: 1.1rem;
@@ -153,7 +134,6 @@
     --_typography---type-paragraph-sm--font-size-sm: .9rem;
     --_typography---type-paragraph-sm--font-size-xs: .9rem;
 
-    /* --------------------------------------------------------------- layout */
     --_layout---grid--gap-main: 1.5rem;
     --_layout---grid--gap-md: 1rem;
     --_layout---grid--gap-sm: .75rem;
@@ -165,7 +145,6 @@
     --_layout---spacing--margin-lg: 3em;
     --_layout---spacing--margin-xxl: 8em;
 
-    /* --------------------------------------------------------------- maten */
     --_size---0rem: 0rem;
     --_size---0-25rem: .25rem;
     --_size---0-5rem: .5rem;
@@ -173,17 +152,12 @@
     --_size---2rem: 2rem;
     --_size---3rem: 3rem;
 
-    /* ---------------------------------------------------------- componenten */
     --_components---container--max-width: calc(var(--_layout---fluid--max) * 1rem);
 
     --_components---section--padding-min-rem: 3;
     --_components---section--padding-max-rem: 5;
     --_components---section--padding: clamp(var(--_components---section--padding-min-rem) * 1rem, ((var(--_components---section--padding-min-rem) - ((var(--_components---section--padding-max-rem) - var(--_components---section--padding-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * 1rem + ((var(--_components---section--padding-max-rem) - var(--_components---section--padding-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_components---section--padding-max-rem) * 1rem);
 
-    /* De CTA-secties gebruiken een dubbele en de footer een halve sectiepadding.
-       Let op: dat is NIET `padding * 2` — in de export worden alleen de rem-delen
-       en de clamp-grenzen geschaald, de vw-component blijft gelijk. Op 1280px
-       scheelt dat 39px (116 i.p.v. 155). Formule daarom letterlijk overgenomen. */
     --_components---section--padding-double: clamp(var(--_components---section--padding-min-rem) * 2rem, ((var(--_components---section--padding-min-rem) - ((var(--_components---section--padding-max-rem) - var(--_components---section--padding-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * 2rem + ((var(--_components---section--padding-max-rem) - var(--_components---section--padding-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_components---section--padding-max-rem) * 2rem);
     --_components---section--padding-half: clamp(var(--_components---section--padding-min-rem) * .5rem, ((var(--_components---section--padding-min-rem) - ((var(--_components---section--padding-max-rem) - var(--_components---section--padding-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min)) * var(--_layout---fluid--min))) * .5rem + ((var(--_components---section--padding-max-rem) - var(--_components---section--padding-min-rem)) / (var(--_layout---fluid--max) - var(--_layout---fluid--min))) * 100vw), var(--_components---section--padding-max-rem) * .5rem);
 
@@ -220,14 +194,11 @@
 
     --_responsive---padding--card: 1.5rem;
 
-    /* ---------------------------------------------------------------- motion */
     --cubic-default: cubic-bezier(0.525, 0, 0, 1);
     --duration-fast: 0.2s;
     --duration-normal: 0.450s;
   }
 
-  /* Responsive overrides. De export herhaalde deze twee blokken 24× (één keer
-   * per pagina); hier staan ze één keer. */
   @media (max-width: 768px) {
     :root {
       --_layout---spacing--margin-xxl: 5em;

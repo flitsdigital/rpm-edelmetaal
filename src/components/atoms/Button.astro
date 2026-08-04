@@ -1,13 +1,4 @@
 ---
-/** Knop of knop-vormige link.
- *
- *  Webflow rendert dit als een `<div class="button">` met daarin een
- *  `aria-hidden` label plus een onzichtbare `<a class="u-link-cover">` met
- *  sr-only tekst — een omweg omdat een Webflow-component geen link kan zijn.
- *  Hier is het gewoon een `<a>` of een `<button>`. Visueel identiek, maar wel
- *  één element in plaats van vier, en zonder dubbele toegankelijke naam.
- *  Vastgelegd als bewuste afwijking in FIDELITY.md.
- */
 interface Props {
   variant?: 'primary' | 'secondary';
   href?: string;
@@ -20,7 +11,6 @@ interface Props {
 const { variant = 'primary', href, type = 'button', full = false, disabled = false, class: className } = Astro.props;
 const Tag = href ? 'a' : 'button';
 ---
-
 <Tag
   class:list={['button', className]}
   data-variant={variant}

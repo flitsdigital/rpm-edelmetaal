@@ -11,15 +11,9 @@ import { images } from '../../data/images';
 import { tourSteden, tour } from '../../data/tour';
 import { tourEvenementen } from '../../data/jsonld';
 
-/* Overzichtspagina van RPM on Tour.
- *
- * De stadspagina's eronder zijn de echte landingspagina's — die ranken op
- * "goud verkopen <plaats>". Deze pagina bindt ze samen en is waar iemand
- * binnenkomt die de plaatsnaam nog niet weet. */
 const { topPrijzen } = await haalPrijzen();
 const evenementen = tourEvenementen(tourSteden);
 ---
-
 <PageLayout
   title={tour.hoofdpagina.title}
   description={tour.hoofdpagina.description}

@@ -1,11 +1,4 @@
 ---
-/** Beeld in een vaste beeldverhouding.
- *
- *  ponytail: plain <img>, geen Astro <Image>. De export levert de afbeeldingen
- *  al in meerdere resoluties en de CSS bepaalt de weergavemaat; er <Image> door
- *  heen halen verandert de rasterisatie en dus de visual diff. Herzien in fase 5
- *  als de performance-audit erom vraagt.
- */
 const RATIOS = {
   '4x3': '4 / 3',
   '16x9': '16 / 9',
@@ -18,7 +11,7 @@ const RATIOS = {
 interface Props {
   src: string;
   alt: string;
-  /** Uit de export overgenomen; laat de browser de juiste resolutie kiezen. */
+
   srcset?: string;
   sizes?: string;
   ratio?: keyof typeof RATIOS;
@@ -38,7 +31,6 @@ const {
   class: className,
 } = Astro.props;
 ---
-
 <div class:list={['media', className]} style={`--ratio:${RATIOS[ratio]}`}>
   <img
     class="media__img"

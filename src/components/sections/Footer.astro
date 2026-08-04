@@ -10,7 +10,6 @@ import { footerLinks, openingstijden, contact } from '../../data/site';
 
 const jaar = new Date().getFullYear();
 ---
-
 <footer class="footer">
   <Container>
     <Row justify="between">
@@ -141,9 +140,6 @@ const jaar = new Date().getFullYear();
 
   .footer__logo {
     display: block;
-    /* 12rem, niet 5rem: het origineel gebruikt hier `.nav-logo_link`.
-       De klasse `.footer-logo_link` (5rem) staat wél in de Webflow-CSS maar
-       wordt op geen enkele pagina gebruikt. */
     width: 12rem;
     line-height: 1;
     color: var(--primary--accent);
@@ -162,8 +158,6 @@ const jaar = new Date().getFullYear();
     color: var(--primary--text-secondary);
   }
 
-  /* 2.5rem uit `.flits-logo` in de export. Stond op 4rem, en dat viel niet op
-     omdat Icon zijn eigen `width: 1em` meebracht en die won. */
   .footer__flits-logo {
     display: block;
     width: 2.5rem;

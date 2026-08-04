@@ -10,14 +10,11 @@ import SectionDivider from '../atoms/SectionDivider.astro';
 import type { IconName } from '../../data/icons';
 import type { Afbeelding } from '../../data/images';
 
-/** Raster van USP-kaarten, met optionele kop erboven. Drie per rij op desktop.
- *  Dekt zowel het blok van drie op de homepage als dat van zes onder de
- *  taxatie-sectie. */
 interface Props {
   title?: string;
   text?: string;
   items: { icon: IconName; title: string; text: string }[];
-  /** Volle-breedte beeld boven de sectie, gevolgd door een divider. */
+
   banner?: Afbeelding;
   paddingTop?: 'default' | 'none';
   paddingBottom?: 'default' | 'none';
@@ -25,7 +22,6 @@ interface Props {
 
 const { title, text, items, banner, paddingTop = 'default', paddingBottom = 'default' } = Astro.props;
 ---
-
 <Section paddingTop={paddingTop} paddingBottom={paddingBottom}>
   {
     banner && (

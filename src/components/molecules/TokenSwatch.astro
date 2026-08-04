@@ -1,19 +1,16 @@
 ---
-/** Eén token als visueel staaltje + naam + waarde + berekende waarde.
- *  Gebruikt door /styleguide voor kleuren, de semantische laag en radii. */
 interface Props {
   name: string;
   value: string;
-  /** 'color' vult het vlak, 'radius' toont de afronding op een accentvlak. */
+
   shape?: 'color' | 'radius';
-  /** Toon ook de door de browser berekende waarde (lost var()-aliassen op). */
+
   showResolved?: boolean;
 }
 
 const { name, value, shape = 'color', showResolved = false } = Astro.props;
 const style = shape === 'radius' ? `border-radius:var(${name})` : `background:var(${name}, ${value})`;
 ---
-
 <figure class="swatch">
   <div class:list={['swatch__chip', `swatch__chip--${shape}`]} style={style}></div>
   <figcaption>

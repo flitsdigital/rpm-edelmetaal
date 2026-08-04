@@ -5,24 +5,20 @@ import { localBusiness } from '../data/jsonld';
 interface Props {
   title: string;
   description?: string;
-  /** Absolute URL; ontbreekt in het origineel, wordt in fase 4 per pagina gezet. */
+
   canonical?: string;
   noindex?: boolean;
-  /** Extra schema.org-blokken naast LocalBusiness. */
+
   jsonLd?: object[];
 }
 
 const { title, description, canonical, noindex = false, jsonLd = [] } = Astro.props;
 
-// ponytail: GA4 alleen in productie. In dev vervuilt het de statistieken en
-// vertraagt het elke reload.
 const GA_ID = 'G-687K5LD8PT';
 const analytics = import.meta.env.PROD;
 ---
-
 <!doctype html>
-<!-- lang was `en` in de Webflow-export terwijl alle content Nederlands is.
-     Bewuste correctie — zie PROGRESS.md. -->
+
 <html lang="nl">
   <head>
     <meta charset="utf-8" />
@@ -40,8 +36,7 @@ const analytics = import.meta.env.PROD;
     {description && <meta name="twitter:description" content={description} />}
 
     {
-      /* Gestructureerde data. Niet op noindex-pagina's: die wil je juist niet
-         in de index, dus daar zou markup tegenstrijdig signaal geven. */
+
       !noindex &&
         [localBusiness, ...jsonLd].map((blok) => (
           <script type="application/ld+json" set:html={JSON.stringify(blok)} />

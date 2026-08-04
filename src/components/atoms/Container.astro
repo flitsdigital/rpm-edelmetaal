@@ -1,6 +1,4 @@
 ---
-/** 88% breed, gecentreerd, tot --_components---container--max-width (85rem).
- *  `nav` maakt er een flex-rij van (de `.container.cc-nav` uit de export). */
 interface Props {
   variant?: 'default' | 'nav';
   class?: string;
@@ -8,7 +6,6 @@ interface Props {
 
 const { variant = 'default', class: className } = Astro.props;
 ---
-
 <div class:list={['container', variant === 'nav' && 'container--nav', className]}>
   <slot />
 </div>

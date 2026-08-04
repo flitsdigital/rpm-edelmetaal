@@ -8,31 +8,17 @@ import NavLink from '../molecules/NavLink.astro';
 import PriceTicker from '../molecules/PriceTicker.astro';
 import { navLinks, b2bLinks, contact, type MetaalPrijs } from '../../data/site';
 
-/** Vaste navigatie: prijsbalk + logo + links + CTA, met burgermenu onder 768px.
- *
- *  Uit de export overgenomen: `data-menu-status` op de nav, en de
- *  scrollrichting op `<body>` (BaseLayout) waardoor de nav krimpt bij omlaag
- *  scrollen.
- *
- *  Bewust NIET overgenomen: het multilevel-dropdownsysteem uit het nav-script
- *  (~150 regels). Er staat op geen enkele pagina een `[data-dropdown-toggle]`
- *  in de markup — het is ongebruikte template-code van Mast.
- *
- *  De B2B-link stond in de export achter `data-ms-content` (Memberstack,
- *  client-side). Vanaf fase 4 komt `isB2b` uit de sessie in de middleware.
- */
 interface Props {
   current?: string;
   prijzen?: MetaalPrijs[];
   isB2b?: boolean;
-  /** De auth-pagina's tonen geen prijsbalk — daar wordt ingelogd, niet gekeken. */
+
   banner?: boolean;
 }
 
 const { current, prijzen = [], isB2b = false, banner = true } = Astro.props;
 const links = [...navLinks, ...b2bLinks];
 ---
-
 <div class="global-nav">
   {
     banner && (
@@ -119,8 +105,6 @@ const links = [...navLinks, ...b2bLinks];
     btn.setAttribute('aria-label', open ? 'Menu openen' : 'Menu sluiten');
   });
 
-  // Scrollrichting op <body>; de nav krimpt bij omlaag scrollen. Drempels uit
-  // de export: 10px verschil om te wisselen, 50px vanaf de bovenkant om te starten.
   let last = 0;
   addEventListener(
     'scroll',
@@ -217,8 +201,6 @@ const links = [...navLinks, ...b2bLinks];
     margin-bottom: 0;
   }
 
-  /* Uitloggen is een POST — een GET zou door een prefetch uitgevoerd kunnen
-     worden. Ziet eruit als de andere navlinks. */
   .nav__logout-knop {
     padding: .5rem 1rem;
     border: 0;
@@ -282,10 +264,6 @@ const links = [...navLinks, ...b2bLinks];
     display: none;
   }
 
-  /* De divider staat in de nav lichter dan in een sectie.
-     Alleen de lijnen krijgen een achtergrond — zet je die ook op de
-     logo-wrapper, dan staat er een grijs blok achter het monogram. Dat was
-     alleen in het mobiele menu te zien, want daar staat de enige nav-divider. */
   .nav :global(.divider__line) { /* guard-ignore: global-css — SectionDivider draagt zijn eigen scope-hash */
     opacity: .4;
     background-color: var(--_color---neutral--neutral-100);
@@ -307,7 +285,6 @@ const links = [...navLinks, ...b2bLinks];
     background-color: var(--_color---neutral--neutral-500);
     transition: opacity var(--duration-fast) var(--cubic-default);
   }
-
 
   @media screen and (max-width: 991px) {
     .nav-banner {

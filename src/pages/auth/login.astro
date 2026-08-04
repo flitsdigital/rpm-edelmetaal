@@ -10,11 +10,10 @@ import { maakServerClient } from '../../lib/supabase-server';
 export const prerender = false;
 
 const supabase = maakServerClient(Astro);
-// Alleen interne paden — anders is `?terug=` een open redirect.
+
 const gevraagd = Astro.url.searchParams.get('terug') ?? '';
 const terug = gevraagd.startsWith('/') && !gevraagd.startsWith('//') ? gevraagd : '/inkoopprijzen-b2b';
 
-// Al ingelogd? Dan meteen door.
 const { data: sessie } = await supabase.auth.getUser();
 if (sessie.user) return Astro.redirect(terug, 302);
 
@@ -27,18 +26,13 @@ if (Astro.request.method === 'POST') {
     password: String(form.get('Password') ?? ''),
   });
 
-  // Eén melding voor "adres onbekend" en "wachtwoord fout". Zou je die uit
-  // elkaar houden, dan kun je met dit formulier uitvinden wélke adressen een
-  // account hebben.
   if (!error) return Astro.redirect(terug, 302);
   fout =
     error.code === 'over_request_rate_limit'
       ? 'Te veel pogingen. Wacht even voordat u het opnieuw probeert.'
       : 'E-mailadres of wachtwoord klopt niet.';
 }
-
 ---
-
 <PageLayout
   title="Inloggen | RPM Edelmetaal"
   current="/auth/login"

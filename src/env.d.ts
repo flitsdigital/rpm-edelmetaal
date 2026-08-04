@@ -4,7 +4,7 @@ import type { SupabaseClient, User } from '@supabase/supabase-js';
 declare global {
   namespace App {
     interface Locals {
-      /** Gezet door de middleware op afgeschermde routes. */
+
       supabase?: SupabaseClient;
       gebruiker?: User;
     }

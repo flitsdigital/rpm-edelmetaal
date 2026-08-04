@@ -1,13 +1,4 @@
 ---
-/** Kolom van het 12-koloms grid. Per breekpunt een aantal van 12; ontbreekt een
- *  breekpunt, dan erft hij die van het breekpunt erboven.
- *
- *  De export had hiervoor 48 losse klassen (.col-lg-1 … .col-xs-12) met
- *  hardgecodeerde percentages. Hier is dat één formule per breekpunt. De
- *  afronding verschilt daardoor in de vierde decimaal (33.3333% i.p.v. 33.33%),
- *  wat bij de breedste container 0,04px scheelt — onder de ruisdrempel van de
- *  visual diff.
- */
 interface Props {
   lg?: number;
   md?: number;
@@ -27,7 +18,6 @@ const vars = [
   .filter(Boolean)
   .join(';');
 ---
-
 <div class:list={['col', className]} style={vars}>
   <slot />
 </div>

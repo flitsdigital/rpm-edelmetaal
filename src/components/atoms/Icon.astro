@@ -1,9 +1,6 @@
 ---
 import { icons, type IconName } from '../../data/icons';
 
-/** Inline SVG uit src/data/icons.ts. Maten komen uit de export:
- *  sm = 1em (`.icon`), md = 1.5em (`.icon-md`), lg = 2.5em (`.icon-lg`).
- *  Zonder `label` is het icoon decoratief en dus verborgen voor screenreaders. */
 interface Props {
   name: IconName;
   size?: 'sm' | 'md' | 'lg';
@@ -14,7 +11,6 @@ interface Props {
 const { name, size = 'sm', tone = 'inherit', label } = Astro.props;
 const icon = icons[name];
 ---
-
 <svg
   class="icon"
   data-size={size}

@@ -36,7 +36,6 @@ const typeMeta = (k: string) => ({
 const HEADINGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 const BODY = ['paragraph-xl', 'paragraph-lg', 'paragraph-body', 'paragraph-sm', 'eyebrow'];
 ---
-
 <BaseLayout title="Styleguide | RPM Edelmetaal" noindex>
   <main class="sg">
     <header>
@@ -141,7 +140,6 @@ const BODY = ['paragraph-xl', 'paragraph-lg', 'paragraph-body', 'paragraph-sm', 
 </BaseLayout>
 
 <script>
-  // Toont de berekende waarde, zodat aliassen hun echte kleur/maat laten zien.
   const root = getComputedStyle(document.documentElement);
   document.querySelectorAll<HTMLElement>('[data-resolved-for]').forEach((el) => {
     el.textContent = root.getPropertyValue(el.dataset.resolvedFor!).trim();

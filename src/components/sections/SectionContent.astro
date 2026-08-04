@@ -10,9 +10,6 @@ import Media from '../atoms/Media.astro';
 import RichText from '../molecules/RichText.astro';
 import type { Afbeelding } from '../../data/images';
 
-/** Tekst aan de ene kant, beeld aan de andere. Het meest hergebruikte
- *  sectiepatroon: 7 keer over drie pagina's, met alleen de kant van het beeld
- *  en de inhoud als verschil. */
 interface Props {
   eyebrow?: string;
   title: string;
@@ -21,14 +18,13 @@ interface Props {
   ctaLabel?: string;
   ctaHref?: string;
   image: Afbeelding;
-  /** Staand kader standaard, zoals op over-ons en testwijze. Een breed onderwerp
-   *  — een breed vooraanzicht bijvoorbeeld — verdrinkt daarin; die krijgt '4x3'. */
+
   imageRatio?: '3x4' | '4x3' | '1x1' | '16x9';
   imagePosition?: 'left' | 'right';
   paddingTop?: 'default' | 'none';
   paddingBottom?: 'default' | 'none';
   level?: 1 | 2 | 3;
-  /** Visuele schaal, los van het element. Standaard gelijk aan `level`. */
+
   size?: 1 | 2 | 3;
 }
 
@@ -48,7 +44,6 @@ const {
   size,
 } = Astro.props;
 ---
-
 <Section paddingTop={paddingTop} paddingBottom={paddingBottom}>
   <Container>
     <Row justify="between">
@@ -88,8 +83,6 @@ const {
 </Section>
 
 <style>
-  /* RichText haalt de ondermarge van zijn laatste element weg, en een ul heeft
-     zelf geen bovenmarge. Zonder deze regel plakt de lijst tegen de tekst. */
   ul {
     margin-top: var(--_typography---paragraph-body--bottom-margin);
   }

@@ -1,11 +1,4 @@
 ---
-/** Klein gouden label boven een kop.
- *
- *  Twee elementen, niet één: de padding staat in `em` en rekent in de export
- *  tegen de fontsize van de ouder (≈15,9px), terwijl de tekst zelf de veel
- *  kleinere eyebrow-schaal heeft (≈12,7px). Samenvouwen tot één element maakt
- *  het label 2,4px smaller en 2,4px lager.
- */
 interface Props {
   align?: 'left' | 'center';
   flush?: boolean;
@@ -13,7 +6,6 @@ interface Props {
 
 const { align = 'left', flush = false } = Astro.props;
 ---
-
 <div class="eyebrow" data-align={align} data-flush={flush ? '' : undefined}>
   <div class="eyebrow__text"><slot /></div>
 </div>

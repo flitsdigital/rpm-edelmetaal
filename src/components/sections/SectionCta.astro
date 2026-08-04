@@ -10,9 +10,6 @@ import BgImage from '../atoms/BgImage.astro';
 import ReviewsBadge from '../molecules/ReviewsBadge.astro';
 import { images, type Afbeelding } from '../../data/images';
 
-/** Gecentreerde call-to-action op een achtergrondbeeld. Komt 6× voor over de
- *  site (2× alleen al op de homepage). Verticale ruimte is verdubbeld — zie de
- *  opmerking bij `--_components---section--padding-double`. */
 interface Props {
   title: string;
   text: string;
@@ -29,7 +26,6 @@ const {
   image = images.achtergrond,
 } = Astro.props;
 ---
-
 <Section paddingTop="double" paddingBottom="double" class="cta">
   <Container>
     <Row justify="center">

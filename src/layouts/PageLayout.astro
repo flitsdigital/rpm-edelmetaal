@@ -4,24 +4,18 @@ import Navbar from '../components/sections/Navbar.astro';
 import Footer from '../components/sections/Footer.astro';
 import type { MetaalPrijs } from '../data/site';
 
-/** Elke publieke pagina: nav + inhoud + footer.
- *  Losgehouden van BaseLayout, zodat de auth-routes in fase 4 wél de meta en
- *  fonts krijgen maar niet de site-navigatie. */
 interface Props {
   title: string;
   description?: string;
   canonical?: string;
   noindex?: boolean;
-  /** Pad van de huidige pagina, voor de actieve staat in de nav. */
+
   current?: string;
   prijzen?: MetaalPrijs[];
   isB2b?: boolean;
-  /** De nav staat vast bovenaan, dus de inhoud krijgt standaard 8rem ruimte om
-   *  er niet onder te vallen (`.page-main` in de export). Zet op `false` als de
-   *  eerste sectie daar bewust achter door moet lopen: de schermvullende hero op
-   *  de homepage, of een section-divider die de ruimte zelf al levert. */
+
   navRuimte?: boolean;
-  /** De auth-pagina's hebben wél de nav maar geen footer — schermvullende kaart. */
+
   footer?: boolean;
   banner?: boolean;
   jsonLd?: object[];
@@ -41,7 +35,6 @@ const {
   jsonLd,
 } = Astro.props;
 ---
-
 <BaseLayout title={title} description={description} canonical={canonical} noindex={noindex} jsonLd={jsonLd}>
   <div class="page">
     <Navbar current={current} prijzen={prijzen} isB2b={isB2b} banner={banner} />

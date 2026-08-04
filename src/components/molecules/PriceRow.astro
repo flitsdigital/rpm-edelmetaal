@@ -1,27 +1,21 @@
 ---
-/** Eén gehalte met zijn inkoopprijs, in de grote tabel op /inkoopprijzen.
- *
- *  `zakelijk` is optioneel en wordt alleen meegegeven op de B2B-route. Het is
- *  bewust een aparte prop en géén client-side check: als de waarde er niet is,
- *  staat hij ook niet in de HTML. */
 interface Props {
-  /** Het getal in het vierkantje, bv. '24' of '925'. */
+
   nummer: string;
-  /** Label ernaast: 'Karaat' bij goud, 'Gehalte' bij de rest. */
+
   label: string;
-  /** 'Prijs particulier:' bij goud, 'Prijs:' bij de rest — zo staat het live. */
+
   prijslabel: string;
-  /** Fijn gehalte als tekst, bv. '999'. */
+
   gehalte: string;
   prijs: string;
   zakelijk?: string;
-  /** Kleurt het nummervierkantje goud op de goud-tab. */
+
   accent?: boolean;
 }
 
 const { nummer, label, prijslabel, gehalte, prijs, zakelijk, accent = false } = Astro.props;
 ---
-
 <div class="price" data-accent={accent ? '' : undefined}>
   <div class="price__header">
     <div class="price__title">

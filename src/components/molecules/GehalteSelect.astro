@@ -2,22 +2,13 @@
 import Field from './Field.astro';
 import { gehaltesPerMetaal, metalen } from '../../data/site';
 
-/** Het gehalte-veld dat meebeweegt met het gekozen metaal.
- *
- *  Alle vier de lijsten staan in de HTML; alleen de actieve is zichtbaar,
- *  `required` en ingeschakeld. In de export werden ze bij elke wijziging uit de
- *  DOM geknipt en weer ingeplakt — hetzelfde resultaat, veel meer manieren om
- *  stuk te gaan. Uitgeschakelde velden worden bovendien niet meegestuurd, dus
- *  de inzending bevat precies één gehalte.
- */
 interface Props {
-  /** Naam van de select waar dit veld op reageert. */
+
   bron: string;
 }
 
 const { bron } = Astro.props;
 ---
-
 <div class="gehalte" data-bron={bron}>
   {
     metalen.map((m, i) => (

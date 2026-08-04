@@ -1,16 +1,4 @@
-/* fonts.css — @font-face
- *
- * Dezelfde bestanden als de export, gekopieerd naar public/fonts/.
- * De export had elke regel dubbel (één keer uit de site-CSS, één keer uit een
- * inline <style>); hier staan ze één keer.
- *
- * Twee dingen uit de export bewust NIET overgenomen:
- *  - De Google Fonts WebFont-loader in de <head>, die Open Sans 300/400/600/
- *    700/800 + italics ophaalde bovenop deze self-hosted bestanden. Dubbel en
- *    render-blocking; 300/600/800 worden nergens gebruikt. Weight 400 en 700
- *    zijn hieronder gedekt, dus visueel identiek.
- *  - Het `webflow-icons` @font-face met een lege `src` — Webflow-cruft.
- */
+
 
 @font-face {
   font-family: Cinzel;

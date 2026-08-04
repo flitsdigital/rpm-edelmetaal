@@ -1,16 +1,12 @@
 ---
 import type { MetaalPrijs } from '../../data/site';
 
-/** De actuele inkoopprijs per metaal in de balk boven de nav.
- *  Kwam in de export uit een Webflow CMS-lijst; komt straks uit
- *  `v_prijzen_publiek`. Lege lijst = niets tonen, geen lege balk. */
 interface Props {
   metalen: MetaalPrijs[];
 }
 
 const { metalen } = Astro.props;
 ---
-
 {
   metalen.length > 0 && (
     <ul class="ticker">

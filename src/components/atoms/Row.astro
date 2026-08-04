@@ -1,6 +1,4 @@
 ---
-/** Rij van het 12-koloms grid. Negatieve marges compenseren de padding van Col,
- *  zodat kolommen aan de containerrand uitlijnen. */
 interface Props {
   justify?: 'start' | 'center' | 'between' | 'around' | 'end';
   align?: 'stretch' | 'center' | 'end';
@@ -10,7 +8,6 @@ interface Props {
 
 const { justify = 'start', align = 'stretch', gap = 'main', class: className } = Astro.props;
 ---
-
 <div class="row" data-justify={justify} data-align={align} data-gap={gap} class:list={[className]}>
   <slot />
 </div>
@@ -42,7 +39,6 @@ const { justify = 'start', align = 'stretch', gap = 'main', class: className } =
     margin-inline: calc(var(--_layout---grid--gap-sm) / 2 * -1);
   }
 
-  /* De export gaf row-gap-button bewust de md-marge, niet de button-marge. */
   .row[data-gap='button'] {
     row-gap: var(--_layout---grid--gap-button);
     margin-inline: calc(var(--_layout---grid--gap-md) / 2 * -1);

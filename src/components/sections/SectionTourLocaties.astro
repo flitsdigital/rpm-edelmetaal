@@ -11,10 +11,6 @@ import TourStop from '../molecules/TourStop.astro';
 import Text from '../atoms/Text.astro';
 import { tourSteden, tour } from '../../data/tour';
 
-/** De locaties van de tour, per stad uitklapbaar.
- *
- *  Gebruikt de bestaande Accordion via slots, zodat het open/dicht-gedrag, de
- *  animatie en de toetsenbordbediening maar op één plek staan. */
 interface Props {
   title: string;
   text?: string;
@@ -24,7 +20,6 @@ interface Props {
 
 const { title, text, ctaLabel, ctaHref } = Astro.props;
 ---
-
 <Section>
   <Container>
     <SectionIntro title={title} text={text} />

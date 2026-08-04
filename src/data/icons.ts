@@ -1,11 +1,4 @@
-/** Alle inline SVG's uit de Webflow-export, één keer.
- *  De export herhaalde deze markup 76× over 7 pagina's (45 kB, waarvan 24 kB
- *  logo's). Uit elke icoon zijn de no-op Figma-maskers gestript — een <mask> met
- *  een rect ter grootte van de hele viewBox doet niets — en de resterende ids
- *  zijn per icoon genamespaced.
- *
- *  Gebruik: <Icon name="phone" /> · <Logo variant="wordmark" />
- */
+
 export type IconName = keyof typeof icons;
 
 export const icons = {

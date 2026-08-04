@@ -13,14 +13,6 @@ import { haalPrijzen } from '../../data/prijzen';
 import { images } from '../../data/images';
 import { tourEvenementen, faqPageVan } from '../../data/jsonld';
 
-/* Eén landingspagina per tourlocatie.
- *
- * Dynamische route in plaats van een bestand per stad: de steden staan al in
- * src/data/tour.ts, en een tweede lijst in de vorm van bestandsnamen zou daar
- * onvermijdelijk van gaan afwijken. Een stad toevoegen is nu één object.
- *
- * De prijzen komen uit dezelfde Supabase-view als /inkoopprijzen — een
- * landingspagina met eigen, afwijkende prijzen is erger dan geen prijzen. */
 export async function getStaticPaths() {
   return tourSteden.map((stad) => ({ params: { stad: stad.slug }, props: { stad } }));
 }
@@ -32,15 +24,11 @@ interface Props {
 const { stad } = Astro.props;
 const { groepen, topPrijzen } = await haalPrijzen();
 
-// Alleen goud: dit is een landingspagina voor "goud verkopen in <plaats>".
-// Zilver, platina en palladium staan op /inkoopprijzen.
 const goud = groepen.filter((g) => g.metaal === 'Goud');
 
 const eersteStop = stad.stops[0];
 const url = `https://www.rpmedelmetaal.nl/goud-verkopen/${stad.slug}`;
 
-// Alleen tonen wat we écht weten. Zolang de datum of het adres ontbreekt, staat
-// er geen chip — een lege of gegokte waarde stuurt mensen de verkeerde kant op.
 const chips = [
   ...(eersteStop
     ? [{ icon: 'calendar' as const, label: eersteStop.datum, datetime: eersteStop.datumISO }]
@@ -51,7 +39,6 @@ const chips = [
 const vragen = tourFaq(stad.naam);
 const evenementen = [...tourEvenementen([stad]), faqPageVan(vragen)];
 ---
-
 <PageLayout
   title={`Goud verkopen in ${stad.naam} | RPM Edelmetaal`}
   description={`RPM Edelmetaal komt naar ${stad.naam} toe. Bekijk de data en laat uw goud gratis en vrijblijvend taxeren, vlak bij u in de buurt.`}
@@ -91,7 +78,6 @@ const evenementen = [...tourEvenementen([stad]), faqPageVan(vragen)];
     text="Wij kopen goud, zilver en andere edelmetalen in — eerlijk, transparant en met persoonlijke aandacht. Kom langs bij een van onze stops of laat uw sieraden gratis en vrijblijvend taxeren."
     items={tourUsps}
   />
-
 
   <SectionDivider />
 

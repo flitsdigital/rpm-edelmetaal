@@ -7,20 +7,18 @@ import Button from '../atoms/Button.astro';
 import SectionIntro from './SectionIntro.astro';
 import InkoopCard from '../molecules/InkoopCard.astro';
 
-/** Compacte prijzenrij op de homepage: vier kaarten plus een doorverwijzing. */
 interface Props {
   title: string;
   text?: string;
   kaarten: { symbool: string; atoomnummer: number; naam: string; prijs: string }[];
   level?: 1 | 2;
-  /** De doorverwijsknop staat alleen op de homepage. */
+
   knop?: boolean;
   paddingTop?: 'default' | 'none';
 }
 
 const { title, text, kaarten, level = 2, knop = true, paddingTop = 'none' } = Astro.props;
 ---
-
 <Section paddingTop={paddingTop}>
   <Container>
     <SectionIntro title={title} text={text} level={level} />

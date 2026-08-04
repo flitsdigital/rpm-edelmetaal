@@ -2,28 +2,17 @@
 import AccordionItem from './AccordionItem.astro';
 import Text from '../atoms/Text.astro';
 
-/** FAQ-accordeon. Open/dicht via de `grid-template-rows: 0fr → 1fr`-truc uit de
- *  export, zodat de hoogte animeert zonder JS-metingen. De trigger is hier een
- *  echte `<button>` met `aria-expanded`; in de export was het een `<div>` en
- *  daarmee niet bedienbaar met het toetsenbord. Zie FIDELITY.md.
- *
- *  Zonder `items` is dit alleen de lijst en vul je hem met eigen
- *  `<AccordionItem>`s. Zo hergebruikt de tourlocatie-accordeon het gedrag en de
- *  animatie, zonder dat dit component iets van tourdata hoeft te weten.
- *  (Slots met een berekende naam kan Astro niet — vandaar een los item-component
- *  in plaats van `slot={`paneel-${i}`}`.) */
 interface Props {
   items?: { vraag: string; antwoord: string }[];
-  /** Sluit andere items bij het openen — `data-accordion-close-siblings` in de export. */
+
   closeSiblings?: boolean;
-  /** Index van het item dat open begint; -1 voor allemaal dicht. */
+
   openIndex?: number;
   id?: string;
 }
 
 const { items, closeSiblings = true, openIndex = 0, id = 'faq' } = Astro.props;
 ---
-
 <ul class="acc" data-close-siblings={closeSiblings ? 'true' : 'false'}>
   {
     items ? (

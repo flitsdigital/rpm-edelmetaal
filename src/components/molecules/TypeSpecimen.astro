@@ -1,7 +1,6 @@
 ---
-/** Eén typografie-stap: voorbeeldtekst op ware grootte + de tokenwaarden ernaast. */
 interface Props {
-  /** Sleutel binnen --_typography---<key>--*, bv. 'h1' of 'paragraph-lg'. */
+
   token: string;
   sample: string;
   meta: { minRem?: string; maxRem?: string; lineHeight?: string; letterSpacing?: string };
@@ -11,7 +10,6 @@ const { token, sample, meta } = Astro.props;
 const v = (prop: string) => `var(--_typography---${token}--${prop})`;
 const style = `font-family:${v('font')};font-size:${v('font-size')};line-height:${v('line-height')};font-weight:${v('font-weight')};letter-spacing:${v('letter-spacing')}`;
 ---
-
 <div class="specimen">
   <div style={style}>{sample}</div>
   <dl>

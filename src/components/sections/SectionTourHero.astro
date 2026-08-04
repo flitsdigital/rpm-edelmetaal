@@ -9,14 +9,6 @@ import Icon from '../atoms/Icon.astro';
 import type { IconName } from '../../data/icons';
 import { images } from '../../data/images';
 
-/** Hero van de tourpagina's: beeld met een verloop naar zwart en de inhoud
- *  gecentreerd erover.
- *
- *  Anders dan HeroHome, die links uitlijnt en de reviewbalk toont. Dit is een
- *  landingspagina: één boodschap, één plek om te kijken.
- *
- *  De chips boven de kop dragen de feiten waarvoor iemand de deur uitgaat —
- *  datum en adres. Daarom een `<time>` en geen losse tekst. */
 interface Props {
   eyebrow?: string;
   chips?: { icon: IconName; label: string; datetime?: string }[];
@@ -26,11 +18,9 @@ interface Props {
 
 const { eyebrow, chips = [], title, text } = Astro.props;
 ---
-
 <section class="tour-hero">
   <BgImage {...images.tourHero} alt="" loading="eager" />
-  {/* De foto is bij daglicht genomen en draagt zelf grote letters. Zonder
-      een extra waas botst de kop met de belettering en is hij slecht te lezen. */}
+  {}
   <div class="tour-hero__waas" aria-hidden="true"></div>
   <Container>
     <Row justify="center">
@@ -74,9 +64,7 @@ const { eyebrow, chips = [], title, text } = Astro.props;
     align-items: center;
     min-height: 37rem;
     position: relative;
-    /* De nav staat vast bovenaan en ligt hier transparant overheen. De inhoud is
-       verticaal gecentreerd, dus zonder deze 8rem — dezelfde compensatie die
-       `.page__main[data-nav-ruimte]` gebruikt — schuift alles onder de nav. */
+
     padding-top: calc(var(--_components---section--padding-double) + 8rem);
     padding-bottom: var(--_components---section--padding-double);
     overflow: clip;
@@ -120,8 +108,7 @@ const { eyebrow, chips = [], title, text } = Astro.props;
     background-color: color-mix(in hsl, var(--_color---neutral--neutral-400) 30%, transparent 70%);
     color: var(--primary--accent-light);
     font-family: var(--_typography---eyebrow--font);
-    /* Vast 1rem, niet de H6-schaal: die loopt op tot 1.25rem en dan wordt
-       de chip groter dan de bedoeling. */
+
     font-size: 1rem;
     line-height: 1.2;
   }

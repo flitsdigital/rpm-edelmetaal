@@ -8,30 +8,20 @@ import Text from '../atoms/Text.astro';
 import PriceRow from '../molecules/PriceRow.astro';
 import SectionIntro from './SectionIntro.astro';
 
-/** De grote prijstabel met een tab per metaal.
- *
- *  Herbouwd op de WAI-ARIA tabs-pattern: `role="tablist"` met echte knoppen,
- *  pijltjesnavigatie en `aria-selected`. In de export was elke tab een `<div>`
- *  met een onzichtbare `<button tabindex="-1">` eroverheen — niet bedienbaar
- *  met het toetsenbord.
- *
- *  `zakelijk` per rij komt alleen mee op de B2B-route. Ontbreekt hij, dan staat
- *  de zakelijke prijs ook niet in de HTML — dat is de hele bedoeling.
- */
 export type Prijsgroep = {
   metaal: string;
   symbool: string;
-  /** Atoomnummer — staat op de compacte kaart boven het symbool (Au = 79). */
+
   atoomnummer: number;
-  /** Marktprijs per gram met 4 decimalen, zoals de prijsbalk en de kaarten hem tonen. */
+
   marktprijs: string;
-  /** 'Karaat' bij goud, 'Gehalte' bij de rest. */
+
   label: string;
-  /** 'Prijs particulier:' bij goud, 'Prijs:' bij de rest — zo staat het live. */
+
   prijslabel: string;
   titel: string;
   intro: string;
-  /** Widget-URL van goldbroker; alleen goud en zilver hadden er een. */
+
   widget?: string;
   rijen: { nummer: string; gehalte: string; prijs: string; zakelijk?: string }[];
 };
@@ -39,20 +29,18 @@ export type Prijsgroep = {
 interface Props {
   groepen: Prijsgroep[];
   id?: string;
-  /** Kop boven de tabs. Op /inkoopprijzen staat die al in een eigen sectie
-   *  erboven; op de tourpagina's hoort hij bij de tabel zelf. */
+
   title?: string;
   text?: string;
 }
 
 const { groepen, id = 'prijzen', title, text } = Astro.props;
 ---
-
 <Section>
   <Container>
     {title && <div class="u-mb-lg"><SectionIntro title={title} text={text} /></div>}
     <div class="tabs">
-      {/* Eén metaal betekent niets te kiezen; een tablist met één knop is ruis. */}
+      {}
       <div class="tabs__menu" role="tablist" aria-label="Kies een edelmetaal" hidden={groepen.length < 2}>
         {
           groepen.map((g, i) => (
@@ -161,7 +149,6 @@ const { groepen, id = 'prijzen', title, text } = Astro.props;
     flex-wrap: wrap;
   }
 
-  /* [hidden] is maar een attribuut; `display: flex` hierboven wint daarvan. */
   .tabs__menu[hidden] {
     display: none;
   }

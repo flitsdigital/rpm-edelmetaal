@@ -3,9 +3,6 @@ import Icon from '../atoms/Icon.astro';
 import Button from '../atoms/Button.astro';
 import type { Stop } from '../../data/tour';
 
-/** Eén stop van de tour: datum, locatie en tijd naast elkaar, met een knop naar
- *  de stadspagina. De datum staat in een `<time>` zodat hij machineleesbaar is —
- *  dit is de informatie waarvoor mensen de deur uitgaan. */
 interface Props {
   stop: Stop;
   href: string;
@@ -13,7 +10,6 @@ interface Props {
 
 const { stop, href } = Astro.props;
 ---
-
 <div class="stop">
   <div class="stop__meta">
     <span class="stop__item">
@@ -75,8 +71,6 @@ const { stop, href } = Astro.props;
       align-items: stretch;
     }
 
-    /* De scheidingsstreepjes staan tussen items die onder elkaar komen te
-       staan; dan scheiden ze niets meer. */
     .stop__streep {
       display: none;
     }

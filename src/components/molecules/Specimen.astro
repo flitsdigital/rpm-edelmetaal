@@ -1,7 +1,4 @@
 ---
-/** Eén blok op /components: titel, korte toelichting, de props-signatuur en het
- *  levende voorbeeld. Bestaat zodat de showcase geen 20× dezelfde kop-plus-kader
- *  herhaalt. */
 interface Props {
   title: string;
   note?: string;
@@ -10,7 +7,6 @@ interface Props {
 
 const { title, note, props } = Astro.props;
 ---
-
 <section class="spec">
   <h2 class="spec__title">{title}</h2>
   {note && <p class="spec__note">{note}</p>}

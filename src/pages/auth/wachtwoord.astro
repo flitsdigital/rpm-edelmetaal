@@ -7,16 +7,6 @@ import Text from '../../components/atoms/Text.astro';
 import Melding from '../../components/molecules/Melding.astro';
 import { maakServerClient } from '../../lib/supabase-server';
 
-/* Eén pagina voor twee momenten, want het is dezelfde handeling vanuit de
- * bezoeker gezien: "ik moet een wachtwoord hebben."
- *
- *   - Mét sessie (binnengekomen via een invite- of herstelmail): nieuw
- *     wachtwoord instellen.
- *   - Zonder sessie: herstelmail aanvragen.
- *
- * Het origineel had hier een onafgemaakte Memberstack-placeholder ("Step 1 of
- * 4"), dus er is niets om na te bouwen.
- */
 export const prerender = false;
 
 const supabase = maakServerClient(Astro);
@@ -31,7 +21,7 @@ if (Astro.request.method === 'POST') {
 
   if (heeftSessie) {
     const wachtwoord = String(form.get('Password') ?? '');
-    // Minimum uit Supabase Auth; korter wordt daar toch geweigerd.
+
     if (wachtwoord.length < 8) {
       melding = { soort: 'fout', tekst: 'Kies een wachtwoord van minstens 8 tekens.' };
     } else {
@@ -43,8 +33,7 @@ if (Astro.request.method === 'POST') {
     await supabase.auth.resetPasswordForEmail(String(form.get('Email') ?? '').trim(), {
       redirectTo: new URL('/auth/callback?terug=%2Fauth%2Fwachtwoord', Astro.url).href,
     });
-    // Bewust geen onderscheid tussen bekend en onbekend: anders is dit een
-    // manier om accounts op te sommen.
+
     klaar = true;
     melding = {
       soort: 'ok',
@@ -52,9 +41,7 @@ if (Astro.request.method === 'POST') {
     };
   }
 }
-
 ---
-
 <PageLayout
   title={heeftSessie ? 'Wachtwoord instellen | RPM Edelmetaal' : 'Wachtwoord vergeten | RPM Edelmetaal'}
   banner={false}

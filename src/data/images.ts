@@ -1,20 +1,10 @@
-/** De 16 afbeeldingen die de zeven echte pagina's gebruiken, met de srcsets
- *  precies zoals Webflow ze genereerde. De andere 81 bestanden in de export
- *  (10,6 MB) horen bij de dev-pagina's van het Mast-template en zijn niet
- *  gekopieerd.
- *
- *  Eén plek voor alle beeldverwijzingen: pagina's noemen een sleutel, niet een
- *  pad. Dat scheelt bij het straks vervangen van beeldmateriaal.
- */
+
 export type Afbeelding = { src: string; srcset?: string; sizes?: string; alt: string };
 
 const p = (naam: string) => `/images/${naam}`;
 
 export const images = {
-  /* ── RPM on Tour ────────────────────────────────────────────────────────
-     Aangeleverd door RPM. Uitgesneden naar 4:3 zodat ze naast een tekstkolom
-     passen. De alt-teksten benoemen bewust geen voertuigtype — in de teksten
-     gaat het erom dát we langskomen, niet waarin. */
+
   tourHero: {
     src: p('tour-hero-1440.jpg'),
     srcset: `${p('tour-hero-500.jpg')} 500w, ${p('tour-hero-800.jpg')} 800w, ${p('tour-hero-1080.jpg')} 1080w, ${p('tour-hero-1440.jpg')} 1440w`,
@@ -40,7 +30,6 @@ export const images = {
     alt: 'RPM Edelmetaal op locatie, gezien vanaf de ingang',
   },
 
-  /** Achtergrond van de hero en alle CTA-secties. */
   achtergrond: {
     src: p('Bg-.jpg'),
     srcset: `${p('Bg--p-500.jpg')} 500w, ${p('Bg--p-800.jpg')} 800w, ${p('Bg--p-1080.jpg')} 1080w, ${p('Bg-.jpg')} 1440w`,

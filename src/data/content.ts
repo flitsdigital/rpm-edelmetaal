@@ -1,12 +1,4 @@
-/** De teksten van de zeven pagina's, letterlijk uit de Webflow-export.
- *
- *  Titels en meta-descriptions zijn woordelijk overgenomen: tijdens een
- *  technische migratie iets herschrijven maakt elke rankingverandering
- *  onattribueerbaar.
- *
- *  Typefouten uit het origineel zijn NIET gecorrigeerd — die staan als losse
- *  vraag in PROGRESS.md, zodat de conversie zelf tekstueel neutraal blijft.
- */
+
 import type { IconName } from './icons';
 
 export const seo = {
@@ -117,9 +109,6 @@ export const cta = {
   text: 'Plan een gratis en vrijblijvende taxatie bij ons in de winkel of aan huis. Eerlijke prijzen, persoonlijke service en directe uitbetaling.',
 };
 
-/** Onder deze regel staat de tekst letterlijk zoals op rpmedelmetaal.nl, inclusief
- *  de typefouten daar. Zie de lijst in PROGRESS.md: corrigeren is een inhoudelijke
- *  keuze van de klant, niet van de conversie. */
 export const contactSectie = {
   title: 'Persoonlijk advies en vrijblijvende taxatie, bij u thuis of in Sneek',
   text: 'Heeft u vragen over de waarde van uw sieraden of wilt u direct een taxatie aanvragen? Wij staan klaar om u te helpen in onze winkel in Sneek of gewoon bij u thuis.',

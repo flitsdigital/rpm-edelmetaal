@@ -7,6 +7,7 @@ import Text from '../atoms/Text.astro';
 import BgImage from '../atoms/BgImage.astro';
 import Icon from '../atoms/Icon.astro';
 import type { IconName } from '../../data/icons';
+import { images } from '../../data/images';
 
 /** Hero van de tourpagina's: beeld met een verloop naar zwart en de inhoud
  *  gecentreerd erover.
@@ -27,7 +28,10 @@ const { eyebrow, chips = [], title, text } = Astro.props;
 ---
 
 <section class="tour-hero">
-  <BgImage src="/images/tour-hero.png" alt="" loading="eager" />
+  <BgImage {...images.tourHero} alt="" loading="eager" />
+  {/* De foto is bij daglicht genomen en de wagen draagt zelf grote letters. Zonder
+      een extra waas botst de kop met de belettering en is hij slecht te lezen. */}
+  <div class="tour-hero__waas" aria-hidden="true"></div>
   <Container>
     <Row justify="center">
       <Col lg={10} md={12}>
@@ -77,6 +81,17 @@ const { eyebrow, chips = [], title, text } = Astro.props;
     padding-bottom: var(--_components---section--padding-double);
     overflow: clip;
     background-color: var(--primary--background);
+  }
+
+  .tour-hero__waas {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--primary--background) 55%, transparent),
+      color-mix(in srgb, var(--primary--background) 72%, transparent) 55%,
+      var(--primary--background)
+    );
   }
 
   .tour-hero__inhoud {

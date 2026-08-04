@@ -7,6 +7,7 @@ import SectionContent from '../../components/sections/SectionContent.astro';
 import SectionContact from '../../components/sections/SectionContact.astro';
 import Button from '../../components/atoms/Button.astro';
 import { haalPrijzen } from '../../data/prijzen';
+import { images } from '../../data/images';
 import { tourSteden, tour } from '../../data/tour';
 import { tourEvenementen } from '../../data/jsonld';
 
@@ -48,7 +49,8 @@ const evenementen = tourEvenementen(tourSteden);
       .split('\n\n')
       .map((p) => `<p>${p}</p>`)
       .join('')}
-    image={{ src: '/images/tour-taxatie.png', alt: 'Taxatie van gouden sieraden in de camper' }}
+    image={images.tourWagen}
+    imageRatio="4x3"
   />
 
   <SectionContact title={tour.contact.titel} text={tour.contact.tekst} formId="taxatie-tour" />

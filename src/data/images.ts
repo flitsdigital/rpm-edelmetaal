@@ -11,6 +11,34 @@ export type Afbeelding = { src: string; srcset?: string; sizes?: string; alt: st
 const p = (naam: string) => `/images/${naam}`;
 
 export const images = {
+  /* ── RPM on Tour ────────────────────────────────────────────────────────
+     Foto's van de taxatiewagen, aangeleverd door RPM. De portretopnames zijn
+     midden uitgesneden naar 4:3 zodat ze naast een tekstkolom passen. */
+  tourHero: {
+    src: p('tour-hero-1440.jpg'),
+    srcset: `${p('tour-hero-500.jpg')} 500w, ${p('tour-hero-800.jpg')} 800w, ${p('tour-hero-1080.jpg')} 1080w, ${p('tour-hero-1440.jpg')} 1440w`,
+    sizes: '100vw',
+    alt: 'De taxatiewagen van RPM Edelmetaal op een parkeerplaats',
+  },
+  tourWagen: {
+    src: p('tour-wagen-1120.jpg'),
+    srcset: `${p('tour-wagen-560.jpg')} 560w, ${p('tour-wagen-800.jpg')} 800w, ${p('tour-wagen-1120.jpg')} 1120w`,
+    sizes: '(max-width: 991px) 100vw, 560px', // guard-ignore: hardcoded-px — sizes-attribuut, geen CSS-lengte
+    alt: 'De taxatiewagen van RPM Edelmetaal, met gratis taxatie van gouden en zilveren sieraden op de zijkant',
+  },
+  tourZijkant: {
+    src: p('tour-zijkant-1120.jpg'),
+    srcset: `${p('tour-zijkant-560.jpg')} 560w, ${p('tour-zijkant-800.jpg')} 800w, ${p('tour-zijkant-1120.jpg')} 1120w`,
+    sizes: '(max-width: 991px) 100vw, 560px', // guard-ignore: hardcoded-px — idem
+    alt: 'Zijaanzicht van de taxatiewagen van RPM Edelmetaal',
+  },
+  tourAchter: {
+    src: p('tour-achter-1120.jpg'),
+    srcset: `${p('tour-achter-560.jpg')} 560w, ${p('tour-achter-800.jpg')} 800w, ${p('tour-achter-1120.jpg')} 1120w`,
+    sizes: '(max-width: 991px) 100vw, 560px', // guard-ignore: hardcoded-px — idem
+    alt: 'De taxatiewagen van RPM Edelmetaal met de deur aan de achterzijde',
+  },
+
   /** Achtergrond van de hero en alle CTA-secties. */
   achtergrond: {
     src: p('Bg-.jpg'),

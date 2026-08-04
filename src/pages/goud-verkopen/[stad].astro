@@ -10,6 +10,7 @@ import SectionContact from '../../components/sections/SectionContact.astro';
 import Button from '../../components/atoms/Button.astro';
 import { tourSteden, tour, tourUsps, tourFaq, mapsUrl, type TourStad } from '../../data/tour';
 import { haalPrijzen } from '../../data/prijzen';
+import { images } from '../../data/images';
 import { tourEvenementen, faqPageVan } from '../../data/jsonld';
 
 /* Eén landingspagina per tourlocatie.
@@ -81,7 +82,8 @@ const evenementen = [...tourEvenementen([stad]), faqPageVan(vragen)];
       .split('\n\n')
       .map((p) => `<p>${p}</p>`)
       .join('')}
-    image={{ src: '/images/tour-taxatie.png', alt: 'Taxatie van gouden sieraden in de camper' }}
+    image={images[stad.foto]}
+    imageRatio="4x3"
   />
 
   <SectionUsp

@@ -21,6 +21,9 @@ interface Props {
   ctaLabel?: string;
   ctaHref?: string;
   image: Afbeelding;
+  /** Staand kader standaard, zoals op over-ons en testwijze. Een breed onderwerp
+   *  — de taxatiewagen bijvoorbeeld — verdrinkt daarin; die krijgt '4x3'. */
+  imageRatio?: '3x4' | '4x3' | '1x1' | '16x9';
   imagePosition?: 'left' | 'right';
   paddingTop?: 'default' | 'none';
   paddingBottom?: 'default' | 'none';
@@ -37,6 +40,7 @@ const {
   ctaLabel,
   ctaHref,
   image,
+  imageRatio = '3x4',
   imagePosition = 'right',
   paddingTop = 'default',
   paddingBottom = 'default',
@@ -51,7 +55,7 @@ const {
       {
         imagePosition === 'left' && (
           <Col lg={6} md={12}>
-            <Media src={image.src} srcset={image.srcset} sizes={image.sizes} alt={image.alt} ratio="3x4" />
+            <Media src={image.src} srcset={image.srcset} sizes={image.sizes} alt={image.alt} ratio={imageRatio} />
           </Col>
         )
       }
@@ -75,7 +79,7 @@ const {
       {
         imagePosition === 'right' && (
           <Col lg={6} md={12}>
-            <Media src={image.src} srcset={image.srcset} sizes={image.sizes} alt={image.alt} ratio="3x4" />
+            <Media src={image.src} srcset={image.srcset} sizes={image.sizes} alt={image.alt} ratio={imageRatio} />
           </Col>
         )
       }

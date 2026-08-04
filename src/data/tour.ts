@@ -36,6 +36,10 @@ export interface TourStad {
   postcode?: string;
   /** Eén zin onder de H1 op de stadspagina. */
   intro: string;
+  /** Welke foto van de wagen deze pagina toont. Per stad een andere, zodat de
+   *  pagina's niet identiek zijn — dat leest prettiger en scheelt in de
+   *  beoordeling als bijna-duplicaat. Sleutel uit `images`. */
+  foto: 'tourWagen' | 'tourZijkant' | 'tourAchter';
   stops: Stop[];
 }
 
@@ -65,11 +69,11 @@ const plaatshouder: Stop[] = [
   { datum: 'Datum volgt', locatie: 'Locatie volgt', tijd: 'Tijd volgt' },
 ];
 export const tourSteden: TourStad[] = [
-  { slug: 'klazienaveen', naam: 'Klazienaveen', intro: intro('Klazienaveen'), stops: plaatshouder },
-  { slug: 'erica', naam: 'Erica', intro: intro('Erica'), stops: plaatshouder },
-  { slug: 'emmer-compascuum', naam: 'Emmer-Compascuum', intro: intro('Emmer-Compascuum'), stops: plaatshouder },
-  { slug: 'westerbork', naam: 'Westerbork', intro: intro('Westerbork'), stops: plaatshouder },
-  { slug: 'beilen', naam: 'Beilen', intro: intro('Beilen'), stops: plaatshouder },
+  { slug: 'klazienaveen', naam: 'Klazienaveen', intro: intro('Klazienaveen'), foto: 'tourWagen', stops: plaatshouder },
+  { slug: 'erica', naam: 'Erica', intro: intro('Erica'), foto: 'tourZijkant', stops: plaatshouder },
+  { slug: 'emmer-compascuum', naam: 'Emmer-Compascuum', intro: intro('Emmer-Compascuum'), foto: 'tourAchter', stops: plaatshouder },
+  { slug: 'westerbork', naam: 'Westerbork', intro: intro('Westerbork'), foto: 'tourWagen', stops: plaatshouder },
+  { slug: 'beilen', naam: 'Beilen', intro: intro('Beilen'), foto: 'tourZijkant', stops: plaatshouder },
 ];
 
 /** Presentatietekst van de tour. Staat hier zodat de pagina's alleen structuur bevatten. */

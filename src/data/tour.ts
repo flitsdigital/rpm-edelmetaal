@@ -45,11 +45,11 @@ const stop = (datum: string, datumISO: string, locatie: string): Stop => ({
 
 export const tourSteden: TourStad[] = [
   {
-    slug: 'blokker',
-    naam: 'Blokker',
+    slug: 'westerblokker',
+    naam: 'Westerblokker',
     adres: 'Westerblokker 171',
     postcode: '1695 AE',
-    intro: intro('Blokker'),
+    intro: intro('Westerblokker'),
     foto: 'tourOpLocatie',
     stops: [stop('Maandag 14 september', '2026-09-14', 'De Nadorst')],
   },

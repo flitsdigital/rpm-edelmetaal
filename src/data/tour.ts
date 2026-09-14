@@ -36,16 +36,68 @@ export const mapsUrl = (stad: TourStad) => {
 const intro = (naam: string) =>
   `Wij komen naar ${naam} toe. Laat uw goud, zilver en andere edelmetalen gratis en vrijblijvend taxeren, vlak bij u in de buurt.`;
 
-const plaatshouder: Stop[] = [
-  { datum: 'Datum volgt', locatie: 'Locatie volgt', tijd: 'Tijd volgt' },
-  { datum: 'Datum volgt', locatie: 'Locatie volgt', tijd: 'Tijd volgt' },
-];
+const stop = (datum: string, datumISO: string, locatie: string): Stop => ({
+  datum,
+  datumISO,
+  locatie,
+  tijd: '10:00 – 16:00 uur',
+});
+
 export const tourSteden: TourStad[] = [
-  { slug: 'klazienaveen', naam: 'Klazienaveen', intro: intro('Klazienaveen'), foto: 'tourOpLocatie', stops: plaatshouder },
-  { slug: 'erica', naam: 'Erica', intro: intro('Erica'), foto: 'tourZijkant', stops: plaatshouder },
-  { slug: 'emmer-compascuum', naam: 'Emmer-Compascuum', intro: intro('Emmer-Compascuum'), foto: 'tourAchter', stops: plaatshouder },
-  { slug: 'westerbork', naam: 'Westerbork', intro: intro('Westerbork'), foto: 'tourOpLocatie', stops: plaatshouder },
-  { slug: 'beilen', naam: 'Beilen', intro: intro('Beilen'), foto: 'tourZijkant', stops: plaatshouder },
+  {
+    slug: 'blokker',
+    naam: 'Blokker',
+    adres: 'Westerblokker 171',
+    postcode: '1695 AE',
+    intro: intro('Blokker'),
+    foto: 'tourOpLocatie',
+    stops: [stop('Maandag 14 september', '2026-09-14', 'De Nadorst')],
+  },
+  {
+    slug: 'elst',
+    naam: 'Elst',
+    adres: 'Dorpsstraat 28',
+    postcode: '6661 EL',
+    intro: intro('Elst'),
+    foto: 'tourZijkant',
+    stops: [
+      stop('Dinsdag 15 september', '2026-09-15', 'Hotel & Grandcafé Het Wapen van Elst'),
+      stop('Woensdag 16 september', '2026-09-16', 'Hotel & Grandcafé Het Wapen van Elst'),
+    ],
+  },
+  {
+    slug: 'eelde',
+    naam: 'Eelde',
+    adres: 'Hoofdweg 90',
+    postcode: '9761 EK',
+    intro: intro('Eelde'),
+    foto: 'tourAchter',
+    stops: [
+      stop('Donderdag 17 september', '2026-09-17', 'Herberg van Hilbrantsz'),
+      stop('Vrijdag 18 september', '2026-09-18', 'Herberg van Hilbrantsz'),
+    ],
+  },
+  {
+    slug: 'ijsselmuiden',
+    naam: 'IJsselmuiden',
+    adres: 'Burg. van Engelenweg 100',
+    postcode: '8271 AV',
+    intro: intro('IJsselmuiden'),
+    foto: 'tourOpLocatie',
+    stops: [
+      stop('Donderdag 17 september', '2026-09-17', "'t Danshuus"),
+      stop('Vrijdag 18 september', '2026-09-18', "'t Danshuus"),
+    ],
+  },
+  {
+    slug: 'roden',
+    naam: 'Roden',
+    adres: 'Koerskamp 2a',
+    postcode: '9301 BE',
+    intro: intro('Roden'),
+    foto: 'tourZijkant',
+    stops: [stop('Vrijdag 18 september', '2026-09-18', 'De Dobbe Roden')],
+  },
 ];
 
 export const tour = {

@@ -1,0 +1,215 @@
+---
+import Section from './Section.astro';
+import Container from '../atoms/Container.astro';
+import Icon from '../atoms/Icon.astro';
+import { tourSteden, type TourStad, type Stop } from '../../data/tour';
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+}
+
+const { eyebrow = 'RPM on Tour', title = 'Deze week bij u in de buurt' } = Astro.props;
+
+interface Kaart { stad: TourStad; stop: Stop }
+
+// De week van de vroegste stop met een echte datum. Geen datums → geen kalender.
+const alle: Kaart[] = tourSteden.flatMap((stad) =>
+  stad.stops.filter((s) => s.datumISO).map((stop) => ({ stad, stop })),
+);
+const eersteISO = alle.map((k) => k.stop.datumISO!).sort()[0];
+
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+const maandag = eersteISO ? new Date(eersteISO) : null;
+maandag?.setDate(maandag.getDate() - ((maandag.getDay() + 6) % 7));
+
+const dagen = maandag
+  ? ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'].map((kort, i) => {
+      const d = new Date(maandag);
+      d.setDate(maandag.getDate() + i);
+      return { kort, nr: d.getDate(), iso: iso(d), kaarten: alle.filter((k) => k.stop.datumISO === iso(d)) };
+    })
+  : [];
+
+const weekendLeeg = dagen.slice(5).every((d) => d.kaarten.length === 0);
+const weekNr = (() => {
+  if (!maandag) return 0;
+  const d = new Date(maandag);
+  d.setDate(d.getDate() + 3);
+  const jan4 = new Date(d.getFullYear(), 0, 4);
+  return 1 + Math.round(((d.getTime() - jan4.getTime()) / 864e5 - 3 + ((jan4.getDay() + 6) % 7)) / 7);
+})();
+---
+{maandag && (
+  <Section paddingBottom="none">
+    <Container>
+      <div class="kal" data-open="true">
+        <button class="kal__kop" type="button" aria-expanded="true" aria-controls="kal-paneel">
+          <span class="kal__titel">
+            <span class="kal__eyebrow">{eyebrow} · week {weekNr}</span>
+            <span class="h4">{title}</span>
+          </span>
+          <span class="kal__strook" aria-hidden="true">
+            {dagen.map((dag) => (
+              <span class="kal__strookdag" data-actief={dag.kaarten.length ? '' : undefined}>
+                <small>{dag.kort}</small>{dag.nr}
+              </span>
+            ))}
+          </span>
+          <span class="kal__chevron"><Icon name="chevron" /></span>
+        </button>
+
+        <div class="kal__paneel" id="kal-paneel" role="region">
+          <div class="kal__wrap">
+            <div class="kal__grid" data-weekend-leeg={weekendLeeg ? '' : undefined}>
+              {dagen.map((dag) => (
+                <div class="kal__dag" data-leeg={dag.kaarten.length === 0 ? '' : undefined}>
+                  <div class="kal__dagkop">
+                    <span class="kal__eyebrow">{dag.kort}</span>
+                    <span class="kal__nr">{dag.nr}</span>
+                  </div>
+                  <div class="kal__kaarten">
+                    {dag.kaarten.length === 0 && <span class="kal__leeg" aria-hidden="true">—</span>}
+                    {dag.kaarten.map(({ stad, stop }) => (
+                      <a class="kal__kaart" href={`/goud-verkopen/${stad.slug}`}>
+                        <span class="h6">{stad.naam}</span>
+                        <span class="kal__regel">{stop.locatie}</span>
+                        <span class="kal__regel kal__tijd"><Icon name="stopwatch" size="sm" />{stop.tijd}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </Section>
+)}
+
+<script>
+  // Zelfde mechaniek als AccordionItem: grid-template-rows 0fr → 1fr.
+  document.querySelectorAll<HTMLElement>('.kal').forEach((kal) => {
+    const knop = kal.querySelector<HTMLButtonElement>('.kal__kop')!;
+    knop.addEventListener('click', () => {
+      const open = kal.dataset.open !== 'true';
+      kal.dataset.open = String(open);
+      knop.setAttribute('aria-expanded', String(open));
+    });
+  });
+</script>
+
+<style>
+  .kal { border: 1px solid var(--_color---neutral--neutral-400); }
+  .kal a { color: inherit; text-decoration: none; }
+  .kal .h4, .kal .h6 { margin: 0; }
+
+  .kal__eyebrow {
+    font-family: var(--_typography---eyebrow--font);
+    font-size: var(--_typography---eyebrow--font-size);
+    font-weight: var(--_typography---eyebrow--font-weight);
+    letter-spacing: var(--_typography---eyebrow--letter-spacing);
+    line-height: var(--_typography---eyebrow--line-height);
+    text-transform: uppercase;
+    color: var(--primary--accent);
+  }
+
+  .kal__kop {
+    display: flex;
+    align-items: center;
+    gap: var(--_layout---grid--gap-md);
+    width: 100%;
+    padding: 1.5em;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .kal__kop:focus-visible { outline: 2px solid var(--primary--accent); outline-offset: -2px; }
+  .kal[data-open='true'] .kal__kop { border-bottom: 1px solid var(--_color---neutral--neutral-400); }
+  .kal__titel { display: flex; flex-flow: column; gap: .4rem; flex: 1; }
+
+  .kal__strook { display: flex; gap: 2px; transition: opacity .3s; }
+  .kal[data-open='true'] .kal__strook { opacity: 0; pointer-events: none; }
+  .kal__strookdag {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 2.4rem;
+    padding: .35rem 0;
+    font-size: .85rem;
+    line-height: 1.1;
+    color: var(--_color---neutral--neutral-300);
+    border-bottom: 2px solid var(--_color---neutral--neutral-400);
+  }
+  .kal__strookdag small { font-size: .6rem; letter-spacing: .08em; text-transform: uppercase; }
+  .kal__strookdag[data-actief] { color: var(--primary--text); border-bottom-color: var(--primary--accent); }
+
+  .kal__chevron {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 2em;
+    height: 2em;
+    color: var(--primary--accent);
+    transform: rotate(180deg);
+    transition: transform .6s cubic-bezier(.625, .05, 0, 1);
+  }
+  .kal[data-open='true'] .kal__chevron { transform: rotate(0.001deg); }
+
+  .kal__paneel {
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+    transition: grid-template-rows .6s cubic-bezier(.625, .05, 0, 1);
+  }
+  .kal[data-open='true'] .kal__paneel { grid-template-rows: 1fr; }
+  .kal__wrap { min-height: 0; overflow: hidden; }
+
+  .kal__grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+  .kal__grid[data-weekend-leeg] { grid-template-columns: repeat(5, 2fr) repeat(2, 1fr); }
+
+  .kal__dag { display: flex; flex-flow: column; min-height: 15rem; border-right: 1px solid var(--_color---neutral--neutral-400); }
+  .kal__dag:last-child { border-right: 0; }
+  .kal__dag[data-leeg] .kal__dagkop { opacity: .35; }
+  .kal__dagkop {
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--_color---neutral--neutral-400);
+  }
+  .kal__nr { font-family: var(--_typography---fonts--heading-font); font-size: 1.75rem; line-height: 1; }
+
+  .kal__kaarten { display: flex; flex-flow: column; gap: .75rem; padding: 1rem; flex: 1; }
+  .kal__leeg { color: var(--_color---neutral--neutral-400); text-align: center; margin-top: 1.5rem; font-size: 1.5rem; }
+  .kal__kaart {
+    display: flex;
+    flex-flow: column;
+    gap: .3rem;
+    padding: 1rem;
+    background: var(--primary--background-secondary);
+    border: 1px solid var(--_color---neutral--neutral-400);
+    border-radius: 1px;
+    transition: border-color .2s;
+  }
+  .kal__kaart:hover { border-color: var(--primary--accent); }
+  .kal__regel { font-size: .875rem; color: var(--primary--text-secondary); }
+  .kal__tijd { display: flex; align-items: center; gap: .4rem; margin-top: .25rem; font-size: .8rem; white-space: nowrap; }
+  .kal__tijd :global(.icon) { color: var(--primary--accent); flex: none; } /* guard-ignore: global-css — Icon draagt zijn eigen scope-hash */
+
+  @media screen and (max-width: 991px) {
+    .kal__grid, .kal__grid[data-weekend-leeg] { grid-template-columns: repeat(2, 1fr); }
+    .kal__dag { min-height: 0; border-bottom: 1px solid var(--_color---neutral--neutral-400); }
+    .kal__dag[data-leeg] { display: none; }
+    .kal__strook { display: none; }
+  }
+  @media screen and (max-width: 767px) {
+    .kal__grid, .kal__grid[data-weekend-leeg] { grid-template-columns: 1fr; }
+    .kal__dag { border-right: 0; }
+  }
+</style>

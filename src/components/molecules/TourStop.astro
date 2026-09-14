@@ -6,9 +6,10 @@ import type { Stop } from '../../data/tour';
 interface Props {
   stop: Stop;
   href: string;
+  icsHref?: string;
 }
 
-const { stop, href } = Astro.props;
+const { stop, href, icsHref } = Astro.props;
 ---
 <div class="stop">
   <div class="stop__meta">
@@ -27,7 +28,12 @@ const { stop, href } = Astro.props;
       {stop.tijd}
     </span>
   </div>
-  <Button href={href} class="stop__knop">Meer informatie</Button>
+  <div class="stop__knoppen">
+    {icsHref && stop.datumISO && (
+      <Button variant="secondary" href={icsHref} class="stop__knop"><Icon name="calendar" size="sm" />Zet in agenda</Button>
+    )}
+    <Button href={href} class="stop__knop">Meer informatie</Button>
+  </div>
 </div>
 
 <style>
@@ -38,6 +44,13 @@ const { stop, href } = Astro.props;
     gap: var(--_layout---grid--gap-md);
     padding: var(--_layout---grid--gap-md);
     background-color: var(--primary--background-secondary);
+  }
+
+  .stop__knoppen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--_layout---grid--gap-sm);
+    flex: none;
   }
 
   .stop__meta {
@@ -75,7 +88,14 @@ const { stop, href } = Astro.props;
       display: none;
     }
 
-    .stop__meta {
+    .stop__knoppen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--_layout---grid--gap-sm);
+    flex: none;
+  }
+
+  .stop__meta {
       flex-flow: column;
       align-items: flex-start;
       gap: .5rem;

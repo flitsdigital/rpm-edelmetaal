@@ -3,6 +3,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import SectionTourHero from '../../components/sections/SectionTourHero.astro';
 import SectionDivider from '../../components/atoms/SectionDivider.astro';
 import SectionTourLocaties from '../../components/sections/SectionTourLocaties.astro';
+import SectionTourKalender from '../../components/sections/SectionTourKalender.astro';
 import SectionContent from '../../components/sections/SectionContent.astro';
 import SectionContact from '../../components/sections/SectionContact.astro';
 import Button from '../../components/atoms/Button.astro';
@@ -28,6 +29,8 @@ const evenementen = tourEvenementen(tourSteden);
   </SectionTourHero>
 
   <SectionDivider />
+
+  <SectionTourKalender eyebrow={tour.eyebrow} />
 
   <SectionTourLocaties
     title={tour.hoofdpagina.locatiesTitel}

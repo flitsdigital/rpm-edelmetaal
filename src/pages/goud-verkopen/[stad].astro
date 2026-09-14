@@ -8,7 +8,7 @@ import SectionUsp from '../../components/sections/SectionUsp.astro';
 import SectionFaq from '../../components/sections/SectionFaq.astro';
 import SectionContact from '../../components/sections/SectionContact.astro';
 import Button from '../../components/atoms/Button.astro';
-import { tourSteden, tour, tourUsps, tourFaq, mapsUrl, type TourStad } from '../../data/tour';
+import { tourSteden, tour, tourUsps, tourFaq, mapsUrl, icsUrl, type TourStad } from '../../data/tour';
 import { haalPrijzen } from '../../data/prijzen';
 import { images } from '../../data/images';
 import { tourEvenementen, faqPageVan } from '../../data/jsonld';
@@ -50,6 +50,7 @@ const evenementen = [...tourEvenementen([stad]), faqPageVan(vragen)];
 >
   <SectionTourHero chips={chips} title={`Goud verkopen in ${stad.naam}`} text={stad.intro}>
     <Button href={mapsUrl(stad)}>Bekijk de locatie op Google</Button>
+    {eersteStop?.datumISO && <Button variant="secondary" href={icsUrl(stad)}>Zet in mijn agenda</Button>}
     <Button variant="secondary" href="#taxatie-stad">Alvast een offerte aanvragen</Button>
   </SectionTourHero>
 

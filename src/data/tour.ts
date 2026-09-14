@@ -33,6 +33,8 @@ export const mapsUrl = (stad: TourStad) => {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(zoekterm)}`;
 };
 
+export const icsUrl = (stad: TourStad) => `/goud-verkopen/${stad.slug}.ics`;
+
 const intro = (naam: string) =>
   `Wij komen naar ${naam} toe. Laat uw goud, zilver en andere edelmetalen gratis en vrijblijvend taxeren, vlak bij u in de buurt.`;
 

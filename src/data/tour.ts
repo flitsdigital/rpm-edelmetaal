@@ -192,3 +192,31 @@ export const tourFaq = (naam: string) => [
     antwoord: `Dan kunt u terecht bij een van onze andere stops, in onze winkel in Sneek, of u laat ons kosteloos bij u thuis langskomen voor een taxatie.`,
   },
 ];
+
+// Eén bron voor het agenda-item (ics én Google Agenda).
+export const agendaItem = (stad: TourStad, stop: Stop) => {
+  const tijd = stop.tijd.match(/(\d\d):(\d\d)\D+(\d\d):(\d\d)/);
+  const dag = stop.datumISO!.replace(/-/g, '');
+  return {
+    titel: `Gratis goudtaxatie RPM Edelmetaal – ${stad.naam}`,
+    adres: [stop.locatie, stad.adres, `${stad.postcode ?? ''} ${stad.naam}`.trim()].filter(Boolean).join(', '),
+    omschrijving: `Loop vrijblijvend binnen, een afspraak is niet nodig. Neem uw goud, zilver en legitimatie mee.\nhttps://www.rpmedelmetaal.nl/goud-verkopen/${stad.slug}`,
+    url: `https://www.rpmedelmetaal.nl/goud-verkopen/${stad.slug}`,
+    dag,
+    start: tijd ? `${dag}T${tijd[1]}${tijd[2]}00` : undefined,
+    eind: tijd ? `${dag}T${tijd[3]}${tijd[4]}00` : undefined,
+  };
+};
+
+export const googleAgendaUrl = (stad: TourStad, stop: Stop) => {
+  const item = agendaItem(stad, stop);
+  const q = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: item.titel,
+    dates: item.start ? `${item.start}/${item.eind}` : `${item.dag}/${item.dag}`,
+    ctz: 'Europe/Amsterdam',
+    location: item.adres,
+    details: item.omschrijving,
+  });
+  return `https://calendar.google.com/calendar/render?${q}`;
+};

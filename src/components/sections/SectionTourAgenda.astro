@@ -7,7 +7,7 @@ import SectionIntro from './SectionIntro.astro';
 import Heading from '../atoms/Heading.astro';
 import Text from '../atoms/Text.astro';
 import TourStop from '../molecules/TourStop.astro';
-import { tour, icsUrl, komendeStops, geweestStops, type TourStad } from '../../data/tour';
+import { tour, komendeStops, geweestStops, type TourStad } from '../../data/tour';
 
 interface Props {
   stad: TourStad;
@@ -29,7 +29,7 @@ const geweest = geweestStops(stad);
       <Row justify="center">
         <Col lg={10} md={12}>
           <div class="agenda__stops">
-            {komend.map((stop) => <TourStop stop={stop} icsHref={icsUrl(stad)} />)}
+            {komend.map((stop) => <TourStop stop={stop} stad={stad} />)}
           </div>
 
           {geweest.length > 0 && (
@@ -37,7 +37,7 @@ const geweest = geweestStops(stad);
               <Heading level={3} size={5}>Eerder waren wij in {stad.naam}</Heading>
               <Text tone="secondary">Onze laatste bezoeken aan {stad.naam}.</Text>
               <div class="agenda__stops">
-                {geweest.map((stop) => <TourStop stop={stop} geweest />)}
+                {geweest.map((stop) => <TourStop stop={stop} stad={stad} geweest />)}
               </div>
             </div>
           )}

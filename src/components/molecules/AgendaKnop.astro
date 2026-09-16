@@ -1,0 +1,61 @@
+---
+import Button from '../atoms/Button.astro';
+import Icon from '../atoms/Icon.astro';
+import { icsUrl, googleAgendaUrl, type TourStad, type Stop } from '../../data/tour';
+
+interface Props {
+  stad: TourStad;
+  stop: Stop;
+  label?: string;
+  class?: string;
+}
+
+const { stad, stop, label = 'Zet in agenda', class: className } = Astro.props;
+---
+{stop.datumISO && (
+  <details class:list={['agenda', className]}>
+    <Button as="summary" variant="secondary"><Icon name="calendar" size="sm" />{label}<Icon name="chevron" size="sm" /></Button>
+    <div class="agenda__menu">
+      <a href={googleAgendaUrl(stad, stop)} target="_blank" rel="noopener">Google Agenda</a>
+      <a href={icsUrl(stad)}>Apple Agenda / Outlook</a>
+    </div>
+  </details>
+)}
+
+<script>
+  // Menu dicht bij klik buiten of Escape; <details> doet dat zelf niet.
+  document.addEventListener('click', (e) => {
+    document.querySelectorAll<HTMLDetailsElement>('.agenda[open]').forEach((d) => {
+      if (!d.contains(e.target as Node)) d.open = false;
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') document.querySelectorAll<HTMLDetailsElement>('.agenda[open]').forEach((d) => (d.open = false));
+  });
+</script>
+
+<style>
+  .agenda { position: relative; display: inline-block; }
+
+  .agenda__menu {
+    position: absolute;
+    top: calc(100% + .35rem);
+    left: 0;
+    z-index: 10;
+    display: flex;
+    flex-flow: column;
+    min-width: 100%;
+    background: var(--primary--background-secondary);
+    border: 1px solid var(--_color---neutral--neutral-400);
+    box-shadow: 0 .5rem 1.5rem rgb(0 0 0 / .4);
+  }
+
+  .agenda__menu a {
+    padding: .75em 1.25em;
+    color: var(--primary--text);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .agenda__menu a + a { border-top: 1px solid var(--_color---neutral--neutral-400); }
+  .agenda__menu a:hover { background: color-mix(in hsl, var(--primary--accent) 10%, transparent 90%); }
+</style>

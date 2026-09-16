@@ -13,6 +13,7 @@ export const navLinks = [
   { href: '/over-ons', label: 'Over ons' },
   { href: '/testwijze', label: 'Testwijze' },
   { href: '/inkoopprijzen', label: 'Inkoopprijzen' },
+  { href: '/goud-verkopen', label: 'Goudtour' },
   { href: '/contact', label: 'Contact' },
 ] as const;
 
@@ -23,6 +24,7 @@ export const footerLinks = [
   { href: '/over-ons', label: 'Over Ons' },
   { href: '/testwijze', label: 'Testwijze' },
   { href: '/inkoopprijzen', label: 'Inkoopprijzen' },
+  { href: '/goud-verkopen', label: 'Goudtour' },
   { href: '/auth/login', label: 'Inloggen' },
   { href: '/contact', label: 'Contact' },
 ] as const;

@@ -6,9 +6,10 @@ import SectionPrijstabel from '../../components/sections/SectionPrijstabel.astro
 import SectionContent from '../../components/sections/SectionContent.astro';
 import SectionUsp from '../../components/sections/SectionUsp.astro';
 import SectionFaq from '../../components/sections/SectionFaq.astro';
+import SectionTourAgenda from '../../components/sections/SectionTourAgenda.astro';
 import SectionContact from '../../components/sections/SectionContact.astro';
 import Button from '../../components/atoms/Button.astro';
-import { tourSteden, tour, tourUsps, tourFaq, mapsUrl, icsUrl, type TourStad } from '../../data/tour';
+import { tourSteden, tour, tourUsps, tourFaq, mapsUrl, icsUrl, komendeStops, type TourStad } from '../../data/tour';
 import { haalPrijzen } from '../../data/prijzen';
 import { images } from '../../data/images';
 import { tourEvenementen, faqPageVan } from '../../data/jsonld';
@@ -26,7 +27,8 @@ const { groepen, topPrijzen } = await haalPrijzen();
 
 const goud = groepen.filter((g) => g.metaal === 'Goud');
 
-const eersteStop = stad.stops[0];
+const komend = komendeStops(stad);
+const eersteStop = komend[0];
 const url = `https://www.rpmedelmetaal.nl/goud-verkopen/${stad.slug}`;
 
 const chips = [
@@ -55,6 +57,8 @@ const evenementen = [...tourEvenementen([stad]), faqPageVan(vragen)];
   </SectionTourHero>
 
   <SectionDivider />
+
+  <SectionTourAgenda stad={stad} id="agenda" />
 
   <SectionPrijstabel
     groepen={goud}

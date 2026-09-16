@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { tourSteden, type TourStad } from '../../data/tour';
+import { tourSteden, komendeStops, type TourStad } from '../../data/tour';
 
 export function getStaticPaths() {
   return tourSteden.map((stad) => ({ params: { stad: stad.slug }, props: { stad } }));
@@ -37,7 +37,7 @@ export const GET: APIRoute = ({ props }) => {
     'PRODID:-//RPM Edelmetaal//Tour//NL',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
-    ...stad.stops.filter((s) => s.datumISO).flatMap((s) => event(stad, s)),
+    ...komendeStops(stad).filter((s) => s.datumISO).flatMap((s) => event(stad, s)),
     'END:VCALENDAR',
   ];
   return new Response(regels.join('\r\n') + '\r\n', {

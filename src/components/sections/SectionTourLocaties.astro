@@ -9,7 +9,7 @@ import Accordion from '../molecules/Accordion.astro';
 import AccordionItem from '../molecules/AccordionItem.astro';
 import TourStop from '../molecules/TourStop.astro';
 import Text from '../atoms/Text.astro';
-import { tourSteden, tour, icsUrl } from '../../data/tour';
+import { tourSteden, tour, icsUrl, komendeStops } from '../../data/tour';
 
 interface Props {
   title: string;
@@ -37,11 +37,11 @@ const { title, text, ctaLabel, ctaHref } = Astro.props;
         <Col lg={10} md={12}>
           <Accordion id="locaties">
             {
-              tourSteden.map((stad, i) => (
+              tourSteden.filter((stad) => komendeStops(stad).length || !stad.stops.length).map((stad, i) => (
                 <AccordionItem vraag={stad.naam} open={i === 0} id={`locaties-${i}`}>
                   <div class="locaties__stops">
-                    {stad.stops.length > 0 ? (
-                      stad.stops.map((stop) => (
+                    {komendeStops(stad).length > 0 ? (
+                      komendeStops(stad).map((stop) => (
                         <TourStop stop={stop} href={`/goud-verkopen/${stad.slug}`} icsHref={icsUrl(stad)} />
                       ))
                     ) : (

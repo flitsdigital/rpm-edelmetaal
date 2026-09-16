@@ -1,6 +1,6 @@
 import { contact, openingstijden } from './site';
 import { faq } from './content';
-import type { TourStad } from './tour';
+import { komendeStops, type TourStad } from './tour';
 
 const SITE = 'https://www.rpmedelmetaal.nl';
 
@@ -55,7 +55,7 @@ export const faqPage = faqPageVan(faq);
 
 export const tourEvenementen = (steden: TourStad[]) =>
   steden.flatMap((stad) =>
-    stad.stops
+    komendeStops(stad)
       .filter((stop) => stop.datumISO)
       .map((stop) => ({
       '@context': 'https://schema.org',

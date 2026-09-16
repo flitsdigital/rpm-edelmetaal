@@ -5,13 +5,14 @@ import type { Stop } from '../../data/tour';
 
 interface Props {
   stop: Stop;
-  href: string;
+  href?: string;
   icsHref?: string;
+  geweest?: boolean;
 }
 
-const { stop, href, icsHref } = Astro.props;
+const { stop, href, icsHref, geweest = false } = Astro.props;
 ---
-<div class="stop">
+<div class="stop" data-geweest={geweest ? '' : undefined}>
   <div class="stop__meta">
     <span class="stop__item">
       <Icon name="calendar" size="md" />
@@ -28,12 +29,14 @@ const { stop, href, icsHref } = Astro.props;
       {stop.tijd}
     </span>
   </div>
+  {!geweest && (href || icsHref) && (
   <div class="stop__knoppen">
     {icsHref && stop.datumISO && (
       <Button variant="secondary" href={icsHref} class="stop__knop"><Icon name="calendar" size="sm" />Zet in agenda</Button>
     )}
-    <Button href={href} class="stop__knop">Meer informatie</Button>
+    {href && <Button href={href} class="stop__knop">Meer informatie</Button>}
   </div>
+  )}
 </div>
 
 <style>
@@ -52,6 +55,7 @@ const { stop, href, icsHref } = Astro.props;
     gap: var(--_layout---grid--gap-sm);
     flex: none;
   }
+  .stop[data-geweest] { opacity: .55; }
 
   .stop__meta {
     display: flex;

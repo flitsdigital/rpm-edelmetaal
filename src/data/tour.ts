@@ -131,6 +131,18 @@ export const tour = {
 
 export const vindStad = (slug: string) => tourSteden.find((s) => s.slug === slug);
 
+// Bouwtijd-datum: de site wordt bij elke deploy opnieuw gebouwd (prijzen ook).
+export const vandaag = new Date().toISOString().slice(0, 10);
+
+export const komendeStops = (stad: TourStad) => stad.stops.filter((s) => !s.datumISO || s.datumISO >= vandaag);
+
+// Nieuwste eerst, maximaal vier — de locatiepagina blijft bestaan na de tour.
+export const geweestStops = (stad: TourStad) =>
+  stad.stops
+    .filter((s) => s.datumISO && s.datumISO < vandaag)
+    .sort((a, b) => b.datumISO!.localeCompare(a.datumISO!))
+    .slice(0, 4);
+
 export const tourUsps: Usp[] = [
   { icon: 'inkoop', title: 'Inkoop edelmetalen', text: 'Goud, zilver, platina, palladium en andere edelmetalen.' },
   { icon: 'taxatie', title: 'Eerlijke taxaties', text: 'Gratis en vrijblijvend, onder het genot van een kopje koffie.' },

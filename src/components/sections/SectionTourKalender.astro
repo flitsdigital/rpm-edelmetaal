@@ -2,7 +2,7 @@
 import Section from './Section.astro';
 import Container from '../atoms/Container.astro';
 import Icon from '../atoms/Icon.astro';
-import { tourSteden, type TourStad, type Stop } from '../../data/tour';
+import { tourSteden, komendeStops, type TourStad, type Stop } from '../../data/tour';
 
 interface Props {
   eyebrow?: string;
@@ -15,7 +15,7 @@ interface Kaart { stad: TourStad; stop: Stop }
 
 // De week van de vroegste stop met een echte datum. Geen datums → geen kalender.
 const alle: Kaart[] = tourSteden.flatMap((stad) =>
-  stad.stops.filter((s) => s.datumISO).map((stop) => ({ stad, stop })),
+  komendeStops(stad).filter((s) => s.datumISO).map((stop) => ({ stad, stop })),
 );
 const eersteISO = alle.map((k) => k.stop.datumISO!).sort()[0];
 

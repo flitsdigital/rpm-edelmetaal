@@ -10,7 +10,7 @@ interface Props {
 const { vraag, open = false, id } = Astro.props;
 const paneelId = `${id}-panel`;
 ---
-<li class="acc__item" data-status={open ? 'active' : 'not-active'}>
+<li class="acc__item" data-status={open ? 'active' : 'not-active'} data-uitgeklapt={open ? '' : undefined}>
   <button class="acc__top" type="button" aria-expanded={open ? 'true' : 'false'} aria-controls={paneelId}>
     <h3 class="acc__h3">{vraag}</h3>
     <span class="acc__icon"><Icon name="chevron" /></span>
@@ -35,11 +35,20 @@ const paneelId = `${id}-panel`;
       if (!wasActive && acc.dataset.closeSiblings === 'true') {
         acc.querySelectorAll<HTMLElement>('.acc__item[data-status="active"]').forEach((sib) => {
           sib.dataset.status = 'not-active';
+          sib.removeAttribute('data-uitgeklapt');
           sib.querySelector('.acc__top')?.setAttribute('aria-expanded', 'false');
         });
       }
       item.dataset.status = wasActive ? 'not-active' : 'active';
+      item.removeAttribute('data-uitgeklapt');
       btn.setAttribute('aria-expanded', String(!wasActive));
+    });
+
+    // Na het uitklappen mag de inhoud weer buiten het paneel steken (bv. het agendamenu).
+    acc.addEventListener('transitionend', (event) => {
+      if (event.propertyName !== 'grid-template-rows') return;
+      const item = (event.target as HTMLElement).closest<HTMLElement>('.acc__item');
+      if (item?.dataset.status === 'active') item.setAttribute('data-uitgeklapt', '');
     });
   });
 </script>
@@ -104,6 +113,11 @@ const paneelId = `${id}-panel`;
 
   .acc__item[data-status='active'] .acc__bottom {
     grid-template-rows: 1fr;
+  }
+
+  .acc__item[data-uitgeklapt] .acc__bottom,
+  .acc__item[data-uitgeklapt] .acc__wrap {
+    overflow: visible;
   }
 
   .acc__wrap {

@@ -68,10 +68,10 @@ const jaar = new Date().getFullYear();
           <Text size="sm" tone="secondary" flush>Copyright {jaar} RPM Edelmetaal</Text>
         </Col>
         <Col lg={4} md={12}>
-          <div class="footer__flits">
+          <a class="footer__flits" href="https://flitsdigital.nl" target="_blank" rel="noopener">
             <Text size="sm" tone="secondary" flush>Website door</Text>
             <span class="footer__flits-logo"><Logo variant="flits" label="Flits Digital" /></span>
-          </div>
+          </a>
         </Col>
       </Row>
     </div>
@@ -156,7 +156,11 @@ const jaar = new Date().getFullYear();
     align-items: center;
     gap: .5em;
     color: var(--primary--text-secondary);
+    text-decoration: none;
+    opacity: .6;
+    transition: opacity .2s;
   }
+  .footer__flits:hover { opacity: 1; }
 
   .footer__flits-logo {
     display: block;

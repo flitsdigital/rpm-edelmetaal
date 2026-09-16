@@ -3,7 +3,6 @@ import Section from './Section.astro';
 import Container from '../atoms/Container.astro';
 import Row from '../atoms/Row.astro';
 import Col from '../atoms/Col.astro';
-import SectionIntro from './SectionIntro.astro';
 import Heading from '../atoms/Heading.astro';
 import Text from '../atoms/Text.astro';
 import TourStop from '../molecules/TourStop.astro';
@@ -20,16 +19,11 @@ const geweest = geweestStops(stad);
 ---
 <Section id={id}>
   <Container>
-    <SectionIntro
-      title={`Agenda ${stad.naam}`}
-      text={komend.length ? `Op deze dagen staan wij in ${stad.naam}. Loop vrijblijvend binnen, een afspraak is niet nodig.` : `Wij zijn binnenkort weer in ${stad.naam}. ${tour.geenStops}`}
-    />
-
-    <div class="u-mt-lg">
-      <Row justify="center">
+    <Row justify="center">
         <Col lg={10} md={12}>
           <div class="agenda__stops">
             {komend.map((stop) => <TourStop stop={stop} stad={stad} />)}
+            {komend.length === 0 && <Text tone="secondary" flush>Wij zijn binnenkort weer in {stad.naam}. {tour.geenStops}</Text>}
           </div>
 
           {geweest.length > 0 && (
@@ -43,7 +37,6 @@ const geweest = geweestStops(stad);
           )}
         </Col>
       </Row>
-    </div>
   </Container>
 </Section>
 

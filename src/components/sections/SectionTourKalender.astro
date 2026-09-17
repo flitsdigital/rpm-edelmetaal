@@ -2,7 +2,7 @@
 import Section from './Section.astro';
 import Container from '../atoms/Container.astro';
 import Icon from '../atoms/Icon.astro';
-import { tourSteden, komendeStops, type TourStad, type Stop } from '../../data/tour';
+import { tourSteden, komendeStops, vandaag, type TourStad, type Stop } from '../../data/tour';
 
 interface Props {
   eyebrow?: string;
@@ -13,11 +13,14 @@ const { eyebrow = 'RPM on Tour', title = 'Deze week bij u in de buurt' } = Astro
 
 interface Kaart { stad: TourStad; stop: Stop }
 
-// De week van de vroegste stop met een echte datum. Geen datums → geen kalender.
+// De week van de vroegste komende stop; stops die al geweest zijn staan gedimd in die week.
 const alle: Kaart[] = tourSteden.flatMap((stad) =>
-  komendeStops(stad).filter((s) => s.datumISO).map((stop) => ({ stad, stop })),
+  stad.stops.filter((s) => s.datumISO).map((stop) => ({ stad, stop })),
 );
-const eersteISO = alle.map((k) => k.stop.datumISO!).sort()[0];
+const eersteISO = tourSteden
+  .flatMap((stad) => komendeStops(stad).map((s) => s.datumISO!))
+  .filter(Boolean)
+  .sort()[0];
 
 const iso = (d: Date) => d.toISOString().slice(0, 10);
 const maandag = eersteISO ? new Date(eersteISO) : null;
@@ -27,7 +30,7 @@ const dagen = maandag
   ? ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'].map((kort, i) => {
       const d = new Date(maandag);
       d.setDate(maandag.getDate() + i);
-      return { kort, nr: d.getDate(), iso: iso(d), kaarten: alle.filter((k) => k.stop.datumISO === iso(d)) };
+      return { kort, nr: d.getDate(), iso: iso(d), geweest: iso(d) < vandaag, kaarten: alle.filter((k) => k.stop.datumISO === iso(d)) };
     })
   : [];
 
@@ -51,7 +54,7 @@ const weekNr = (() => {
           </span>
           <span class="kal__strook" aria-hidden="true">
             {dagen.map((dag) => (
-              <span class="kal__strookdag" data-actief={dag.kaarten.length ? '' : undefined}>
+              <span class="kal__strookdag" data-actief={dag.kaarten.length ? '' : undefined} data-geweest={dag.geweest ? '' : undefined}>
                 <small>{dag.kort}</small>{dag.nr}
               </span>
             ))}
@@ -63,7 +66,7 @@ const weekNr = (() => {
           <div class="kal__wrap">
             <div class="kal__grid" data-weekend-leeg={weekendLeeg ? '' : undefined}>
               {dagen.map((dag) => (
-                <div class="kal__dag" data-leeg={dag.kaarten.length === 0 ? '' : undefined}>
+                <div class="kal__dag" data-leeg={dag.kaarten.length === 0 ? '' : undefined} data-geweest={dag.geweest ? '' : undefined}>
                   <div class="kal__dagkop">
                     <span class="kal__eyebrow">{dag.kort}</span>
                     <span class="kal__nr">{dag.nr}</span>
@@ -147,6 +150,7 @@ const weekNr = (() => {
   }
   .kal__strookdag small { font-size: .6rem; letter-spacing: .08em; text-transform: uppercase; }
   .kal__strookdag[data-actief] { color: var(--primary--text); border-bottom-color: var(--primary--accent); }
+  .kal__strookdag[data-geweest] { opacity: .3; }
 
   .kal__chevron {
     display: flex;
@@ -176,6 +180,7 @@ const weekNr = (() => {
   .kal__dag { display: flex; flex-flow: column; min-height: 15rem; border-right: 1px solid var(--_color---neutral--neutral-400); }
   .kal__dag:last-child { border-right: 0; }
   .kal__dag[data-leeg] .kal__dagkop { opacity: .35; }
+  .kal__dag[data-geweest] .kal__dagkop, .kal__dag[data-geweest] .kal__kaarten { opacity: .2; }
   .kal__dagkop {
     display: flex;
     align-items: baseline;

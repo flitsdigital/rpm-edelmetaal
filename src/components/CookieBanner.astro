@@ -1,0 +1,117 @@
+---
+// Flits cookie-consent v1.0.0 (Consentkit). data-cb-*/aria-attributen zijn het contract met consent.min.js.
+---
+<div data-cb="banner" role="dialog" aria-labelledby="cb-title" aria-describedby="cb-text" class="cb-banner">
+  <div class="cb-card">
+    <h2 id="cb-title" class="cb-title">Wij gebruiken cookies</h2>
+    <p id="cb-text" class="cb-text">Wij gebruiken functionele cookies om de website goed te laten werken. Met uw toestemming gebruiken we ook cookies voor statistieken (Google Analytics en Microsoft Clarity) en advertenties (Google Ads en Meta).</p>
+    <a href="/privacybeleid" class="cb-link">Lees ons privacybeleid</a>
+    <div data-cb="prefs" class="cb-prefs"><div class="cb-row">
+        <div class="cb-row-content">
+          <div class="cb-row-title">Noodzakelijk</div>
+          <div class="cb-row-text">Nodig om de website goed te laten werken. Staat altijd aan.</div>
+        </div>
+        <div role="switch" aria-checked="true" aria-disabled="true" aria-label="Noodzakelijk" class="cb-switch is-on is-locked">
+          <div class="cb-knob">
+          </div>
+        </div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-content">
+          <div class="cb-row-title">Statistieken</div>
+          <div class="cb-row-text">Inzicht in hoe bezoekers de website gebruiken, via Google Analytics en Microsoft Clarity.</div>
+        </div>
+        <a href="#" role="switch" aria-checked="false" aria-label="Statistieken" data-cb-toggle="analytics" class="cb-switch w-inline-block">
+          <div class="cb-knob">
+          </div>
+        </a>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-content">
+          <div class="cb-row-title">Marketing</div>
+          <div class="cb-row-text">Meten en tonen van advertenties via Google Ads en Meta (Facebook en Instagram).</div>
+        </div>
+        <a href="#" role="switch" aria-checked="false" aria-label="Marketing" data-cb-toggle="marketing" class="cb-switch w-inline-block">
+          <div class="cb-knob">
+          </div>
+        </a>
+      </div>
+      </div>
+    <div class="cb-actions">
+      <a href="#" data-cb-action="settings" class="cb-btn is-secondary">Instellingen</a>
+      <a href="#" data-cb-action="save" class="cb-btn is-secondary">Keuze opslaan</a>
+      <a href="#" data-cb-action="reject" class="cb-btn">Weigeren</a>
+      <a href="#" data-cb-action="accept" class="cb-btn">Alles accepteren</a>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+:root {
+  --cb-color: var(--_color---primary--gold-100);
+  --cb-color-background: var(--_color---neutral--neutral-500);
+  --cb-color-surface: var(--_color---neutral--neutral-400);
+  --cb-color-accent: var(--_color---primary--gold-500);
+  --cb-color-accent-text: var(--_color---neutral--neutral-100); /* donker op roze = 5:1, wit op roze haalt AA niet */
+  --cb-color-switch-off: var(--_color---neutral--black);
+  --cb-color-focus: var(--_color---primary--gold-500);
+  --cb-font-size: 16px;
+  --cb-font-size-small: 14px;
+  --cb-font-size-title: 24px;
+  --cb-padding: 26px;
+  --cb-offset: 16px;
+  --cb-max-width: 560px;
+  --cb-border-radius: 4px;
+  --cb-button-radius: 1px;
+  --cb-shadow: 0 12px 40px rgba(27, 2, 13, 0.18);
+  --cb-switch-width: 44px;
+  --cb-switch-height: 24px;
+  --cb-switch-padding: 3px;
+  --cb-z-index: 9999;
+  --cb-ease: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.cb-knob {
+  transition: translate 0.25s var(--cb-ease);
+}
+
+.cb-switch.is-on .cb-knob {
+  translate: calc(var(--cb-switch-width) - var(--cb-switch-height)) 0;
+}
+
+.cb-btn:focus-visible,
+.cb-switch:focus-visible,
+.cb-link:focus-visible {
+  outline: 2px solid var(--cb-color-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cb-knob { transition: none; }
+}
+
+@media (max-width: 479px) {
+  :root { --cb-offset: 8px; --cb-padding: 20px; }
+}
+
+.cb-banner { margin-right: 0; }
+
+.cb-banner { position: fixed; bottom: var(--cb-offset); left: var(--cb-offset); right: var(--cb-offset); z-index: var(--cb-z-index); max-width: var(--cb-max-width); margin-left: auto; margin-right: auto; display: none; }
+.cb-card { padding-top: var(--cb-padding); padding-right: var(--cb-padding); padding-bottom: var(--cb-padding); padding-left: var(--cb-padding); color: var(--cb-color); background-color: var(--cb-color-background); border-radius: var(--cb-border-radius); box-shadow: var(--cb-shadow); }
+.cb-title { margin-top: 0px; margin-bottom: 0.5em; font-size: var(--cb-font-size-title); font-weight: 700; line-height: 1.2; }
+.cb-text { margin-top: 0px; margin-bottom: 1em; font-size: var(--cb-font-size); line-height: 1.5; }
+.cb-link { display: inline-block; margin-bottom: 1em; color: var(--cb-color-accent); text-decoration: underline; font-size: var(--cb-font-size); }
+.cb-prefs { display: none; margin-bottom: 1em; border-top-style: solid; border-top-width: 1px; border-top-color: var(--cb-color-surface); }
+.cb-row { display: flex; justify-content: space-between; align-items: center; grid-column-gap: 1em; padding-top: 0.75em; padding-bottom: 0.75em; border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: var(--cb-color-surface); }
+.cb-row-content { flex-grow: 1; flex-shrink: 1; flex-basis: 0%; }
+.cb-row-title { font-size: var(--cb-font-size); font-weight: 700; line-height: 1.3; }
+.cb-row-text { font-size: var(--cb-font-size-small); line-height: 1.4; opacity: 0.75; }
+.cb-switch { display: flex; align-items: center; flex-grow: 0; flex-shrink: 0; flex-basis: auto; width: var(--cb-switch-width); height: var(--cb-switch-height); padding-top: var(--cb-switch-padding); padding-right: var(--cb-switch-padding); padding-bottom: var(--cb-switch-padding); padding-left: var(--cb-switch-padding); background-color: var(--cb-color-switch-off); border-radius: 999px; cursor: pointer; }
+.cb-switch.is-on { background-color: var(--cb-color-accent); }
+.cb-switch.is-locked { cursor: default; opacity: 0.6; }
+.cb-knob { flex-grow: 0; flex-shrink: 0; flex-basis: auto; width: calc(var(--cb-switch-height) - 2 * var(--cb-switch-padding)); height: 100%; background-color: var(--cb-color-background); border-radius: 999px; }
+.cb-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; grid-column-gap: 0.5em; grid-row-gap: 0.5em; }
+.cb-btn { display: flex; justify-content: center; align-items: center; min-height: 2.75em; padding-top: 0.75em; padding-right: 1.125em; padding-bottom: 0.75em; padding-left: 1.125em; color: var(--cb-color-accent-text); background-color: var(--cb-color-accent); border-radius: var(--cb-button-radius); font-size: var(--cb-font-size); font-weight: 700; line-height: 1; text-align: center; text-decoration: none; cursor: pointer; }
+.cb-btn.is-secondary { color: var(--cb-color); background-color: var(--cb-color-surface); }
+@media (max-width: 479px) { .cb-btn { flex-grow: 1; flex-shrink: 1; flex-basis: 40%; } }
+</style>

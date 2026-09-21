@@ -19,10 +19,20 @@ interface Props {
 }
 
 const { title, text, ctaLabel, ctaHref } = Astro.props;
+
+// SEO: alle plaatsnamen (ook afgelopen stops, die pagina's blijven bestaan) als tekst met links.
+const links = tourSteden.map((s) => `<a href="/goud-verkopen/${s.slug}">${s.naam}</a>`);
+const plaatsenZin = `Wij komen in ${links.slice(0, -1).join(', ')} en ${links.at(-1)}.`;
 ---
 <Section>
   <Container>
     <SectionIntro title={title} text={text} />
+
+    <div class="locaties__plaatsen">
+      <Text align="center" tone="secondary" flush>
+        <Fragment set:html={plaatsenZin} />
+      </Text>
+    </div>
 
     {
       ctaLabel && ctaHref && (
@@ -61,6 +71,12 @@ const { title, text, ctaLabel, ctaHref } = Astro.props;
 </Section>
 
 <style>
+  .locaties__plaatsen {
+    max-width: 60ch;
+    margin: var(--_layout---spacing--margin-sm) auto 0;
+  }
+  .locaties__plaatsen a { color: var(--primary--text); }
+
   .locaties__cta {
     display: flex;
     justify-content: center;

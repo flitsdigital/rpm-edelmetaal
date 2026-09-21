@@ -100,6 +100,63 @@ export const tourSteden: TourStad[] = [
     foto: 'tourZijkant',
     stops: [stop('Vrijdag 18 september', '2026-09-18', 'De Dobbe Roden')],
   },
+  {
+    slug: 'ugchelen',
+    naam: 'Ugchelen',
+    adres: 'Bogaardslaan 81',
+    postcode: '7339 AN',
+    intro: intro('Ugchelen'),
+    foto: 'tourAchter',
+    stops: [stop('Maandag 21 september', '2026-09-21', 'Ons Dorpshuis')],
+  },
+  {
+    slug: 'veendam',
+    naam: 'Veendam',
+    adres: 'Museumplein 3',
+    postcode: '9641 AD',
+    intro: intro('Veendam'),
+    foto: 'tourOpLocatie',
+    stops: [
+      stop('Dinsdag 22 september', '2026-09-22', 'Brouwhotel Parkzicht'),
+      stop('Woensdag 23 september', '2026-09-23', 'Brouwhotel Parkzicht'),
+    ],
+  },
+  {
+    slug: 'westervoort',
+    naam: 'Westervoort',
+    adres: 'Dorpstraat 11',
+    postcode: '6931 BA',
+    intro: intro('Westervoort'),
+    foto: 'tourZijkant',
+    stops: [
+      stop('Dinsdag 22 september', '2026-09-22', 'Zalencentrum Wieleman'),
+      stop('Woensdag 23 september', '2026-09-23', 'Zalencentrum Wieleman'),
+    ],
+  },
+  {
+    slug: 'groenlo',
+    naam: 'Groenlo',
+    adres: 'Markt 4',
+    postcode: '7141 AA',
+    intro: intro('Groenlo'),
+    foto: 'tourAchter',
+    stops: [
+      stop('Donderdag 24 september', '2026-09-24', 'Eetwinkel Vier'),
+      stop('Vrijdag 25 september', '2026-09-25', 'Eetwinkel Vier'),
+    ],
+  },
+  {
+    slug: 'epe',
+    naam: 'Epe',
+    adres: 'Hoofdstraat 106A',
+    postcode: '8162 AN',
+    intro: intro('Epe'),
+    foto: 'tourOpLocatie',
+    stops: [
+      stop('Donderdag 24 september', '2026-09-24', 'De Slimmerick'),
+      stop('Vrijdag 25 september', '2026-09-25', 'De Slimmerick'),
+    ],
+  },
 ];
 
 export const tour = {

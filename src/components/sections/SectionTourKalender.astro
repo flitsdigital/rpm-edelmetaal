@@ -54,9 +54,10 @@ const weken = weekStarts.map((start) => {
     nr: weekNrVan(maandag),
     bereik: `${maand(maandag)} – ${maand(zondag)}`,
     dagen,
-    weekendLeeg: dagen.slice(5).every((d) => d.kaarten.length === 0),
   };
 });
+// Eén kolomindeling voor alle weken, zodat de kolommen niet verspringen bij het bladeren.
+const weekendLeeg = weken.every((w) => w.dagen.slice(5).every((d) => d.kaarten.length === 0));
 ---
 {weken.length > 0 && (
   <Section paddingTop="half" paddingBottom="none">
@@ -91,7 +92,7 @@ const weken = weekStarts.map((start) => {
               </div>
             )}
             {weken.map((week, w) => (
-            <div class="kal__grid" data-week={w} hidden={w > 0} data-weekend-leeg={week.weekendLeeg ? '' : undefined}>
+            <div class="kal__grid" data-week={w} hidden={w > 0} data-weekend-leeg={weekendLeeg ? '' : undefined}>
               {week.dagen.map((dag) => (
                 <div class="kal__dag" data-leeg={dag.kaarten.length === 0 ? '' : undefined} data-geweest={dag.geweest ? '' : undefined}>
                   <div class="kal__dagkop">
@@ -242,8 +243,8 @@ const weken = weekStarts.map((start) => {
   .kal__pijl:disabled { opacity: .25; cursor: default; }
   .kal [hidden] { display: none !important; }
 
-  .kal__grid { display: grid; grid-template-columns: repeat(7, 1fr); }
-  .kal__grid[data-weekend-leeg] { grid-template-columns: repeat(5, 2fr) repeat(2, 1fr); }
+  .kal__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .kal__grid[data-weekend-leeg] { grid-template-columns: repeat(5, minmax(0, 2fr)) repeat(2, minmax(0, 1fr)); }
 
   .kal__dag { display: flex; flex-flow: column; min-height: 15rem; border-right: 1px solid var(--_color---neutral--neutral-400); }
   .kal__dag:last-child { border-right: 0; }
@@ -258,7 +259,7 @@ const weken = weekStarts.map((start) => {
   }
   .kal__nr { font-family: var(--_typography---fonts--heading-font); font-size: 1.75rem; line-height: 1; }
 
-  .kal__kaarten { display: flex; flex-flow: column; gap: .75rem; padding: 1rem; flex: 1; }
+  .kal__kaarten { display: flex; flex-flow: column; gap: .75rem; padding: .75rem; flex: 1; }
   .kal__leeg { color: var(--_color---neutral--neutral-400); text-align: center; margin-top: 1.5rem; font-size: 1.5rem; }
   .kal__kaart {
     display: flex;
@@ -268,15 +269,18 @@ const weken = weekStarts.map((start) => {
     background: var(--primary--background-secondary);
     border: 1px solid var(--_color---neutral--neutral-400);
     border-radius: 1px;
+    hyphens: auto;
+    overflow-wrap: break-word;
     transition: border-color .2s;
   }
+  .kal__kaart .h6 { font-size: clamp(.85rem, 1.1vw, 1.1rem); }
   .kal__kaart:hover { border-color: var(--primary--accent); }
   .kal__regel { font-size: .875rem; color: var(--primary--text-secondary); }
   .kal__tijd { display: flex; align-items: center; gap: .4rem; margin-top: .25rem; font-size: .8rem; white-space: nowrap; }
   .kal__tijd :global(.icon) { color: var(--primary--accent); flex: none; } /* guard-ignore: global-css — Icon draagt zijn eigen scope-hash */
 
   @media screen and (max-width: 991px) {
-    .kal__grid, .kal__grid[data-weekend-leeg] { grid-template-columns: repeat(2, 1fr); }
+    .kal__grid, .kal__grid[data-weekend-leeg] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .kal__dag { min-height: 0; border-bottom: 1px solid var(--_color---neutral--neutral-400); }
     .kal__dag[data-leeg] { display: none; }
     .kal__strook { display: none; }

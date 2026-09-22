@@ -23,49 +23,76 @@ const eersteISO = tourSteden
   .sort()[0];
 
 const iso = (d: Date) => d.toISOString().slice(0, 10);
-const maandag = eersteISO ? new Date(eersteISO) : null;
-maandag?.setDate(maandag.getDate() - ((maandag.getDay() + 6) % 7));
-
-const dagen = maandag
-  ? ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'].map((kort, i) => {
-      const d = new Date(maandag);
-      d.setDate(maandag.getDate() + i);
-      return { kort, nr: d.getDate(), iso: iso(d), geweest: iso(d) < vandaag, kaarten: alle.filter((k) => k.stop.datumISO === iso(d)) };
-    })
-  : [];
-
-const weekendLeeg = dagen.slice(5).every((d) => d.kaarten.length === 0);
-const weekNr = (() => {
-  if (!maandag) return 0;
+const maandagVan = (datumISO: string) => {
+  const d = new Date(datumISO);
+  d.setDate(d.getDate() - ((d.getDay() + 6) % 7));
+  return d;
+};
+const weekNrVan = (maandag: Date) => {
   const d = new Date(maandag);
   d.setDate(d.getDate() + 3);
   const jan4 = new Date(d.getFullYear(), 0, 4);
   return 1 + Math.round(((d.getTime() - jan4.getTime()) / 864e5 - 3 + ((jan4.getDay() + 6) % 7)) / 7);
-})();
+};
+
+// Alle weken vanaf de week van de eerstvolgende stop die stops hebben; lege weken slaan we over.
+const weekStarts = eersteISO
+  ? [...new Set(alle.map((k) => iso(maandagVan(k.stop.datumISO!))))].filter((m) => m >= iso(maandagVan(eersteISO))).sort()
+  : [];
+
+const maand = (d: Date) => d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', timeZone: 'UTC' });
+const weken = weekStarts.map((start) => {
+  const maandag = new Date(start);
+  const dagen = ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'].map((kort, i) => {
+    const d = new Date(maandag);
+    d.setDate(maandag.getDate() + i);
+    return { kort, nr: d.getDate(), iso: iso(d), geweest: iso(d) < vandaag, kaarten: alle.filter((k) => k.stop.datumISO === iso(d)) };
+  });
+  const zondag = new Date(maandag);
+  zondag.setDate(maandag.getDate() + 6);
+  return {
+    nr: weekNrVan(maandag),
+    bereik: `${maand(maandag)} – ${maand(zondag)}`,
+    dagen,
+    weekendLeeg: dagen.slice(5).every((d) => d.kaarten.length === 0),
+  };
+});
 ---
-{maandag && (
+{weken.length > 0 && (
   <Section paddingTop="half" paddingBottom="none">
     <Container>
       <div class="kal" data-open="true">
         <button class="kal__kop" type="button" aria-expanded="true" aria-controls="kal-paneel">
           <span class="kal__titel">
-            <span class="kal__eyebrow">{eyebrow} · week {weekNr}</span>
+            <span class="kal__eyebrow">{eyebrow} · week <span data-weeknr>{weken[0].nr}</span></span>
             <span class="h4">{title}</span>
           </span>
-          <span class="kal__strook" aria-hidden="true">
-            {dagen.map((dag) => (
+          {weken.map((week, w) => (
+          <span class="kal__strook" aria-hidden="true" data-week={w} hidden={w > 0}>
+            {week.dagen.map((dag) => (
               <span class="kal__strookdag" data-actief={dag.kaarten.length ? '' : undefined} data-geweest={dag.geweest ? '' : undefined}>
                 <small>{dag.kort}</small>{dag.nr}
               </span>
             ))}
           </span>
+          ))}
           <span class="kal__chevron"><Icon name="chevron" /></span>
         </button>
 
         <div class="kal__paneel" id="kal-paneel" role="region">
           <div class="kal__wrap">
-            <div class="kal__grid" data-weekend-leeg={weekendLeeg ? '' : undefined}>
-              {dagen.map((dag) => (
+            {weken.length > 1 && (
+              <div class="kal__nav">
+                <button class="kal__pijl" type="button" data-stap="-1" aria-label="Vorige week" disabled><Icon name="chevron" /></button>
+                <span class="kal__bereik" aria-live="polite">
+                  {weken.map((week, w) => <span data-week={w} data-nr={week.nr} hidden={w > 0}>Week {week.nr} · {week.bereik}</span>)}
+                </span>
+                <button class="kal__pijl kal__pijl--volgende" type="button" data-stap="1" aria-label="Volgende week"><Icon name="chevron" /></button>
+              </div>
+            )}
+            {weken.map((week, w) => (
+            <div class="kal__grid" data-week={w} hidden={w > 0} data-weekend-leeg={week.weekendLeeg ? '' : undefined}>
+              {week.dagen.map((dag) => (
                 <div class="kal__dag" data-leeg={dag.kaarten.length === 0 ? '' : undefined} data-geweest={dag.geweest ? '' : undefined}>
                   <div class="kal__dagkop">
                     <span class="kal__eyebrow">{dag.kort}</span>
@@ -84,6 +111,7 @@ const weekNr = (() => {
                 </div>
               ))}
             </div>
+            ))}
           </div>
         </div>
       </div>
@@ -100,6 +128,18 @@ const weekNr = (() => {
       kal.dataset.open = String(open);
       knop.setAttribute('aria-expanded', String(open));
     });
+
+    // Weeknavigatie: alle weken staan al in de HTML, we wisselen alleen `hidden`.
+    const weken = kal.querySelectorAll('.kal__grid').length;
+    const pijlen = kal.querySelectorAll<HTMLButtonElement>('.kal__pijl');
+    let huidig = 0;
+    pijlen.forEach((pijl) => pijl.addEventListener('click', () => {
+      huidig = Math.min(weken - 1, Math.max(0, huidig + Number(pijl.dataset.stap)));
+      kal.querySelectorAll<HTMLElement>('[data-week]').forEach((el) => (el.hidden = el.dataset.week !== String(huidig)));
+      kal.querySelector('[data-weeknr]')!.textContent = kal.querySelector<HTMLElement>(`.kal__bereik [data-week="${huidig}"]`)!.dataset.nr!;
+      pijlen[0].disabled = huidig === 0;
+      pijlen[1].disabled = huidig === weken - 1;
+    }));
   });
 </script>
 
@@ -173,6 +213,34 @@ const weekNr = (() => {
   }
   .kal[data-open='true'] .kal__paneel { grid-template-rows: 1fr; }
   .kal__wrap { min-height: 0; overflow: hidden; }
+
+  .kal__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: .75rem 1.25rem;
+    border-bottom: 1px solid var(--_color---neutral--neutral-400);
+  }
+  .kal__bereik { font-size: .875rem; color: var(--primary--text-secondary); text-align: center; }
+  .kal__pijl {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--_color---neutral--neutral-400);
+    background: transparent;
+    color: var(--primary--accent);
+    cursor: pointer;
+    transform: rotate(-90deg);
+    transition: border-color .2s;
+  }
+  .kal__pijl--volgende { transform: rotate(90deg); }
+  .kal__pijl:hover:not(:disabled) { border-color: var(--primary--accent); }
+  .kal__pijl:focus-visible { outline: 2px solid var(--primary--accent); outline-offset: 2px; }
+  .kal__pijl:disabled { opacity: .25; cursor: default; }
+  .kal [hidden] { display: none !important; }
 
   .kal__grid { display: grid; grid-template-columns: repeat(7, 1fr); }
   .kal__grid[data-weekend-leeg] { grid-template-columns: repeat(5, 2fr) repeat(2, 1fr); }

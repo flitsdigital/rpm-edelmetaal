@@ -29,7 +29,7 @@ export interface TourStad {
 export const mapsUrl = (stad: TourStad) => {
   const zoekterm = stad.adres
     ? `${stad.adres}, ${stad.postcode ?? ''} ${stad.naam}`.replace(/\s+/g, ' ').trim()
-    : `${stad.naam}, Drenthe`;
+    : `${stad.postcode ?? ''} ${stad.naam}`.trim();
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(zoekterm)}`;
 };
 
@@ -155,6 +155,186 @@ export const tourSteden: TourStad[] = [
     stops: [
       stop('Donderdag 24 september', '2026-09-24', 'De Slimmerick'),
       stop('Vrijdag 25 september', '2026-09-25', 'De Slimmerick'),
+    ],
+  },
+  {
+    slug: 'norg',
+    naam: 'Norg',
+    adres: 'Brink 1',
+    postcode: '9331 AA',
+    intro: intro('Norg'),
+    foto: 'tourZijkant',
+    stops: [stop('Maandag 5 oktober', '2026-10-05', 'MFC De Brinkhof')],
+  },
+  {
+    slug: 'beneden-leeuwen',
+    naam: 'Beneden-Leeuwen',
+    adres: 'Leliestraat 19',
+    postcode: '6658 XN',
+    intro: intro('Beneden-Leeuwen'),
+    foto: 'tourAchter',
+    stops: [
+      stop('Dinsdag 6 oktober', '2026-10-06', 'Brasserie De Rosmolen'),
+      stop('Woensdag 7 oktober', '2026-10-07', 'Brasserie De Rosmolen'),
+    ],
+  },
+  {
+    slug: 'zwartemeer',
+    naam: 'Zwartemeer',
+    adres: 'De Blokken 41',
+    postcode: '7894 CH',
+    intro: intro('Zwartemeer'),
+    foto: 'tourOpLocatie',
+    stops: [
+      stop('Dinsdag 6 oktober', '2026-10-06', 'Dorpshuis De Meerstal'),
+      stop('Woensdag 7 oktober', '2026-10-07', 'Dorpshuis De Meerstal'),
+    ],
+  },
+  {
+    slug: 'geldermalsen',
+    naam: 'Geldermalsen',
+    adres: 'Rijksstraatweg 64',
+    postcode: '4191 SG',
+    intro: intro('Geldermalsen'),
+    foto: 'tourZijkant',
+    stops: [
+      stop('Donderdag 8 oktober', '2026-10-08', 'De Pluk'),
+      stop('Vrijdag 9 oktober', '2026-10-09', 'De Pluk'),
+    ],
+  },
+  {
+    slug: 'groesbeek',
+    naam: 'Groesbeek',
+    adres: 'Pompweg 2B',
+    postcode: '6562 AK',
+    intro: intro('Groesbeek'),
+    foto: 'tourAchter',
+    stops: [
+      stop('Donderdag 8 oktober', '2026-10-08', 'Zaal Wilhelmina'),
+      stop('Vrijdag 9 oktober', '2026-10-09', 'Zaal Wilhelmina'),
+    ],
+  },
+  {
+    slug: 'sleen',
+    naam: 'Sleen',
+    adres: 'Menso Altingstraat 6',
+    postcode: '7841 CB',
+    intro: intro('Sleen'),
+    foto: 'tourOpLocatie',
+    stops: [stop('Zaterdag 10 oktober', '2026-10-10', 'De Deel')],
+  },
+  {
+    slug: 'swifterbant',
+    naam: 'Swifterbant',
+    // ponytail: straatnaam ontbreekt in de planning
+    postcode: '8255 HT',
+    intro: intro('Swifterbant'),
+    foto: 'tourZijkant',
+    stops: [stop('Maandag 12 oktober', '2026-10-12', 'De Schutsluis')],
+  },
+  {
+    slug: 'oosterbeek',
+    naam: 'Oosterbeek',
+    adres: 'Generaal Urquhartlaan 1',
+    postcode: '6861 GE',
+    intro: intro('Oosterbeek'),
+    foto: 'tourAchter',
+    stops: [
+      stop('Dinsdag 13 oktober', '2026-10-13', 'De Zoomerij'),
+      stop('Woensdag 14 oktober', '2026-10-14', 'De Zoomerij'),
+    ],
+  },
+  {
+    slug: 'renkum',
+    naam: 'Renkum',
+    adres: 'Groeneweg 12',
+    postcode: '6871 DD',
+    intro: intro('Renkum'),
+    foto: 'tourOpLocatie',
+    stops: [
+      stop('Dinsdag 13 oktober', '2026-10-13', 'Stichting Broedplaats Renkum'),
+      stop('Woensdag 14 oktober', '2026-10-14', 'Stichting Broedplaats Renkum'),
+    ],
+  },
+  {
+    slug: 'berlicum',
+    naam: 'Berlicum',
+    adres: 'Kerkwijk 61',
+    postcode: '5258 KB',
+    intro: intro('Berlicum'),
+    foto: 'tourZijkant',
+    stops: [
+      stop('Donderdag 15 oktober', '2026-10-15', 'Den Durpsherd'),
+      stop('Vrijdag 16 oktober', '2026-10-16', 'Den Durpsherd'),
+    ],
+  },
+  {
+    slug: 'nieuw-dordrecht',
+    naam: 'Nieuw-Dordrecht',
+    adres: 'Rietdekkershof 5',
+    postcode: '7885 GA',
+    intro: intro('Nieuw-Dordrecht'),
+    foto: 'tourAchter',
+    stops: [
+      stop('Donderdag 15 oktober', '2026-10-15', 'Dorpshuis De Klink'),
+      stop('Vrijdag 16 oktober', '2026-10-16', 'Dorpshuis De Klink'),
+    ],
+  },
+  {
+    slug: 'biddinghuizen',
+    naam: 'Biddinghuizen',
+    adres: 'Akkerhof 3A',
+    postcode: '8256 BK',
+    intro: intro('Biddinghuizen'),
+    foto: 'tourOpLocatie',
+    stops: [stop('Maandag 19 oktober', '2026-10-19', 'MFC De Binding')],
+  },
+  {
+    slug: 'aalten',
+    naam: 'Aalten',
+    adres: 'Lichtenvoordsestraatweg 87',
+    postcode: '7121 RD',
+    intro: intro('Aalten'),
+    foto: 'tourZijkant',
+    stops: [
+      stop('Dinsdag 20 oktober', '2026-10-20', 'Café Restaurant "Domme Aanleg"'),
+      stop('Woensdag 21 oktober', '2026-10-21', 'Café Restaurant "Domme Aanleg"'),
+    ],
+  },
+  {
+    slug: 'lunteren',
+    naam: 'Lunteren',
+    adres: 'Dorpsstraat 28',
+    postcode: '6741 AL',
+    intro: intro('Lunteren'),
+    foto: 'tourAchter',
+    stops: [
+      stop('Dinsdag 20 oktober', '2026-10-20', 'Dorpshuis Het Westhoffhuis'),
+      stop('Woensdag 21 oktober', '2026-10-21', 'Dorpshuis Het Westhoffhuis'),
+    ],
+  },
+  {
+    slug: 'dieren',
+    naam: 'Dieren',
+    adres: 'Ericaplein 5',
+    postcode: '6951 CP',
+    intro: intro('Dieren'),
+    foto: 'tourOpLocatie',
+    stops: [
+      stop('Donderdag 22 oktober', '2026-10-22', 'De Zoomerij Bibliotheek / Cultuur'),
+      stop('Vrijdag 23 oktober', '2026-10-23', 'De Zoomerij Bibliotheek / Cultuur'),
+    ],
+  },
+  {
+    slug: 'twello',
+    naam: 'Twello',
+    adres: 'H.W. Iordensweg 3',
+    postcode: '7391 KA',
+    intro: intro('Twello'),
+    foto: 'tourZijkant',
+    stops: [
+      stop('Donderdag 22 oktober', '2026-10-22', 'Taverne Twello'),
+      stop('Vrijdag 23 oktober', '2026-10-23', 'Taverne Twello'),
     ],
   },
 ];

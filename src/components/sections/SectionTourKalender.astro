@@ -54,10 +54,10 @@ const weken = weekStarts.map((start) => {
     nr: weekNrVan(maandag),
     bereik: `${maand(maandag)} – ${maand(zondag)}`,
     dagen,
+    // Za/zo zonder stops krijgen een smalle kolom; de rest is altijd even breed.
+    kolommen: dagen.map((d, i) => `minmax(0, ${i >= 5 && d.kaarten.length === 0 ? 1 : 2}fr)`).join(' '),
   };
 });
-// Eén kolomindeling voor alle weken, zodat de kolommen niet verspringen bij het bladeren.
-const weekendLeeg = weken.every((w) => w.dagen.slice(5).every((d) => d.kaarten.length === 0));
 ---
 {weken.length > 0 && (
   <Section paddingTop="half" paddingBottom="none">
@@ -92,7 +92,7 @@ const weekendLeeg = weken.every((w) => w.dagen.slice(5).every((d) => d.kaarten.l
               </div>
             )}
             {weken.map((week, w) => (
-            <div class="kal__grid" data-week={w} hidden={w > 0} data-weekend-leeg={weekendLeeg ? '' : undefined}>
+            <div class="kal__grid" data-week={w} hidden={w > 0} style={`--kolommen: ${week.kolommen}`}>
               {week.dagen.map((dag) => (
                 <div class="kal__dag" data-leeg={dag.kaarten.length === 0 ? '' : undefined} data-geweest={dag.geweest ? '' : undefined}>
                   <div class="kal__dagkop">
@@ -243,8 +243,7 @@ const weekendLeeg = weken.every((w) => w.dagen.slice(5).every((d) => d.kaarten.l
   .kal__pijl:disabled { opacity: .25; cursor: default; }
   .kal [hidden] { display: none !important; }
 
-  .kal__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
-  .kal__grid[data-weekend-leeg] { grid-template-columns: repeat(5, minmax(0, 2fr)) repeat(2, minmax(0, 1fr)); }
+  .kal__grid { display: grid; grid-template-columns: var(--kolommen); }
 
   .kal__dag { display: flex; flex-flow: column; min-height: 15rem; border-right: 1px solid var(--_color---neutral--neutral-400); }
   .kal__dag:last-child { border-right: 0; }
@@ -280,13 +279,13 @@ const weekendLeeg = weken.every((w) => w.dagen.slice(5).every((d) => d.kaarten.l
   .kal__tijd :global(.icon) { color: var(--primary--accent); flex: none; } /* guard-ignore: global-css — Icon draagt zijn eigen scope-hash */
 
   @media screen and (max-width: 991px) {
-    .kal__grid, .kal__grid[data-weekend-leeg] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .kal__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .kal__dag { min-height: 0; border-bottom: 1px solid var(--_color---neutral--neutral-400); }
     .kal__dag[data-leeg] { display: none; }
     .kal__strook { display: none; }
   }
   @media screen and (max-width: 767px) {
-    .kal__grid, .kal__grid[data-weekend-leeg] { grid-template-columns: 1fr; }
+    .kal__grid { grid-template-columns: 1fr; }
     .kal__dag { border-right: 0; }
   }
 </style>

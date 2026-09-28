@@ -297,8 +297,8 @@ export const tourSteden: TourStad[] = [
     intro: intro('Oosterbeek'),
     foto: 'tourAchter',
     stops: [
-      stop('Dinsdag 13 oktober', '2026-10-13', 'De Zoomerij'),
-      stop('Woensdag 14 oktober', '2026-10-14', 'De Zoomerij'),
+      stop('Dinsdag 13 oktober', '2026-10-13', 'Bibliotheek Oosterbeek'),
+      stop('Woensdag 14 oktober', '2026-10-14', 'Bibliotheek Oosterbeek'),
     ],
   },
   {

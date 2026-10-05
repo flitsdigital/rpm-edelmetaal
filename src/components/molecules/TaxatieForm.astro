@@ -13,7 +13,7 @@ interface Props {
 
 const { action = '/api/taxatie', id = 'taxatie' } = Astro.props;
 const bron = Astro.url.pathname;
-const metaalOpties = metalen.map((m) => ({ value: m, label: m }));
+const metaalOpties = [...metalen, 'Ik weet het niet'].map((m) => ({ value: m, label: m }));
 ---
 <div class="formblock" data-state="idle">
   <form class="form" id={id} action={action} method="post" novalidate>

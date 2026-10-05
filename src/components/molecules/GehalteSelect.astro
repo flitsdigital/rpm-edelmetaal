@@ -18,7 +18,10 @@ const { bron } = Astro.props;
           label={m === 'Goud' ? 'Karaat' : 'Gehalte'}
           control="select"
           placeholder="Selecteer een…"
-          options={gehaltesPerMetaal[m].map((g) => ({ value: `${m} ${g}`, label: `${m} ${g}` }))}
+          options={[
+            ...gehaltesPerMetaal[m].map((g) => ({ value: `${m} ${g}`, label: `${m} ${g}` })),
+            { value: 'Ik weet het niet', label: 'Ik weet het niet' },
+          ]}
           required={i === 0}
         />
       </div>

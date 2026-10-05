@@ -122,6 +122,12 @@ const {
     padding-right: 2.5rem;
   }
 
+  /* De uitklaplijst is native: zonder eigen achtergrond krijgt hij wit, met onze witte tekst erop. */
+  .field__input option {
+    background-color: var(--primary--background);
+    color: var(--primary--text);
+  }
+
   .field[data-control='textarea'] .field__input {
     min-height: 12rem;
     resize: vertical;

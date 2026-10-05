@@ -14,7 +14,6 @@ export const navLinks = [
   { href: '/testwijze', label: 'Testwijze' },
   { href: '/inkoopprijzen', label: 'Inkoopprijzen' },
   { href: '/goud-verkopen', label: 'Goudtour' },
-  { href: '/contact', label: 'Contact' },
 ] as const;
 
 export const b2bLinks = [{ href: '/inkoopprijzen-b2b', label: 'B2B' }] as const;

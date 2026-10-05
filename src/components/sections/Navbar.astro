@@ -17,7 +17,8 @@ interface Props {
 }
 
 const { current, prijzen = [], isB2b = false, banner = true } = Astro.props;
-const links = [...navLinks, ...b2bLinks];
+// Ingelogd zijn weten we alleen op de B2B-pagina (de rest is statisch); wie elders op Inloggen klikt en al ingelogd is, gaat direct door naar B2B.
+const links = isB2b ? [...navLinks, ...b2bLinks] : navLinks;
 ---
 <div class="global-nav">
   {

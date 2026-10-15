@@ -314,18 +314,6 @@ export const tourSteden: TourStad[] = [
     ],
   },
   {
-    slug: 'berlicum',
-    naam: 'Berlicum',
-    adres: 'Kerkwijk 61',
-    postcode: '5258 KB',
-    intro: intro('Berlicum'),
-    foto: 'tourZijkant',
-    stops: [
-      stop('Donderdag 15 oktober', '2026-10-15', 'Den Durpsherd'),
-      stop('Vrijdag 16 oktober', '2026-10-16', 'Den Durpsherd'),
-    ],
-  },
-  {
     slug: 'nieuw-dordrecht',
     naam: 'Nieuw-Dordrecht',
     adres: 'Rietdekkershof 5',

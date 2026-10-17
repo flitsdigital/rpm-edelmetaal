@@ -383,6 +383,15 @@ export const tourSteden: TourStad[] = [
     ],
   },
   {
+    slug: 'oosterhesselen',
+    naam: 'Oosterhesselen',
+    adres: 'Beatrixlaan 23a',
+    postcode: '7861 AG',
+    intro: intro('Oosterhesselen'),
+    foto: 'tourOpLocatie',
+    stops: [stop('Vrijdag 23 oktober', '2026-10-23', 'Hesselerhof')],
+  },
+  {
     slug: 'zeeland',
     naam: 'Zeeland',
     adres: 'Kerkstraat 56',
@@ -390,6 +399,15 @@ export const tourSteden: TourStad[] = [
     intro: intro('Zeeland'),
     foto: 'tourAchter',
     stops: [stop('Maandag 26 oktober', '2026-10-26', 'Dorpshuis Zeeland')],
+  },
+  {
+    slug: 'koekange',
+    naam: 'Koekange',
+    adres: 'Pr. Margrietlaan 1',
+    postcode: '7958 SB',
+    intro: intro('Koekange'),
+    foto: 'tourZijkant',
+    stops: [stop('Maandag 26 oktober', '2026-10-26', 'Dorpshuis De Schakel')],
   },
   {
     slug: 'dongen',

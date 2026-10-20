@@ -32,9 +32,10 @@ interface Props {
 
   title?: string;
   text?: string;
+  voetnoot?: string[];
 }
 
-const { groepen, id = 'prijzen', title, text } = Astro.props;
+const { groepen, id = 'prijzen', title, text, voetnoot } = Astro.props;
 ---
 <Section>
   <Container>
@@ -110,6 +111,11 @@ const { groepen, id = 'prijzen', title, text } = Astro.props;
         ))
       }
     </div>
+    {voetnoot && (
+      <div class="tabs__voetnoot">
+        {voetnoot.map((regel) => <Text size="sm" tone="secondary">{regel}</Text>)}
+      </div>
+    )}
   </Container>
 </Section>
 
@@ -214,6 +220,15 @@ const { groepen, id = 'prijzen', title, text } = Astro.props;
 
   .tabs__rows {
     row-gap: 2rem;
+  }
+
+  .tabs__voetnoot {
+    max-width: 45rem;
+    margin-top: var(--_layout---spacing--margin-lg);
+  }
+
+  .tabs__voetnoot :global(p:last-child) {
+    margin-bottom: 0;
   }
 </style>
 

@@ -11,6 +11,7 @@ import SectionContact from '../../components/sections/SectionContact.astro';
 import Button from '../../components/atoms/Button.astro';
 import { tourSteden, tour, tourUsps, tourFaq, mapsUrl, komendeStops, type TourStad } from '../../data/tour';
 import { haalPrijzen } from '../../data/prijzen';
+import { prijsVoetnoot } from '../../data/content';
 import { images } from '../../data/images';
 import { tourEvenementen, faqPageVan } from '../../data/jsonld';
 
@@ -61,6 +62,7 @@ const evenementen = [...tourEvenementen([stad]), faqPageVan(vragen)];
     id={`prijzen-${stad.slug}`}
     title="Onze actuele inkoopprijzen"
     text={`Goud verkopen in ${stad.naam}? Dan bent u bij ons aan het juiste adres.`}
+    voetnoot={prijsVoetnoot}
   />
 
   <SectionContent

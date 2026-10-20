@@ -109,6 +109,12 @@ export const cta = {
   text: 'Plan een gratis en vrijblijvende taxatie bij ons in de winkel of aan huis. Eerlijke prijzen, persoonlijke service en directe uitbetaling.',
 };
 
+export const prijsVoetnoot = [
+  'De gepubliceerde prijzen gelden op onze vaste locatie. Tijdens externe taxatiedagen kunnen afwijkende tarieven gelden vanwege extra organisatie- en locatiekosten. We bespreken het actuele tarief altijd vooraf en doen u een duidelijk, vrijblijvend aanbod.',
+  'Bij verkoop aan RPM Edelmetaal is legitimatie verplicht. Onder de 50 gram sloopgoud geldt een aftrek van € 3,- per gram (niet voor handelaren, postzendingen en afgeven).',
+  'Het is aan RPM Edelmetaal te beoordelen hoe een partij wordt ingenomen. De biedprijs voor zilver geldt bij gesorteerde aanlevering. Biedprijzen onder voorbehoud van typefouten en koersfluctuaties.',
+];
+
 export const contactSectie = {
   title: 'Persoonlijk advies en vrijblijvende taxatie, bij u thuis of in Sneek',
   text: 'Heeft u vragen over de waarde van uw sieraden of wilt u direct een taxatie aanvragen? Wij staan klaar om u te helpen in onze winkel in Sneek of gewoon bij u thuis.',

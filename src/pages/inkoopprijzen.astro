@@ -8,7 +8,7 @@ import SectionPrijstabel from '../components/sections/SectionPrijstabel.astro';
 import SectionCta from '../components/sections/SectionCta.astro';
 import SectionContact from '../components/sections/SectionContact.astro';
 import SectionDivider from '../components/atoms/SectionDivider.astro';
-import { seo, cta, contactSectie } from '../data/content';
+import { seo, cta, contactSectie, prijsVoetnoot } from '../data/content';
 import { haalPrijzen } from '../data/prijzen';
 const { groepen, topPrijzen, topKaarten } = await haalPrijzen();
 ---
@@ -39,7 +39,7 @@ const { groepen, topPrijzen, topKaarten } = await haalPrijzen();
     </Container>
   </Section>
 
-  <SectionPrijstabel groepen={groepen} id="prijzen" />
+  <SectionPrijstabel groepen={groepen} id="prijzen" voetnoot={prijsVoetnoot} />
 
   <SectionCta title={cta.title} text={cta.text} />
 

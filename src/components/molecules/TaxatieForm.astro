@@ -82,7 +82,10 @@ const metaalOpties = [...metalen, 'Ik weet het niet'].map((m) => ({ value: m, la
       const ok = Boolean(res?.ok);
       block.dataset.state = ok ? 'done' : 'fail';
       const melding = block.querySelector<HTMLElement>(ok ? '.formblock__done' : '.formblock__fail');
-      if (ok) form.hidden = true;
+      if (ok) {
+        form.hidden = true;
+        ((window as unknown as { dataLayer?: unknown[] }).dataLayer ??= []).push({ event: 'taxatie_verstuurd' });
+      }
       if (melding) {
         melding.hidden = false;
 

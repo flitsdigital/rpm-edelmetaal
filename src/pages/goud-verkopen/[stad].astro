@@ -8,6 +8,7 @@ import SectionUsp from '../../components/sections/SectionUsp.astro';
 import SectionFaq from '../../components/sections/SectionFaq.astro';
 import SectionTourAgenda from '../../components/sections/SectionTourAgenda.astro';
 import SectionContact from '../../components/sections/SectionContact.astro';
+import TourActiebalk from '../../components/sections/TourActiebalk.astro';
 import Button from '../../components/atoms/Button.astro';
 import { tourSteden, tour, tourUsps, tourFaq, mapsUrl, komendeStops, type TourStad } from '../../data/tour';
 import { haalPrijzen } from '../../data/prijzen';
@@ -94,4 +95,5 @@ const evenementen = [...tourEvenementen([stad]), faqPageVan(vragen)];
   <SectionContact title={tour.contact.titel} text={tour.contact.tekst} formId="taxatie-stad" />
 
   <SectionDivider />
+  {eersteStop && <TourActiebalk stad={stad} stop={eersteStop} />}
 </PageLayout>

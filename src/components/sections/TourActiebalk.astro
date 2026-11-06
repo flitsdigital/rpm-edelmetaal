@@ -1,0 +1,79 @@
+---
+import Button from '../atoms/Button.astro';
+import Icon from '../atoms/Icon.astro';
+import { contact } from '../../data/site';
+import { mapsUrl, type Stop, type TourStad } from '../../data/tour';
+
+interface Props {
+  stad: TourStad;
+  stop: Stop;
+}
+
+const { stad, stop } = Astro.props;
+---
+<script is:inline>
+  // Test 'tour-actiebalk': alleen mobiel, en alleen op stadspagina's met een komende stop.
+  (function () {
+    // guard-ignore: hardcoded-breakpoint — matchMedia kan geen CSS-token lezen
+    if (!matchMedia('(max-width: 767px)').matches) return;
+    var sleutel = 'rpm_ab_tour_actiebalk';
+    var variant;
+    try { variant = localStorage.getItem(sleutel); } catch (e) {}
+    if (variant !== 'a' && variant !== 'b') {
+      variant = Math.random() < 0.5 ? 'a' : 'b';
+      // shortcut: zonder localStorage wisselt de variant per pagina, bij een vaste test server-side toewijzen.
+      try { localStorage.setItem(sleutel, variant); } catch (e) {}
+    }
+    document.documentElement.dataset.abTour = variant;
+    // De klikken meet GTM; die leest de variant uit deze dataLayer-waarde.
+    (window.dataLayer = window.dataLayer || []).push({ event: 'ab_blootstelling', ab_test: 'tour-actiebalk', ab_variant: variant });
+  })();
+</script>
+
+<aside class="actiebalk" aria-label={`Naar onze stop in ${stad.naam}`}>
+  <p class="actiebalk__stop">{stop.datum} · {stop.tijd}</p>
+  <div class="actiebalk__knoppen">
+    <Button href={mapsUrl(stad)}><Icon name="pin" size="sm" />Route</Button>
+    <Button href={contact.telefoonHref} variant="secondary"><Icon name="phone" size="sm" />Bellen</Button>
+  </div>
+</aside>
+
+<style>
+  .actiebalk {
+    display: none;
+    flex-flow: column;
+    gap: .5rem;
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 998;
+    padding: .75rem 1.25rem calc(.75rem + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--_color---neutral--neutral-400);
+    background-color: var(--primary--background-secondary);
+  }
+
+  /* guard-ignore: global-css — de variant staat op <html>, buiten dit component */
+  :global(html[data-ab-tour='b']) .actiebalk {
+    display: flex;
+  }
+
+  /* guard-ignore: global-css — ruimte zodat de balk de footer niet afdekt */
+  :global(html[data-ab-tour='b'] body) {
+    padding-bottom: 8rem;
+  }
+
+  .actiebalk__stop {
+    margin: 0;
+    color: var(--primary--text-secondary);
+    font-size: var(--_typography---paragraph-sm--font-size);
+    text-align: center;
+  }
+
+  .actiebalk__knoppen {
+    display: flex;
+    gap: var(--_layout---grid--gap-sm);
+  }
+
+  .actiebalk__knoppen :global(.button) { /* guard-ignore: global-css — Button draagt zijn eigen scope-hash */
+    flex: 1;
+  }
+</style>

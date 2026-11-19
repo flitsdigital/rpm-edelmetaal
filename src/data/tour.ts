@@ -681,7 +681,7 @@ export const tourSteden: TourStad[] = [
   {
     slug: 'zundert',
     naam: 'Zundert',
-    adres: 'Rucphensestraat 14',
+    adres: 'Rucphenseweg 14',
     postcode: '4882 KC',
     intro: intro('Zundert'),
     foto: 'tourOpLocatie',

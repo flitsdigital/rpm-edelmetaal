@@ -39,6 +39,8 @@ export default defineConfig({
   trailingSlash: 'never',
   output: 'static',
   adapter: vercel(),
+  // Stop afgezegd: oude flyer-/QR-links niet laten doodlopen.
+  redirects: { '/goud-verkopen/odoorn': '/goud-verkopen' },
 
   // Zonder deze lijst vertrouwt Astro de `Host`/`X-Forwarded-Host` van de proxy
   // niet en valt `Astro.url` terug op `https://localhost`. De CSRF-check

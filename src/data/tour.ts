@@ -751,6 +751,15 @@ export const tourSteden: TourStad[] = [
     ],
   },
   {
+    slug: 'steenwijkerwold',
+    naam: 'Steenwijkerwold',
+    adres: 'Gelderingen 65',
+    postcode: '8341 PT',
+    intro: intro('Steenwijkerwold'),
+    foto: 'tourAchter',
+    stops: [stop('Woensdag 25 november', '2026-11-25', 'Café Gelderingen')],
+  },
+  {
     slug: 'doetinchem',
     naam: 'Doetinchem',
     adres: 'Wijnbergseweg 86',
@@ -782,6 +791,15 @@ export const tourSteden: TourStad[] = [
     intro: intro('Diever'),
     foto: 'tourOpLocatie',
     stops: [stop('Vrijdag 27 november', '2026-11-27', "MFC 't Hart")],
+  },
+  {
+    slug: 'emst',
+    naam: 'Emst',
+    adres: 'Dominee van Rhijnstraat 69',
+    postcode: '8166 AL',
+    intro: intro('Emst'),
+    foto: 'tourAchter',
+    stops: [stop('Zaterdag 28 november', '2026-11-28', 'Hezebrink')],
   },
   {
     slug: 'loppersum',
